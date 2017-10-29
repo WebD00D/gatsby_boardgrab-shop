@@ -1,0 +1,41 @@
+.navbar {
+
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 30px;
+
+  background-color: #F5F5F5;
+
+}
+
+.navbar__logo-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__logo {
+  height: 48px;
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+
+  background-color: #498144;
+}
+
+.navbar__logo img {
+  height: 28px;
+}
+
+.navbar__logo-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(31,35,65,0.36);
+  font-weight: 500;
+}

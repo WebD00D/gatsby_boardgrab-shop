@@ -1,0 +1,80 @@
+.fc-green {
+  color: #498144 !important;
+}
+
+.fc-red {
+  color: #E74C3C;
+}
+
+.fc-blue {
+  color: #64c8d2;
+}
+
+.fc-orange {
+  color: #ff6e0a;
+}
+
+.fc-yellow {
+  color: #f4d03f;
+}
+
+.td-none {
+  text-decoration: none;
+}
+
+.t-sans {
+font-family: 'Montserrat', sans-serif;
+}
+
+.t-upper { text-transform: uppercase;}
+
+.f-11 {
+  font-size: 11px;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.ls-2 {
+  letter-spacing: 2px;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+
+.m-t-30 {
+  margin-top: 30px;
+}
+
+.fx {
+  display: flex;
+}
+
+.fx-j-c { justify-content: center; }
+.fx-s-b { justify-content: space-between;}
+.fx-a-c { align-items: center; }
+
+
+.mx-992 { max-width: 992px; width: 100%; }
+
+.m-b-48 {
+  margin-bottom: 48px;
+}
+
+.w-20p {
+  width: 20%;
+}
+.w-40p {
+  width: 40%;
+}
