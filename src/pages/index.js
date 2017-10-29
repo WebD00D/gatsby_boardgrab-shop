@@ -3,26 +3,22 @@ import Link from 'gatsby-link'
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-import LoginForm from "../components/LoginForm";
+
 
 class IndexPage extends PureComponent {
 
-  render() {
-
-    if ( this.props.userId ) {
-      return (
-        <Redirect to="/inventory" />
-      )
-    }
-
+  render() { 
     return (
       <div>
-        {this.props.userId}
-        <LoginForm />
+      
+      Homepage
+      
       </div>
     )
   }
 }
+
+
 
 
 const mapStateToProps = ({ userId }) => {
