@@ -17,12 +17,7 @@ export default class CityPin extends PureComponent {
     const {size = 20, boardCount, onClick} = this.props; 
 
     return (
-        <div style={{...pinStyle,backgroundColor: '#498144', borderRadius: "50%", height: "30px", width: "30px", color: '#FFFFFF', fontSize: 11, textAlign: 'center', fontFamily: 'sans-serif'}}>120</div>
-    //   <svg height={size} viewBox='0 0 24 24'
-    //     style={{...pinStyle, transform: `translate(${-size/2}px,${-size}px)`}}
-    //     onClick={onClick} >
-    //     <path d={ICON}/>
-    //   </svg>
+        <div onClick={onClick} style={{...pinStyle, backgroundColor: '#498144',  borderRadius: "50%", display: 'flex', alignItems: 'center', justifyContent: 'center' ,height: "30px", width: "30px", color: '#FFFFFF', fontSize: 11, fontWeight: 400 , fontFamily: 'Helvetica'}}>120</div>
     );
   }
 }

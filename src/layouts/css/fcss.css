@@ -58,7 +58,7 @@ font-family: 'Montserrat', sans-serif;
 }
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .fx {

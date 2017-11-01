@@ -7,17 +7,19 @@ import { connect } from "react-redux";
 
 import CityPin from "../components/CityPin";
 
-
 import CITIES from "../data/cities.json";
 
 class IndexPage extends PureComponent {
 
   constructor(props) {
     super(props);
+
+    this.handleCityChange = this.handleCityChange.bind(this);
+
     this.state = {
-      latitude: 34.0522,
-      longitude: -118.2437,
-      popupInfo: null
+      popupInfo: null,
+      width: 0,
+      height: 0,
     };
   }
 
@@ -26,40 +28,52 @@ class IndexPage extends PureComponent {
       <Marker key={`marker-${index}`}
         longitude={city.longitude}
         latitude={city.latitude} >
-        <CityPin size={20} boardCount={150} onClick={() => this.setState({popupInfo: city})} />
+        <CityPin size={20} boardCount={150} onClick={()=> this.handleCityChange(city.name)}/>
       </Marker>
     );
   }
 
+  handleCityChange(city) {
+    this.props.setCityData(city);
+  }
+
+  componentDidMount() {
+    const containerWidth = document.getElementById("map").clientWidth;
+
+    this.setState({
+      width: containerWidth,
+      height: window.innerHeight
+    })
+  }
+
 	render() {
 		return (
-			<div>
-				Testing
-				<MapGL
+			<div id="container" style={{display: 'flex'}}>
+
+        <div id="boards" style={{width: '70%'}}>
+          Boards {this.props.userId}
+        </div>
+        <div id="map" style={{width: '30%', position: 'fixed', top: '100px', bottom: 0, right: 0}}>
+        <MapGL
 					mapboxApiAccessToken={
 						'pk.eyJ1Ijoid2ViZG9vZCIsImEiOiJjajlnZTk0OTMyeGVhMndwOWJ4bDlqMDd1In0.TzYbLbUFco-TSaqObrvWTA'
 					}
-					width={600}
-					height={400}
-					latitude={this.state.latitude}
-					longitude={this.state.longitude}
-					zoom={8}
-          mapStyle='mapbox://styles/mapbox/streets-v9'
+					width={this.state.width}
+					height={this.state.height}
+					latitude={this.props.latitude}
+					longitude={this.props.longitude}
+					zoom={this.props.mapZoom}
+          mapStyle='mapbox://styles/webdood/cj9gc6pvx8udn2ro4lyqrxuo6'
 					onViewportChange={viewport => {
 						const { width, height, latitude, longitude, zoom } = viewport;
-						// Optionally call `setState` and use the state to update the map.
-            console.log(viewport);
-            this.setState({
-              latitude,
-              longitude
-            })
+            this.props.setMapPosition(latitude,longitude)
 					}}
-
 				>
-
-    { CITIES.map(this._renderCityMarker) }
-        
+        { CITIES.map(this._renderCityMarker) }
+      
         </MapGL>
+        </div>
+
 			</div>
 		);
 	}
@@ -68,7 +82,18 @@ class IndexPage extends PureComponent {
 
 
 
-const mapStateToProps = ({ userId }) => {
-  return { userId };
+const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom }) => {
+  return { userId, latitude, longitude, regions, mapZoom };
 };
-export default connect(mapStateToProps)(IndexPage)
+
+const mapDispatchToProps = dispatch => {
+  return { 
+    setMapPosition: (latitude, longitude) => dispatch({ type: `SET_MAP_POSITION`, latitude, longitude }),
+    setCityData: (city) => dispatch({ type: `SET_CITY_DATA`, city })
+  
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(IndexPage)
