@@ -41,11 +41,23 @@ const reducer = (state, action) => {
 			return o.region === selectedRegion;
 		});
 
+		let boardsByRegionData = _.find(state.boardsByRegion, function(o) {
+			return o.region === selectedRegion;
+		});
+
+		console.log('BOARDS BY REGION', boardsByRegionData);
+
+		if (!boardsByRegionData) {
+			boardsByRegionData = [];
+		}
+
 		return {
 			...state,
 			selectedRegion: action.region,
 			currentCityList: selectedRegion === 'All Locations' ? [] : regionData.cities,
-			mapZoom: selectedRegion === 'All Locations' ? 4 : 8,
+			boardsToDisplay: selectedRegion === 'All Locations' ? state.allBoardsList : boardsByRegionData.boards,
+			selectedCity: 'All Cities',
+			mapZoom: selectedRegion === 'All Locations' ? 2 : 6,
 			latitude: selectedRegion === 'All Locations' ? 33.97980872872457 : regionData.cities[0].latitude,
 			longitude: selectedRegion === 'All Locations' ? -118.0810546875 : regionData.cities[0].longitude
 		};
@@ -57,12 +69,26 @@ const reducer = (state, action) => {
 			return o.name === selectedCity;
 		});
 
+		let boardsByCityData = _.find(state.boardsByCity, function(o) {
+			return o.name === selectedCity;
+		});
+
+		const boardsByRegionData = _.find(state.boardsByRegion, function(o) {
+			return o.region === state.selectedRegion;
+		});
+
+		if (!boardsByCityData) {
+			boardsByCityData = [];
+		}
+		console.log('BOARDS BY CITY DATA', boardsByCityData);
+
 		return {
 			...state,
 			latitude: cityData.latitude,
 			longitude: cityData.longitude,
+			boardsToDisplay: selectedCity === 'All Cities' ? boardsByRegionData.boards : boardsByCityData.boards,
 			selectedCity: cityData.name,
-			mapZoom: 12
+			mapZoom: selectedCity === 'All Cities' ? 4 : 12
 		};
 	}
 
@@ -85,7 +111,9 @@ const initialState = {
 	longitude: -118.47003936767578,
 	selectedRegion: 'Southern California',
 	selectedCity: 'All Cities',
+	mapZoom: 8,
 
+	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
 		{ name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
 		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625 },
@@ -101,10 +129,6 @@ const initialState = {
 		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375 },
 		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125 }
 	],
-
-	mapZoom: 8,
-
-	// Region defaults to Southern California
 
 	regions: [
 		{ region: 'All Locations', latitude: 34.16181816123038, longitude: -116.806640625 },
@@ -161,37 +185,67 @@ const initialState = {
 				{ name: 'Seattle', latitude: 47.60616304386874, longitude: -122.36572265625 },
 				{ name: 'Astoria', latitude: 47.60616304386874, longitude: -122.36572265625 }
 			]
-    },
-    {
+		},
+		{
 			region: 'Mid Atlantic',
 			cities: [
-        { name: 'All Cities', latitude: 37.54457732085582, longitude: -77.442626953125 },
-        { name: 'Richmond', latitude: 37.54457732085582, longitude: -77.442626953125 },
+				{ name: 'All Cities', latitude: 37.54457732085582, longitude: -77.442626953125 },
+				{ name: 'Richmond', latitude: 37.54457732085582, longitude: -77.442626953125 },
 				{ name: 'Virginia Beach', latitude: 36.85325222344019, longitude: -75.9814453125 },
 				{ name: 'Outer Banks', latitude: 35.94688293218141, longitude: -75.6243896484375 },
-        { name: 'Southern Delaware', latitude: 38.53527591154414, longitude: -75.07232666015625 },
-        { name: 'Ocean City', latitude: 39.281167913914636, longitude: -74.5806884765625 },
-        { name: 'Eastern Shore', latitude: 37.56417412088097, longitude: -75.7122802734375 },
-        { name: 'Atlantic City', latitude: 39.37040245787161, longitude: -74.44610595703125 },
-        { name: 'Long Beach Island', latitude: 39.65434146406167, longitude: -74.190673828125 },
-        { name: 'Seaside Heights', latitude: 39.9434364619742, longitude: -74.07257080078125 },
-			]
-    },
-    {
-			region: 'South East',
-			cities: [
-        { name: 'All Cities', latitude: 34.66484057821928, longitude: -76.9427490234375  },
-        { name: 'Emerald Isle', latitude: 34.66484057821928, longitude: -76.9427490234375 },
-				{ name: 'Wrightsville Beach', latitude: 34.17090836352573, longitude: -77.80517578125 },
-				{ name: 'Surf City', latitude: 34.42956713470528, longitude: -77.5469970703125 },
-        { name: 'Myrtle Beach', latitude: 33.69235234723729, longitude: -78.8873291015625 },
-        { name: 'Charleston', latitude: 32.78265637602964, longitude: -79.9310302734375 },
-        { name: 'Folly Beach', latitude: 32.654407116645416, longitude: -79.9420166015625 },
-        { name: 'Hilton Head', latitude: 32.20582936513577, longitude: -80.738525390625 },
-        { name: 'Tybee Island', latitude: 31.99643007718664, longitude: -80.84976196289062 },
-        { name: 'Brunswick', latitude: 31.15053220759678, longitude: -81.47872924804688 },
+				{ name: 'Southern Delaware', latitude: 38.53527591154414, longitude: -75.07232666015625 },
+				{ name: 'Ocean City', latitude: 39.281167913914636, longitude: -74.5806884765625 },
+				{ name: 'Eastern Shore', latitude: 37.56417412088097, longitude: -75.7122802734375 },
+				{ name: 'Atlantic City', latitude: 39.37040245787161, longitude: -74.44610595703125 },
+				{ name: 'Long Beach Island', latitude: 39.65434146406167, longitude: -74.190673828125 },
+				{ name: 'Seaside Heights', latitude: 39.9434364619742, longitude: -74.07257080078125 }
 			]
 		},
+		{
+			region: 'South East',
+			cities: [
+				{ name: 'All Cities', latitude: 34.66484057821928, longitude: -76.9427490234375 },
+				{ name: 'Emerald Isle', latitude: 34.66484057821928, longitude: -76.9427490234375 },
+				{ name: 'Wrightsville Beach', latitude: 34.17090836352573, longitude: -77.80517578125 },
+				{ name: 'Surf City', latitude: 34.42956713470528, longitude: -77.5469970703125 },
+				{ name: 'Myrtle Beach', latitude: 33.69235234723729, longitude: -78.8873291015625 },
+				{ name: 'Charleston', latitude: 32.78265637602964, longitude: -79.9310302734375 },
+				{ name: 'Folly Beach', latitude: 32.654407116645416, longitude: -79.9420166015625 },
+				{ name: 'Hilton Head', latitude: 32.20582936513577, longitude: -80.738525390625 },
+				{ name: 'Tybee Island', latitude: 31.99643007718664, longitude: -80.84976196289062 },
+				{ name: 'Brunswick', latitude: 31.15053220759678, longitude: -81.47872924804688 }
+			]
+		},
+		{
+			region: 'East Florida',
+			cities: [
+				{ name: 'All Cities', latitude: 28.101057958669447, longitude: -80.5517578125 },
+				{ name: 'St. Augustine', latitude: 29.91685223307017, longitude: -81.32080078125 },
+				{ name: 'Cocoa Beach', latitude: 28.321306762152954, longitude: -80.60943603515625 },
+				{ name: 'Palm Beach', latitude: 26.698998877374333, longitude: -80.05050659179688 },
+				{ name: 'Delray', latitude: 26.45950861170239, longitude: -80.07522583007812 },
+				{ name: 'Miami', latitude: 25.764030136696327, longitude: -80.20294189453125 }
+			]
+		},
+
+		{
+			region: 'Hawaii',
+			cities: [
+				{ name: 'All Cities', latitude: 21.299610604945606, longitude: -157.862548828125 },
+				{ name: "O'ahu", latitude: 21.442843107187656, longitude: -157.9998779296875 },
+				{ name: 'Maui', latitude: 20.87677672772702, longitude: -156.6705322265625 },
+				{ name: 'Hawaii', latitude: 20.035289711352377, longitude: -155.85617065429688 }
+			]
+		},
+
+		{
+			region: 'South Africa',
+			cities: [
+				{ name: 'All Cities', latitude: -33.934245311173115, longitude: 18.4185791015625 },
+				{ name: 'Cape Town', latitude: -33.934245311173115, longitude: 18.4185791015625 }
+			]
+		},
+
 		{
 			region: 'Australia',
 			cities: [
@@ -200,6 +254,134 @@ const initialState = {
 				{ name: 'Sydney', latitude: -33.87041555094182, longitude: 151.083984375 }
 			]
 		}
+	], // end cities by region
+
+	boardsByRegion: [
+		{
+			region: 'Southern California',
+			latitude: 34.16181816123038,
+			longitude: -116.806640625,
+			boards: [
+				{
+					id: 1,
+					userId: 1,
+					region: 'Southern California',
+					tags: ['Beginners', 'Small Waves', 'A Tight Budget'],
+					city: 'San Diego',
+					name: `5'8" Rusty Dwart`,
+					brand: `Rusty`,
+					model: `Dwart`,
+					price: '300',
+					dimensions: ` 5'8" x 32" x 3" `,
+					fins: "3",
+					condition: "Good",
+					description: "Description lorem ipsum dolar set amit",
+					shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+					featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+				}
+			]
+		}
+	],
+
+	boardsByCity: [
+		{
+			name: 'San Diego',
+			latitude: 32.71566625570317,
+			longitude: -117.14996337890625,
+			boards: [
+				{
+					id: 1,
+					userId: 1,
+					region: 'Southern California',
+					city: 'San Diego',
+					name: `5'8" Rusty Dwart`,
+					brand: `Rusty`,
+					model: `Dwart`,
+					price: '300',
+					dimensions: ` 5'8" x 32" x 3" `,
+					fins: "3",
+					condition: "Good",
+					description: "Description lorem ipsum dolar set amit",
+					shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+					featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+					photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+				}
+			]
+		}
+	], // END BOARDS BY CITY
+
+	allBoardsList: [
+		{
+			id: 1,
+			userId: 1,
+			region: 'Southern California',
+			city: 'San Diego',
+			name: `5'8" Rusty Dwart`,
+			brand: `Rusty`,
+			model: `Dwart`,
+			price: '300',
+			dimensions: ` 5'8" x 32" x 3" `,
+			fins: "3",
+			condition: "Good",
+			description: "Description lorem ipsum dolar set amit",
+			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		}
+	],
+
+	// WILL DEFAULT TO SOUTHER CALIFORNIA BOARDS ON LOAD.
+	boardsToDisplay: [
+		{
+			id: 1,
+			userId: 1,
+			region: 'Southern California',
+			city: 'San Diego',
+			name: `5'8" Rusty Dwart`,
+			brand: `Rusty`,
+			model: `Dwart`,
+			price: '300',
+			dimensions: ` 5'8" x 32" x 3" `,
+			fins: "3",
+			condition: "Good",
+			description: "Description lorem ipsum dolar set amit",
+			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		}
+	],
+
+	// END BOARDS TO DISPLAY
+	users: [
+		{ 
+			userId: 1,
+			username: 'rva.christian',
+			email: 'rva.christian91@gmail.com',
+			profilePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			boards: [ 1 ], // id's of boards
+
+		}
 	]
 };
 
@@ -207,6 +389,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

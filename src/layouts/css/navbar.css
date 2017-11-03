@@ -1,5 +1,5 @@
 .navbar {
-
+  position: fixed;
   height: 60px;
   width: 100%;
   display: flex;
@@ -7,10 +7,15 @@
   justify-content: space-between;
   padding-left: 30px;
   padding-right: 30px;
-
+  background-color: #FFFFFF;
   border-top: 5px solid #498144;
   border-bottom: 1px solid #F5F5F5;
 
+}
+
+.navbar__wrapper {
+  position: relative;
+  z-index: 4;
 }
 
 .navbar__logo-wrap {
@@ -61,7 +66,7 @@
 .navbar__location__dropdown {
   position: absolute;
   width: 350px;
-  top: 40px;
+  top: 80px;
 
   border: 1px solid #D4D1D1;
   background-color: #FFFFFF;
@@ -129,6 +134,8 @@
 
 
 .navbar__subnav {
+  position: fixed;
+  top: 60px;
   height: 40px;
   width: 100%;
   display: flex;
@@ -137,6 +144,7 @@
   padding-left: 30px;
   padding-right: 30px;
 
+  background-color: #FFFFFF;
   border-bottom: 1px solid #F5F5F5;
 }
 

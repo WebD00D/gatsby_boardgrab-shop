@@ -1,0 +1,15 @@
+.filter__text {
+    font-size: 12px;
+    letter-spacing: 0.92px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    margin-right: 24px;
+
+    display: flex;
+    align-items: center;
+}
+
+.filter__text img {
+    height: 10px;
+    margin-left: 8px;
+}

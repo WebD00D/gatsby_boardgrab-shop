@@ -50,7 +50,6 @@ class Navbar extends PureComponent {
 
   render(){
 
-
     const cities = this.props.currentCityList.map((city, key) =>
     <div key={key} onClick={()=> this.handleCityChange(city.name)} className="navbar__location__dropdown__item">{city.name}</div>
   );
@@ -92,17 +91,14 @@ class Navbar extends PureComponent {
 							<div onClick={() => this.handleRegionChange('East Florida')} className="navbar__location__dropdown__item">
 								East Florida
 							</div>
-							<div onClick={() => this.handleRegionChange('West Florida')} className="navbar__location__dropdown__item">
-								West Florida
-							</div>
 							<div onClick={() => this.handleRegionChange('Hawaii')} className="navbar__location__dropdown__item">
 								Hawaii
 							</div>
 							<div onClick={() => this.handleRegionChange('Australia')} className="navbar__location__dropdown__item">
 								Australia
 							</div>
-							<div onClick={() => this.handleRegionChange('Cape Town')} className="navbar__location__dropdown__item navbar__location__dropdown__item--no-border">
-								Cape Town
+							<div onClick={() => this.handleRegionChange('South Africa')} className="navbar__location__dropdown__item navbar__location__dropdown__item--no-border">
+								South Africa
 							</div>
 						</div>
 					</div>
@@ -127,7 +123,7 @@ class Navbar extends PureComponent {
 						Start Selling with Boardgrab
 					</Link>
 					<Link className="navbar__link" to="/">
-						Sign in / Sign up
+						Login / Register
 					</Link>
 				</div>
 			</div>
@@ -136,9 +132,9 @@ class Navbar extends PureComponent {
 					<Link className="navbar__subnav__link" to="/">
 						Who we are
 					</Link>
-					<Link className="navbar__subnav__link" to="/">
+					<a className="navbar__subnav__link" target="_blank" href="https://medium.com/boardgrab">
 						Blog
-					</Link>
+					</a>
 					<Link className="navbar__subnav__link" to="/">
 						Reviews
 					</Link>

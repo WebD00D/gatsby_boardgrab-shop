@@ -36,7 +36,7 @@ class TemplateWrapper extends React.Component {
     return (
       <div>
         <Helmet
-          title="Boardgrab Shop Dashboard"
+          title="Boardgrab Shop"
           meta={[
             { name: "description", content: "Sample" },
             { name: "keywords", content: "sample, something" }
@@ -44,7 +44,7 @@ class TemplateWrapper extends React.Component {
         />
         <Navbar />
         {/* <ConnectedCounter /> */}
-        <div style={{ margin: "0 auto", maxWidth: 960, paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ margin: "0 auto",paddingTop: 170, paddingBottom: 100 }}>
         {this.props.children()}
       </div>
       </div>

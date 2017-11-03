@@ -6,6 +6,9 @@ import MapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
 import { connect } from "react-redux";
 
 import CityPin from "../components/CityPin";
+import Board from "../components/Board";
+
+import "../layouts/css/filters.css";
 
 import CITIES from "../data/cities.json";
 
@@ -23,14 +26,25 @@ class IndexPage extends PureComponent {
     };
   }
 
-  _renderCityMarker = (city, index) => {
+
+  _renderBoards = (board, index) => {
     return (
-      <Marker key={`marker-${index}`}
-        longitude={city.longitude}
-        latitude={city.latitude} >
-        <CityPin size={20} boardCount={150} onClick={()=> this.handleCityChange(city.name)}/>
-      </Marker>
-    );
+
+      <Board key={`boards-${index}`} board={board} onClick={()=> alert(`view info for board id ${board.id}`)} />
+
+    )
+  }
+  
+
+  _renderCityMarker = (city, index) => {
+
+      return (
+        <Marker key={`marker-${index}`}
+          longitude={city.longitude}
+          latitude={city.latitude} >
+          <CityPin size={20} boardCount={city.boards.length} onClick={()=> this.handleCityChange(city.name)}/>
+        </Marker>
+      );
   }
 
   handleCityChange(city) {
@@ -50,8 +64,28 @@ class IndexPage extends PureComponent {
 		return (
 			<div id="container" style={{display: 'flex'}}>
 
-        <div id="boards" style={{width: '70%'}}>
-          Boards {this.props.userId}
+        <div id="boards" style={{width: '70%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
+
+          <div style={{
+              height: '40px', width: '70%', position: 'fixed', top: '100px' ,backgroundColor: '#FFFFFF',borderBottom: '1px solid #f5f5f5' ,zIndex: 3, display: 'flex', alignItems: 'center'
+          }}>
+             
+            <div style={{paddingLeft: '30px', paddingRight: '30px', width: '100%', display: 'flex' }}>
+              <div className="filter__text">Best for <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+              <div className="filter__text">Fin Setup <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+              <div className="filter__text">Length <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+              <div className="filter__text">Width <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+              <div className="filter__text">Thickness <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+              <div className="filter__text">Volume <img src={require('../layouts/images/dropdownarrow.png')} /></div>
+            </div>
+
+          </div>
+
+          <div style={{width: '100%', paddingLeft: '30px', paddingRight: '30px'}}>
+          { this.props.boardsToDisplay ? this.props.boardsToDisplay.map(this._renderBoards): 'NO BOARDS FOUND!' }
+          </div>
+
+          
         </div>
         <div id="map" style={{width: '30%', position: 'fixed', top: '100px', bottom: 0, right: 0}}>
         <MapGL
@@ -69,7 +103,9 @@ class IndexPage extends PureComponent {
             this.props.setMapPosition(latitude,longitude)
 					}}
 				>
-        { CITIES.map(this._renderCityMarker) }
+        {/* { CITIES.map(this._renderCityMarker) } */}
+
+        {  this.props.boardsByCity.map(this._renderCityMarker)}
       
         </MapGL>
         </div>
@@ -79,11 +115,8 @@ class IndexPage extends PureComponent {
 	}
 }
 
-
-
-
-const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom }) => {
-  return { userId, latitude, longitude, regions, mapZoom };
+const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom, citesByRegion ,boardsByCity, allBoardsList, boardsToDisplay }) => {
+  return { userId, latitude, longitude, regions, mapZoom, citesByRegion, boardsByCity, allBoardsList, boardsToDisplay };
 };
 
 const mapDispatchToProps = dispatch => {
