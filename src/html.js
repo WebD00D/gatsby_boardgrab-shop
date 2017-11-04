@@ -2,7 +2,6 @@ import React from "react";
 import Helmet from "react-helmet";
 
 
-
 let stylesStr;
 if (process.env.NODE_ENV === "production") {
   try {
@@ -22,7 +21,6 @@ module.exports = props => {
       />
     );
   }
-
 
 
   return (

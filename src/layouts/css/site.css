@@ -1,0 +1,84 @@
+.t-primary {
+    letter-spacing: 0.92px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.site-container {
+
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.site-container--sm {
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+.authentication-header {
+    margin-bottom: 12px;
+}
+
+.authentication-field {
+    margin-bottom: 12px;
+    display: block;
+    height: 44px;
+    padding: 0 15px;
+    font-size: 14px;
+    width: 100%;
+    border: 2px solid #e7eaec;
+    border-radius: 6px;
+    font-family: 'Montserrat',tahoma,helvetica,sans-serif;
+    color: #152235;
+}
+
+.authentication-field:focus, .authentication-field:active {
+    outline: none;
+}
+
+.authentication-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #404040;
+    font-weight: 300;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .2s ease;
+}
+
+hr {
+    margin-top: 30px !important;
+}
+
+.auth-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    font-family: "Montserrat",tahoma,helvetica,sans-serif;
+    font-weight: 800;
+    background: #498144;
+    border: 0;
+    color: white;
+    width: 200px;
+    height: 44px;
+    line-height: 30px;
+    border-radius: 4px;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    letter-spacing: 1.2px;
+    font-weight: 400;
+}
+
+.auth-button:hover {
+    cursor: pointer;
+}
+
+.auth-button--black {
+    background-color: #404040;
+}
+
+

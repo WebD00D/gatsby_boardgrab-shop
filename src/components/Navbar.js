@@ -16,7 +16,8 @@ class Navbar extends PureComponent {
     this.handleLocationDropDown = this.handleLocationDropDown.bind(this);
     this.handleSubLocationDropDown = this.handleSubLocationDropDown.bind(this);
     this.handleRegionChange = this.handleRegionChange.bind(this);
-    this.handleCityChange = this.handleCityChange.bind(this);
+		this.handleCityChange = this.handleCityChange.bind(this);
+
 
     this.state = {
       locationSelectorOpen: false,
@@ -44,7 +45,9 @@ class Navbar extends PureComponent {
 
   handleCityChange(city) {
     this.props.setCityData(city);
-  }
+	}
+	
+
 
 
 
@@ -118,25 +121,29 @@ class Navbar extends PureComponent {
 						</div>
 					</div>
 				</div>
-				<div>
+				<div style={{ display: 'flex' }}>
+
 					<Link className="navbar__link" to="/">
 						Start Selling with Boardgrab
 					</Link>
-					<Link className="navbar__link" to="/">
-						Login / Register
-					</Link>
+
+					{ this.props.userAuthenticated ? <div onClick={this.props.signOutUser} className="navbar__link hover">Signout</div> : <Link className="navbar__link " to="/authentication">Login / Register</Link> }
+
 				</div>
 			</div>
 			<div className="navbar__subnav ">
 				<div className="navbar__subnav--left navbar_subnav__section">
-					<Link className="navbar__subnav__link" to="/">
+				<Link className="navbar__subnav__link" to="/">
+						Shop
+					</Link>
+					<Link className="navbar__subnav__link" to="/about">
 						Who we are
 					</Link>
 					<a className="navbar__subnav__link" target="_blank" href="https://medium.com/boardgrab">
 						Blog
 					</a>
-					<Link className="navbar__subnav__link" to="/">
-						Reviews
+					<Link className="navbar__subnav__link" to="/text-us">
+						Text Us
 					</Link>
 				</div>
 				<div className="navbar__subnav--right navbar_subnav__section">
@@ -170,8 +177,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity }) => {
-  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity }
+const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated }) => {
+  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps )(Navbar)

@@ -82,3 +82,8 @@ font-family: 'Montserrat', sans-serif;
 .w-40p {
   width: 40%;
 }
+
+
+.hover:hover {
+  cursor: pointer;
+}

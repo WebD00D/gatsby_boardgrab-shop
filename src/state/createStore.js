@@ -3,18 +3,28 @@ import fire from '../fire';
 import _ from 'lodash';
 
 const reducer = (state, action) => {
+
 	if (action.type === `INCREMENT`) {
 		return Object.assign({}, state, {
 			count: state.count + 1
 		});
 	}
 
+	if (action.type === `CREATE_AND_SIGNIN_USER`) {
+		return { 
+			...state, 
+			userId: action.userId, 
+			account_username: action.account_username, 
+			firstTimeLogin: true, 
+			userAuthenticated: true };
+	}
+
 	if (action.type === `SET_CURRENT_USER`) {
+		console.log('setting curret user', action.userId)
 		return {
 			...state,
-			userId: action.user,
-			shop_name: action.shop,
-			shop_coast: action.coast
+			userId: action.userId,
+			userAuthenticated: true,
 		};
 	}
 
@@ -24,14 +34,7 @@ const reducer = (state, action) => {
 			...state,
 			userId: '',
 			account_username: '',
-			shop_city: '',
-			shop_name: '',
-			shop_phone: '',
-			shop_state: '',
-			shop_website: '',
-			user_email: '',
-			paypal_email: '',
-			shop_coast: ''
+			userAuthenticated: false
 		};
 	}
 
@@ -100,12 +103,16 @@ const reducer = (state, action) => {
 		};
 	}
 
+	
+
 	return state;
 };
 
 const initialState = {
 	count: 0,
 	userId: '',
+	userAuthenticated: false,
+	firstTimeLogin: false,
 	account_username: '',
 	latitude: 33.985787115598434,
 	longitude: -118.47003936767578,
