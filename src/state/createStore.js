@@ -95,6 +95,30 @@ const reducer = (state, action) => {
 		};
 	}
 
+	if (action.type === `SET_LISTING_CITIES`) {
+		const selectedRegion = action.region;
+		console.log("SET IT,", action.region )
+		const regionData = _.find(state.citesByRegion, function(o) {
+			return o.region === selectedRegion;
+		});
+
+		let boardsByRegionData = _.find(state.boardsByRegion, function(o) {
+			return o.region === selectedRegion;
+		});
+
+		console.log('BOARDS BY REGION', boardsByRegionData);
+
+		if (!boardsByRegionData) {
+			boardsByRegionData = [];
+		}
+
+		return {
+			...state,
+			dropDownCityList: selectedRegion === 'All Locations' ? [] : regionData.cities,
+		};
+	}
+
+
 	if (action.type === `SET_MAP_POSITION`) {
 		return {
 			...state,
@@ -122,6 +146,25 @@ const initialState = {
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
+		{ name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
+		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625 },
+		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438 },
+		{ name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125 },
+		{ name: 'San Clemente', latitude: 33.42914915719729, longitude: -117.61138916015625 },
+		{ name: 'Encinitas', latitude: 33.03399561940715, longitude: -117.279052734375 },
+		{ name: 'Ocean Side', latitude: 33.19847683493303, longitude: -117.36968994140625 },
+		{ name: 'Long Beach', latitude: 33.773439833797745, longitude: -118.19503784179688 },
+		{ name: 'Venice', latitude: 33.985787115598434, longitude: -118.47003936767578 },
+		{ name: 'Santa Monica', latitude: 34.021079493306914, longitude: -118.49647521972656 },
+		{ name: 'Malibu', latitude: 34.02990029603907, longitude: -118.78486633300781 },
+		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375 },
+		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125 }
+	],
+
+	// This city list is specifically for the dropdowns on Board listing.
+	// I didn't want to use currentCityList so change on dropdown doesn't effect nav bar.
+
+	dropDownCityList: [
 		{ name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
 		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625 },
 		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438 },
@@ -379,6 +422,31 @@ const initialState = {
 		}
 	],
 
+	boardsByUser: [
+		{
+			id: 1,
+			userId: 1,
+			region: 'Southern California',
+			city: 'San Diego',
+			name: `5'8" Rusty Dwart`,
+			brand: `Rusty`,
+			model: `Dwart`,
+			price: '300',
+			dimensions: ` 5'8" x 32" x 3" `,
+			fins: "3",
+			condition: "Good",
+			description: "Description lorem ipsum dolar set amit",
+			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		}
+	],
+
 	// END BOARDS TO DISPLAY
 	users: [
 		{ 
@@ -396,6 +464,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

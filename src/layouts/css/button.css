@@ -1,15 +1,24 @@
 .button {
-  height: 48px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 500;
-  border: none;
-  line-height: 48px;
-      display: block;
-      text-align: center;
-      text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  font-family: "Montserrat",tahoma,helvetica,sans-serif;
+  font-weight: 800;
+  background: #498144;
+  border: 0;
+  color: white;
+  width: 200px;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 4px;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 1.2px;
+  font-weight: 400;
+  display: block;
+  text-decoration: none;
+  text-align: center;
 }
 
 .button:focus, .button:active {
@@ -35,5 +44,5 @@
 }
 
 .button--small {
-  width: 250px;
+  width: 250px
 }

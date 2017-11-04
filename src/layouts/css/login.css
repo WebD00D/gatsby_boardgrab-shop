@@ -7,7 +7,7 @@
 .login-form__field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 22px;
+  margin-bottom: 12px;
 }
 
 .login-form__field label {
@@ -42,21 +42,17 @@ textarea:focus {
 }
 
 .login-form__field input, .login-form__field select {
-  height: 48px;
-  border: 2px solid rgba(31,35,65,0.36);
-  transition: .4s ease;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-
-  letter-spacing: 2px;
-  color: rgba(31,35,65,0.5);
-  background-color: #FFFFFF;
-
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: none !important;
-  -webkit-appearance: none;
-  -webkit-border-radius: 0px;
+  margin-bottom: 12px;
+  display: block;
+  height: 44px;
+  padding: 0 15px;
+  font-size: 14px;
+  width: 100%;
+  border: 2px solid #e7eaec;
+  border-radius: 6px;
+  font-family: 'Montserrat',tahoma,helvetica,sans-serif;
+  color: #152235;
+  transition: .2s ease;
 }
 
 
@@ -125,4 +121,12 @@ select:focus {
   letter-spacing: 2px;
   color: rgba(31,35,65,1);
   margin-bottom: 32px;
+}
+
+.tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #404040;
+  opacity: 0.6;
 }

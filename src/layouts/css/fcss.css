@@ -48,6 +48,10 @@ font-family: 'Montserrat', sans-serif;
   margin-bottom: 10px;
 }
 
+.m-b-0 {
+  margin-bottom: 0px;
+}
+
 .m-b-20 {
   margin-bottom: 20px;
 }
@@ -70,7 +74,7 @@ font-family: 'Montserrat', sans-serif;
 .fx-a-c { align-items: center; }
 
 
-.mx-992 { max-width: 992px; width: 100%; }
+.mx-992 { max-width: 992px; width: 100%; margin-left: auto; margin-right: auto; }
 
 .m-b-48 {
   margin-bottom: 48px;

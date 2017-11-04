@@ -48,9 +48,6 @@ class Navbar extends PureComponent {
 	}
 	
 
-
-
-
   render(){
 
     const cities = this.props.currentCityList.map((city, key) =>
@@ -123,9 +120,11 @@ class Navbar extends PureComponent {
 				</div>
 				<div style={{ display: 'flex' }}>
 
-					<Link className="navbar__link" to="/">
-						Start Selling with Boardgrab
-					</Link>
+
+				  { this.props.userAuthenticated ? <Link className="navbar__link hover" to="/list-a-board">New Listing</Link> : '' }
+					{ this.props.userAuthenticated ? <Link className="navbar__link hover" to="/inventory">My Quiver</Link> : '' }
+					 { !this.props.userAuthenticated ? <Link className="navbar__link" to="/sell-with-us">Start Selling with Boardgrab</Link> : '' }
+					
 
 					{ this.props.userAuthenticated ? <div onClick={this.props.signOutUser} className="navbar__link hover">Signout</div> : <Link className="navbar__link " to="/authentication">Login / Register</Link> }
 

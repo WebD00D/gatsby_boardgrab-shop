@@ -20,10 +20,6 @@ import "../layouts/css/button.css";
 class Inventory extends Component {
   constructor(props) {
     super(props);
-
-
-
-
     this.state = {
       boards: {}
     };
@@ -31,7 +27,7 @@ class Inventory extends Component {
 
   componentDidMount() {
 
-    fire.database().ref("/shops/" + this.props.shop_coast + "/" + this.props.userId + "/boards").once('value').then(function(snapshot){
+    fire.database().ref("/boardsByUser/" + this.props.userId ).once('value').then(function(snapshot){
       this.setState({
         boards: snapshot.val()
       });
@@ -60,7 +56,7 @@ class Inventory extends Component {
       boardItems.push(
         <div  key={key} onClick={() => this.handlePost(key).bind(this)} className="table-row">
           <div className="t-sans f-11 t-upper fw-500 ls-2 w-40p">
-            {value.title}
+            {value.name}
           </div>
           <div className="t-sans f-11 t-upper fw-500 ls-2 w-20p">
             ${value.price}
