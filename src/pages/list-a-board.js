@@ -152,7 +152,7 @@ class ListABoard extends Component {
 		// 2) SAVE BOARD BY CITY
 		fire
 			.database()
-			.ref(`boardsByCity/${this.state.city}/${dateTime}`)
+			.ref(`boardsByCity/${this.state.city}/boards/${dateTime}`)
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,

@@ -37,10 +37,23 @@ class IndexPage extends PureComponent {
       height: window.innerHeight
     })
 
+    // GET ALL BOARDS
     fire.database().ref("/allBoardsList/boards").once('value').then(function(snapshot){
 			console.log("BOARDS", snapshot.val())
 			this.props.getAllBoards(snapshot.val())
-		}.bind(this))
+    }.bind(this))
+    
+    // GET ALL BOARDS BY REGION
+    fire.database().ref("/boardsByRegion/").once('value').then(function(snapshot){
+			console.log("BOARDS BY REGION", snapshot.val())
+			this.props.getAllBoardsByRegion(snapshot.val())
+    }.bind(this))
+    
+    // GET ALL BOARDS BY CITY
+    fire.database().ref("/boardsByCity/").once('value').then(function(snapshot){
+			console.log("BOARDS BY CITY", snapshot.val())
+			this.props.getAllBoardsByCity(snapshot.val())
+    }.bind(this))
 
     
   }
@@ -54,6 +67,8 @@ class IndexPage extends PureComponent {
   }
   
   _renderCityMarker = (city, index) => {
+    console.log(city,index)
+    return;
       return (
         <Marker key={`marker-${index}`}
           longitude={city.longitude}
@@ -69,30 +84,39 @@ class IndexPage extends PureComponent {
 
 	render() {
 
-    console.log('ALL BOARDS LIST', this.props.boards)
-    console.log('ALL BOARDS LIST', this.props.boardsToDisplay && this.props.boardsToDisplay.length)
+    let boards;
 
-    console.log(typeof(this.props.boardsToDisplay), this.props.boardsToDisplay)
+    if ( !this.props.boardsToDisplay ) {
+      boards = <div>No Boards</div>
+    } else {
+      boards = Object.keys(this.props.boardsToDisplay).map(function(key) {
+        console.log(key)
+        return <Board key={`boards-${Number(key)}`} board={this.props.boardsToDisplay[key]} onClick={()=> alert(`view info for board id ${key}`)} /> 
+      }.bind(this));
+    }
 
 
-    var result = Object.keys(this.props.boardsToDisplay).map(function(key) {
-      console.log(key)
-      return <Board key={`boards-${Number(key)}`} board={this.props.boardsToDisplay[key]} onClick={()=> alert(`view info for board id ${key}`)} /> 
-    }.bind(this));
+    let boardsByCity = Object.keys(this.props.boardsByCity).map(function(key){
+     
 
-    console.log("RESULT", result)
+      return  (
+        <Marker key={`marker-${key}`}
+        longitude={this.props.boardsByCity[key].longitude}
+        latitude={this.props.boardsByCity[key].latitude} >
+        <CityPin size={20} boardCount={_.size(this.props.boardsByCity[key].boards)} onClick={()=> this.handleCityChange(key)}/>
+      </Marker>
+      )
+    }.bind(this))
 
-    // this.props.boardsToDisplay.keys.map(function(val, i){
-    //   console.log(val, i)
-    // })
+ 
+
     
-
+   
 		return (
 			<div id="container" style={{display: 'flex'}}>
 
       {this.props.account_username}
       
-
         <div id="boards" style={{width: '70%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
 
           <div style={{
@@ -111,10 +135,8 @@ class IndexPage extends PureComponent {
           </div>
 
           <div style={{width: '100%', paddingLeft: '30px', paddingRight: '30px', display: 'flex', flexWrap: 'wrap'}}>
-          {result}
-          {/* { this.props.boardsToDisplay ? this.props.boardsToDisplay.map(this._renderBoards): 'NO BOARDS FOUND!' } */}
+            {boards}
           </div>
-
           
         </div>
         <div id="map" style={{width: '30%', position: 'fixed', top: '100px', bottom: 0, right: 0}}>
@@ -135,7 +157,8 @@ class IndexPage extends PureComponent {
 				>
         {/* { CITIES.map(this._renderCityMarker) } */}
 
-        {  this.props.boardsByCity.map(this._renderCityMarker)}
+        {/* {  this.props.boardsByCity.map(this._renderCityMarker)} */}
+        {boardsByCity}
       
         </MapGL>
         </div>
@@ -153,7 +176,9 @@ const mapDispatchToProps = dispatch => {
   return { 
     setMapPosition: (latitude, longitude) => dispatch({ type: `SET_MAP_POSITION`, latitude, longitude }),
     setCityData: (city) => dispatch({ type: `SET_CITY_DATA`, city }),
-    getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards})
+    getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards}),
+    getAllBoardsByRegion: (boards) => dispatch({ type: `GET_ALL_BOARDS_BY_REGION`, boards}),
+    getAllBoardsByCity: (boards) => dispatch({ type: `GET_ALL_BOARDS_BY_CITY`, boards})
   
   }
 }

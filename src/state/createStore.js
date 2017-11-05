@@ -42,8 +42,6 @@ const reducer = (state, action) => {
 
 		console.log('ALL BOARDS',action.boards)
 
-
-
 		return {
 			...state,
 			allBoardsList: action.boards,
@@ -51,18 +49,36 @@ const reducer = (state, action) => {
 
 		}
 		
-		
-		
 	}
+
+	if ( action.type === `GET_ALL_BOARDS_BY_REGION` ) {
+		console.log('BOARDS BY REGION',action.boards)
+		
+		return {
+			...state,
+			boardsByRegion: action.boards,		
+		}
+	}
+
+	if ( action.type === `GET_ALL_BOARDS_BY_CITY` ) {
+		console.log('BOARDS BY CITY',action.boards)
+		
+		return {
+			...state,
+			boardsByCity: action.boards,		
+		}
+	}
+
 
 	if (action.type === `SET_REGION_AND_CITIES`) {
 		const selectedRegion = action.region;
+
 		const regionData = _.find(state.citesByRegion, function(o) {
 			return o.region === selectedRegion;
 		});
 
-		let boardsByRegionData = _.find(state.boardsByRegion, function(o) {
-			return o.region === selectedRegion;
+		let boardsByRegionData = _.find(state.boardsByRegion, function(o, i) {
+			return i === selectedRegion;
 		});
 
 		if (!boardsByRegionData) {
@@ -73,7 +89,7 @@ const reducer = (state, action) => {
 			...state,
 			selectedRegion: action.region,
 			currentCityList: selectedRegion === 'All Locations' ? [] : regionData.cities,
-			boardsToDisplay: selectedRegion === 'All Locations' ? state.allBoardsList : boardsByRegionData.boards,
+			boardsToDisplay: selectedRegion === 'All Locations' ? state.allBoardsList : boardsByRegionData,
 			selectedCity: 'All Cities',
 			mapZoom: selectedRegion === 'All Locations' ? 2 : 6,
 			latitude: selectedRegion === 'All Locations' ? 33.97980872872457 : regionData.cities[0].latitude,
@@ -83,12 +99,14 @@ const reducer = (state, action) => {
 
 	if (action.type === `SET_CITY_DATA`) {
 		const selectedCity = action.city;
+		console.log("SELECTED CITY", selectedCity)
 		const cityData = _.find(state.currentCityList, function(o) {
+			
 			return o.name === selectedCity;
 		});
 
-		let boardsByCityData = _.find(state.boardsByCity, function(o) {
-			return o.name === selectedCity;
+		let boardsByCityData = _.find(state.boardsByCity, function(o,i) {
+			return i === selectedCity;
 		});
 
 		const boardsByRegionData = _.find(state.boardsByRegion, function(o) {
@@ -322,68 +340,68 @@ const initialState = {
 	], // end cities by region
 
 	boardsByRegion: [
-		{
-			region: 'Southern California',
-			latitude: 34.16181816123038,
-			longitude: -116.806640625,
-			boards: [
-				{
-					id: 1,
-					userId: 1,
-					region: 'Southern California',
-					tags: ['Beginners', 'Small Waves', 'A Tight Budget'],
-					city: 'San Diego',
-					name: `5'8" Rusty Dwart`,
-					brand: `Rusty`,
-					model: `Dwart`,
-					price: '300',
-					dimensions: ` 5'8" x 32" x 3" `,
-					fins: "3",
-					condition: "Good",
-					description: "Description lorem ipsum dolar set amit",
-					shaperInfo: "Shaper info lorem ipsum dolar set amit.",
-					featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-				}
-			]
-		}
+		// {
+		// 	region: 'Southern California',
+		// 	latitude: 34.16181816123038,
+		// 	longitude: -116.806640625,
+		// 	boards: [
+		// 		{
+		// 			id: 1,
+		// 			userId: 1,
+		// 			region: 'Southern California',
+		// 			tags: ['Beginners', 'Small Waves', 'A Tight Budget'],
+		// 			city: 'San Diego',
+		// 			name: `5'8" Rusty Dwart`,
+		// 			brand: `Rusty`,
+		// 			model: `Dwart`,
+		// 			price: '300',
+		// 			dimensions: ` 5'8" x 32" x 3" `,
+		// 			fins: "3",
+		// 			condition: "Good",
+		// 			description: "Description lorem ipsum dolar set amit",
+		// 			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+		// 			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 		}
+		// 	]
+		// }
 	],
 
 	boardsByCity: [
-		{
-			name: 'San Diego',
-			latitude: 32.71566625570317,
-			longitude: -117.14996337890625,
-			boards: [
-				{
-					id: 1,
-					userId: 1,
-					region: 'Southern California',
-					city: 'San Diego',
-					name: `5'8" Rusty Dwart`,
-					brand: `Rusty`,
-					model: `Dwart`,
-					price: '300',
-					dimensions: ` 5'8" x 32" x 3" `,
-					fins: "3",
-					condition: "Good",
-					description: "Description lorem ipsum dolar set amit",
-					shaperInfo: "Shaper info lorem ipsum dolar set amit.",
-					featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-					photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-				}
-			]
-		}
+		// {
+		// 	name: 'San Diego',
+		// 	latitude: 32.71566625570317,
+		// 	longitude: -117.14996337890625,
+		// 	boards: [
+		// 		{
+		// 			id: 1,
+		// 			userId: 1,
+		// 			region: 'Southern California',
+		// 			city: 'San Diego',
+		// 			name: `5'8" Rusty Dwart`,
+		// 			brand: `Rusty`,
+		// 			model: `Dwart`,
+		// 			price: '300',
+		// 			dimensions: ` 5'8" x 32" x 3" `,
+		// 			fins: "3",
+		// 			condition: "Good",
+		// 			description: "Description lorem ipsum dolar set amit",
+		// 			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+		// 			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 		}
+		// 	]
+		// }
 	], // END BOARDS BY CITY
 
 	allBoardsList: [
