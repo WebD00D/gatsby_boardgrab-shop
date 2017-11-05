@@ -25,8 +25,8 @@ class ListABoard extends Component {
 		this.handlePostAnother = this.handlePostAnother.bind(this);
 
 		this.state = {
-			region: '',
-			city: '',
+			region: 'Southern California',
+			city: 'San Diego',
 			listingTitle: '1',
 			brandShaper: '2',
 			model: '3',
@@ -186,7 +186,7 @@ class ListABoard extends Component {
 		// 3) SAVE TO ALL BOARD LIST
 		fire
 			.database()
-			.ref(`allBoardsList/${dateTime}`)
+			.ref(`allBoardsList/boards/${dateTime}`)
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,

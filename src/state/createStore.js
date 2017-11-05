@@ -38,6 +38,23 @@ const reducer = (state, action) => {
 		};
 	}
 
+	if ( action.type === `GET_ALL_BOARDS` ) {
+
+		console.log('ALL BOARDS',action.boards)
+
+
+
+		return {
+			...state,
+			allBoardsList: action.boards,
+			boardsToDisplay: action.boards
+
+		}
+		
+		
+		
+	}
+
 	if (action.type === `SET_REGION_AND_CITIES`) {
 		const selectedRegion = action.region;
 		const regionData = _.find(state.citesByRegion, function(o) {
@@ -47,8 +64,6 @@ const reducer = (state, action) => {
 		let boardsByRegionData = _.find(state.boardsByRegion, function(o) {
 			return o.region === selectedRegion;
 		});
-
-		console.log('BOARDS BY REGION', boardsByRegionData);
 
 		if (!boardsByRegionData) {
 			boardsByRegionData = [];
@@ -140,25 +155,25 @@ const initialState = {
 	account_username: '',
 	latitude: 33.985787115598434,
 	longitude: -118.47003936767578,
-	selectedRegion: 'Southern California',
+	selectedRegion: 'All Locations',
 	selectedCity: 'All Cities',
 	mapZoom: 8,
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
-		{ name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
-		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625 },
-		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438 },
-		{ name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125 },
-		{ name: 'San Clemente', latitude: 33.42914915719729, longitude: -117.61138916015625 },
-		{ name: 'Encinitas', latitude: 33.03399561940715, longitude: -117.279052734375 },
-		{ name: 'Ocean Side', latitude: 33.19847683493303, longitude: -117.36968994140625 },
-		{ name: 'Long Beach', latitude: 33.773439833797745, longitude: -118.19503784179688 },
-		{ name: 'Venice', latitude: 33.985787115598434, longitude: -118.47003936767578 },
-		{ name: 'Santa Monica', latitude: 34.021079493306914, longitude: -118.49647521972656 },
-		{ name: 'Malibu', latitude: 34.02990029603907, longitude: -118.78486633300781 },
-		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375 },
-		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125 }
+		// { name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
+		// { name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625 },
+		// { name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438 },
+		// { name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125 },
+		// { name: 'San Clemente', latitude: 33.42914915719729, longitude: -117.61138916015625 },
+		// { name: 'Encinitas', latitude: 33.03399561940715, longitude: -117.279052734375 },
+		// { name: 'Ocean Side', latitude: 33.19847683493303, longitude: -117.36968994140625 },
+		// { name: 'Long Beach', latitude: 33.773439833797745, longitude: -118.19503784179688 },
+		// { name: 'Venice', latitude: 33.985787115598434, longitude: -118.47003936767578 },
+		// { name: 'Santa Monica', latitude: 34.021079493306914, longitude: -118.49647521972656 },
+		// { name: 'Malibu', latitude: 34.02990029603907, longitude: -118.78486633300781 },
+		// { name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375 },
+		// { name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125 }
 	],
 
 	// This city list is specifically for the dropdowns on Board listing.
@@ -372,54 +387,54 @@ const initialState = {
 	], // END BOARDS BY CITY
 
 	allBoardsList: [
-		{
-			id: 1,
-			userId: 1,
-			region: 'Southern California',
-			city: 'San Diego',
-			name: `5'8" Rusty Dwart`,
-			brand: `Rusty`,
-			model: `Dwart`,
-			price: '300',
-			dimensions: ` 5'8" x 32" x 3" `,
-			fins: "3",
-			condition: "Good",
-			description: "Description lorem ipsum dolar set amit",
-			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
-			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-		}
+		// {
+		// 	id: 1,
+		// 	userId: 1,
+		// 	region: 'Southern California',
+		// 	city: 'San Diego',
+		// 	name: `5'8" Rusty Dwart`,
+		// 	brand: `Rusty`,
+		// 	model: `Dwart`,
+		// 	price: '300',
+		// 	dimensions: ` 5'8" x 32" x 3" `,
+		// 	fins: "3",
+		// 	condition: "Good",
+		// 	description: "Description lorem ipsum dolar set amit",
+		// 	shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+		// 	featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// }
 	],
 
 	// WILL DEFAULT TO SOUTHER CALIFORNIA BOARDS ON LOAD.
 	boardsToDisplay: [
-		{
-			id: 1,
-			userId: 1,
-			region: 'Southern California',
-			city: 'San Diego',
-			name: `5'8" Rusty Dwart`,
-			brand: `Rusty`,
-			model: `Dwart`,
-			price: '300',
-			dimensions: ` 5'8" x 32" x 3" `,
-			fins: "3",
-			condition: "Good",
-			description: "Description lorem ipsum dolar set amit",
-			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
-			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-		}
+		// {
+		// 	id: 1,
+		// 	userId: 1,
+		// 	region: 'Southern California',
+		// 	city: 'San Diego',
+		// 	name: `5'8" Rusty Dwart`,
+		// 	brand: `Rusty`,
+		// 	model: `Dwart`,
+		// 	price: '300',
+		// 	dimensions: ` 5'8" x 32" x 3" `,
+		// 	fins: "3",
+		// 	condition: "Good",
+		// 	description: "Description lorem ipsum dolar set amit",
+		// 	shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+		// 	featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// 	photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+		// }
 	],
 
 	boardsByUser: [
@@ -464,6 +479,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

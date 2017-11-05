@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react'
 import Link from 'gatsby-link'
+import fire from "../fire";
 import { Route, Redirect } from "react-router-dom";
 import MapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
+import _ from "lodash";
 
 import { connect } from "react-redux";
 
@@ -26,6 +28,22 @@ class IndexPage extends PureComponent {
     };
   }
 
+ 
+  componentDidMount() {
+    console.log("COMPONENT DID MOUNT")
+    const containerWidth = document.getElementById("map").clientWidth;
+    this.setState({
+      width: containerWidth,
+      height: window.innerHeight
+    })
+
+    fire.database().ref("/allBoardsList/boards").once('value').then(function(snapshot){
+			console.log("BOARDS", snapshot.val())
+			this.props.getAllBoards(snapshot.val())
+		}.bind(this))
+
+    
+  }
 
   _renderBoards = (board, index) => {
     return (
@@ -35,9 +53,7 @@ class IndexPage extends PureComponent {
     )
   }
   
-
   _renderCityMarker = (city, index) => {
-
       return (
         <Marker key={`marker-${index}`}
           longitude={city.longitude}
@@ -51,18 +67,31 @@ class IndexPage extends PureComponent {
     this.props.setCityData(city);
   }
 
-  componentDidMount() {
-    const containerWidth = document.getElementById("map").clientWidth;
-
-    this.setState({
-      width: containerWidth,
-      height: window.innerHeight
-    })
-  }
-
 	render() {
+
+    console.log('ALL BOARDS LIST', this.props.boards)
+    console.log('ALL BOARDS LIST', this.props.boardsToDisplay && this.props.boardsToDisplay.length)
+
+    console.log(typeof(this.props.boardsToDisplay), this.props.boardsToDisplay)
+
+
+    var result = Object.keys(this.props.boardsToDisplay).map(function(key) {
+      console.log(key)
+      return <Board key={`boards-${Number(key)}`} board={this.props.boardsToDisplay[key]} onClick={()=> alert(`view info for board id ${key}`)} /> 
+    }.bind(this));
+
+    console.log("RESULT", result)
+
+    // this.props.boardsToDisplay.keys.map(function(val, i){
+    //   console.log(val, i)
+    // })
+    
+
 		return (
 			<div id="container" style={{display: 'flex'}}>
+
+      {this.props.account_username}
+      
 
         <div id="boards" style={{width: '70%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
 
@@ -81,8 +110,9 @@ class IndexPage extends PureComponent {
 
           </div>
 
-          <div style={{width: '100%', paddingLeft: '30px', paddingRight: '30px'}}>
-          { this.props.boardsToDisplay ? this.props.boardsToDisplay.map(this._renderBoards): 'NO BOARDS FOUND!' }
+          <div style={{width: '100%', paddingLeft: '30px', paddingRight: '30px', display: 'flex', flexWrap: 'wrap'}}>
+          {result}
+          {/* { this.props.boardsToDisplay ? this.props.boardsToDisplay.map(this._renderBoards): 'NO BOARDS FOUND!' } */}
           </div>
 
           
@@ -115,14 +145,15 @@ class IndexPage extends PureComponent {
 	}
 }
 
-const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom, citesByRegion ,boardsByCity, allBoardsList, boardsToDisplay }) => {
-  return { userId, latitude, longitude, regions, mapZoom, citesByRegion, boardsByCity, allBoardsList, boardsToDisplay };
+const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom, citesByRegion ,boardsByCity, allBoardsList, boardsToDisplay, account_username }) => {
+  return { userId, latitude, longitude, regions, mapZoom, citesByRegion, boardsByCity, allBoardsList, boardsToDisplay, account_username };
 };
 
 const mapDispatchToProps = dispatch => {
   return { 
     setMapPosition: (latitude, longitude) => dispatch({ type: `SET_MAP_POSITION`, latitude, longitude }),
-    setCityData: (city) => dispatch({ type: `SET_CITY_DATA`, city })
+    setCityData: (city) => dispatch({ type: `SET_CITY_DATA`, city }),
+    getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards})
   
   }
 }

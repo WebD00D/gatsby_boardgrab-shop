@@ -7,6 +7,7 @@ export default class Board extends PureComponent {
   render() {
 
     const {onClick, board} = this.props; 
+    console.log("BOARD", board)
 
     return (
         <div className="board" onClick={onClick}>
