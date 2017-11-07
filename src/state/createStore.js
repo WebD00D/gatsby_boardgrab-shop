@@ -93,7 +93,8 @@ const reducer = (state, action) => {
 			selectedCity: 'All Cities',
 			mapZoom: selectedRegion === 'All Locations' ? 2 : 6,
 			latitude: selectedRegion === 'All Locations' ? 33.97980872872457 : regionData.cities[0].latitude,
-			longitude: selectedRegion === 'All Locations' ? -118.0810546875 : regionData.cities[0].longitude
+			longitude: selectedRegion === 'All Locations' ? -118.0810546875 : regionData.cities[0].longitude,
+			regionHasNoBoards: boardsByRegionData.length == 0 && selectedRegion != 'All Locations'
 		};
 	}
 
@@ -189,7 +190,8 @@ const reducer = (state, action) => {
 			selectedCity: selectedCity,
 			mapZoom: selectedCity === 'All Cities' ? 4 : 12,
 			selectedRegion: needToSetRegion ? regionToSet.region : state.selectedRegion,
-			currentCityList: needToSetRegion ? regionData.cities : state.currentCityList
+			currentCityList: needToSetRegion ? regionData.cities : state.currentCityList,
+			regionHasNoBoards: !boardsByRegionData
 
 		};
 	}
@@ -242,6 +244,7 @@ const initialState = {
 	selectedRegion: 'All Locations',
 	selectedCity: 'All Cities',
 	mapZoom: 8,
+	regionHasNoBoards: 'not set',
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
@@ -646,6 +649,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

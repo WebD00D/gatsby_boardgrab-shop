@@ -82,3 +82,11 @@ hr {
 }
 
 
+
+#_kmts form button[type='submit'] {
+    background-color: green !important;
+}
+
+.publisher-anchor-color a {
+    color: black !important;
+}

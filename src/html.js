@@ -33,6 +33,7 @@ module.exports = props => {
         {props.headComponents}
         {css}
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet"/>
+        <script src="https://use.fontawesome.com/9aa665cf7f.js"></script>
       </head>
       <body className="sans-serif black">
         <div className="site-wrapper">
