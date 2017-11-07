@@ -11,6 +11,7 @@ import CityPin from "../components/CityPin";
 import Board from "../components/Board";
 
 import "../layouts/css/filters.css";
+import "../layouts/css/fcss.css";
 
 import CITIES from "../data/cities.json";
 
@@ -20,6 +21,7 @@ class IndexPage extends PureComponent {
     super(props);
 
     this.handleCityChange = this.handleCityChange.bind(this);
+    this._updateDims = this._updateDims.bind(this);
 
     this.state = {
       popupInfo: null,
@@ -28,14 +30,15 @@ class IndexPage extends PureComponent {
     };
   }
 
- 
+
+  componentWillMount() {
+   
+  }
+
   componentDidMount() {
-    console.log("COMPONENT DID MOUNT")
-    const containerWidth = document.getElementById("map").clientWidth;
-    this.setState({
-      width: containerWidth,
-      height: window.innerHeight
-    })
+    this._updateDims()
+    window.addEventListener("resize", this._updateDims);
+    
 
     // GET ALL BOARDS
     fire.database().ref("/allBoardsList/boards").once('value').then(function(snapshot){
@@ -58,11 +61,17 @@ class IndexPage extends PureComponent {
     
   }
 
+  _updateDims() {
+    const containerWidth = document.getElementById("map").clientWidth;
+    this.setState({
+      width: containerWidth,
+      height: window.innerHeight
+    })
+  }
+
   _renderBoards = (board, index) => {
     return (
-
       <Board key={`boards-${index}`} board={board} onClick={()=> alert(`view info for board id ${board.id}`)} />
-
     )
   }
   
@@ -87,7 +96,7 @@ class IndexPage extends PureComponent {
     let boards;
 
     if ( !this.props.boardsToDisplay ) {
-      boards = <div>No Boards</div>
+      boards = <div className="t-sans">No boards found! Be the first to <Link className="fc-green" to="/list-a-board">list a board for {this.props.selectedCity}</Link></div>
     } else {
       boards = Object.keys(this.props.boardsToDisplay).map(function(key) {
         console.log(key)
@@ -96,9 +105,7 @@ class IndexPage extends PureComponent {
     }
 
 
-    let boardsByCity = Object.keys(this.props.boardsByCity).map(function(key){
-     
-
+     let boardsByCity = Object.keys(this.props.boardsByCity).map(function(key){
       return  (
         <Marker key={`marker-${key}`}
         longitude={this.props.boardsByCity[key].longitude}
@@ -120,7 +127,7 @@ class IndexPage extends PureComponent {
         <div id="boards" style={{width: '70%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
 
           <div style={{
-              height: '40px', width: '70%', position: 'fixed', top: '100px' ,backgroundColor: '#FFFFFF',borderBottom: '1px solid #f5f5f5' ,zIndex: 3, display: 'flex', alignItems: 'center'
+              height: '40px', width: '70%', position: 'fixed', top: '100px' ,backgroundColor: '#FFFFFF',borderBottom: '1px solid #f5f5f5' ,zIndex: 3, display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}>
              
             <div style={{paddingLeft: '30px', paddingRight: '30px', width: '100%', display: 'flex' }}>
@@ -155,9 +162,7 @@ class IndexPage extends PureComponent {
             this.props.setMapPosition(latitude,longitude)
 					}}
 				>
-        {/* { CITIES.map(this._renderCityMarker) } */}
 
-        {/* {  this.props.boardsByCity.map(this._renderCityMarker)} */}
         {boardsByCity}
       
         </MapGL>
@@ -168,8 +173,8 @@ class IndexPage extends PureComponent {
 	}
 }
 
-const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom, citesByRegion ,boardsByCity, allBoardsList, boardsToDisplay, account_username }) => {
-  return { userId, latitude, longitude, regions, mapZoom, citesByRegion, boardsByCity, allBoardsList, boardsToDisplay, account_username };
+const mapStateToProps = ({ userId, latitude, longitude, regions, mapZoom, citesByRegion ,boardsByCity, allBoardsList, boardsToDisplay, account_username, selectedCity }) => {
+  return { userId, latitude, longitude, regions, mapZoom, citesByRegion, boardsByCity, allBoardsList, boardsToDisplay, account_username, selectedCity };
 };
 
 const mapDispatchToProps = dispatch => {

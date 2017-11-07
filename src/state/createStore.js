@@ -99,9 +99,40 @@ const reducer = (state, action) => {
 
 	if (action.type === `SET_CITY_DATA`) {
 		const selectedCity = action.city;
-		console.log("SELECTED CITY", selectedCity)
+
+		// TODO: If city selected is all cities, need to load all boards for that single city. 
+
+		if (selectedCity === "All Cities") {
+
+			// Let's get the region. 
+			const regionData = _.find(state.citesByRegion, function(o) {
+				return o.region === state.selectedRegion;
+			});
+
+			let boardsByRegionData = _.find(state.boardsByRegion, function(o, i) {
+				return i === state.selectedRegion;
+			});
+
+			if (!boardsByRegionData) {
+				boardsByRegionData = [];
+			}
+
+			return {
+				...state,
+				selectedRegion: state.selectedRegion,
+				currentCityList: state.selectedRegion === 'All Locations' ? [] : regionData.cities,
+				boardsToDisplay: state.selectedRegion === 'All Locations' ? state.allBoardsList : boardsByRegionData,
+				selectedCity: 'All Cities',
+				mapZoom: state.selectedRegion === 'All Locations' ? 2 : 6,
+				latitude: state.selectedRegion === 'All Locations' ? 33.97980872872457 : regionData.cities[0].latitude,
+				longitude: state.selectedRegion === 'All Locations' ? -118.0810546875 : regionData.cities[0].longitude
+			};
+
+
+		}
+
+
 		const cityData = _.find(state.currentCityList, function(o) {
-			
 			return o.name === selectedCity;
 		});
 
@@ -109,22 +140,57 @@ const reducer = (state, action) => {
 			return i === selectedCity;
 		});
 
-		const boardsByRegionData = _.find(state.boardsByRegion, function(o) {
-			return o.region === state.selectedRegion;
+	
+		const boardsByRegionData = _.find(state.boardsByRegion, function(o, i) {
+			return i === state.selectedRegion;
 		});
+
+
+
+		console.log("BOARDS BY REGION DATA", boardsByRegionData)
 
 		if (!boardsByCityData) {
 			boardsByCityData = [];
 		}
-		console.log('BOARDS BY CITY DATA', boardsByCityData);
 
+
+		let latitude =  boardsByCityData.latitude;
+		let longitude =  boardsByCityData.longitude;
+
+
+		// Sets region if not selected. This would happen if the user clicks on a map icon when the Region has been set
+		// to "All Locations"
+
+		let needToSetRegion = false;
+		let regionToSet;
+		let regionData;
+		let citiesForDropdown;
+
+		if ( state.selectedRegion === "All Locations" ) {
+			needToSetRegion = true;
+			 regionToSet = _.find(state.cityMeta, function(o) {
+				return o.name === selectedCity
+			})
+
+			regionData = _.find(state.citesByRegion,function(o){
+				console.log(o.region, regionToSet.region)
+				return o.region === regionToSet.region
+
+			})
+
+		}
+
+		
 		return {
 			...state,
-			latitude: cityData.latitude,
-			longitude: cityData.longitude,
+			latitude: latitude,
+			longitude: longitude,
 			boardsToDisplay: selectedCity === 'All Cities' ? boardsByRegionData.boards : boardsByCityData.boards,
-			selectedCity: cityData.name,
-			mapZoom: selectedCity === 'All Cities' ? 4 : 12
+			selectedCity: selectedCity,
+			mapZoom: selectedCity === 'All Cities' ? 4 : 12,
+			selectedRegion: needToSetRegion ? regionToSet.region : state.selectedRegion,
+			currentCityList: needToSetRegion ? regionData.cities : state.currentCityList
+
 		};
 	}
 
@@ -196,6 +262,89 @@ const initialState = {
 
 	// This city list is specifically for the dropdowns on Board listing.
 	// I didn't want to use currentCityList so change on dropdown doesn't effect nav bar.
+
+	cityMeta: [
+
+		// SOUTHERN CALIFORNIA 
+		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625, region: 'Southern California' },
+		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438, region: 'Southern California' },
+		{ name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125, region: 'Southern California' },
+		{ name: 'San Clemente', latitude: 33.42914915719729, longitude: -117.61138916015625, region: 'Southern California' },
+		{ name: 'Encinitas', latitude: 33.03399561940715, longitude: -117.279052734375, region: 'Southern California' },
+		{ name: 'Ocean Side', latitude: 33.19847683493303, longitude: -117.36968994140625, region: 'Southern California' },
+		{ name: 'Long Beach', latitude: 33.773439833797745, longitude: -118.19503784179688, region: 'Southern California' },
+		{ name: 'Venice', latitude: 33.985787115598434, longitude: -118.47003936767578, region: 'Southern California' },
+		{ name: 'Santa Monica', latitude: 34.021079493306914, longitude: -118.49647521972656, region: 'Southern California' },
+		{ name: 'Malibu', latitude: 34.02990029603907, longitude: -118.78486633300781, region: 'Southern California' },
+		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375, region: 'Southern California' },
+		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125, region: 'Southern California' },
+
+		// NORTHERN CALIFORNIA 
+		{ name: 'All Cities', latitude: 37.50972584293751, longitude: -122.16796875, region: 'Northern California' },
+		{ name: 'Monterey', latitude: 36.59127365634205, longitude: -121.88507080078125, region: 'Northern California' },
+		{ name: 'Santa Cruz', latitude: 36.97622678464096, longitude: -122.0196533203125, region: 'Northern California' },
+		{ name: 'San Jose', latitude: 37.341775502148586, longitude: -121.904296875, region: 'Northern California' },
+		{ name: 'Palo Alto', latitude: 37.45741810262938, longitude: -122.13775634765625, region: 'Northern California' },
+		{ name: 'San Francisco', latitude: 37.77071473849609, longitude: -122.4481201171875, region: 'Northern California' },
+		{ name: 'Berkely', latitude: 37.87268533717655, longitude: -122.2833251953125, region: 'Northern California' },
+		{ name: 'Vallejo', latitude: 38.10646650598286, longitude: -122.25860595703125, region: 'Northern California' },
+		{ name: 'Mendacino', latitude: 39.30242456041487, longitude: -123.7774658203125, region: 'Northern California' },
+
+		// PACIFIC NORTH WEST
+		{ name: 'All Cities', latitude: 46.042735653846506, longitude: -123.92578125, region: 'Pacific North West' },
+		{ name: 'Portland', latitude: 45.51404592560424, longitude: -122.684326171875, region: 'Pacific North West' },
+		{ name: 'Seattle', latitude: 47.60616304386874, longitude: -122.36572265625, region: 'Pacific North West' },
+		{ name: 'Astoria', latitude: 47.60616304386874, longitude: -122.36572265625, region: 'Pacific North West' },
+
+		// MID ATLANTIC
+		{ name: 'All Cities', latitude: 37.54457732085582, longitude: -77.442626953125, region: 'Mid Atlantic' },
+		{ name: 'Richmond', latitude: 37.54457732085582, longitude: -77.442626953125, region: 'Mid Atlantic' },
+		{ name: 'Virginia Beach', latitude: 36.85325222344019, longitude: -75.9814453125, region: 'Mid Atlantic' },
+		{ name: 'Outer Banks', latitude: 35.94688293218141, longitude: -75.6243896484375, region: 'Mid Atlantic' },
+		{ name: 'Southern Delaware', latitude: 38.53527591154414, longitude: -75.07232666015625, region: 'Mid Atlantic' },
+		{ name: 'Ocean City', latitude: 39.281167913914636, longitude: -74.5806884765625, region: 'Mid Atlantic' },
+		{ name: 'Eastern Shore', latitude: 37.56417412088097, longitude: -75.7122802734375, region: 'Mid Atlantic' },
+		{ name: 'Atlantic City', latitude: 39.37040245787161, longitude: -74.44610595703125, region: 'Mid Atlantic' },
+		{ name: 'Long Beach Island', latitude: 39.65434146406167, longitude: -74.190673828125, region: 'Mid Atlantic' },
+		{ name: 'Seaside Heights', latitude: 39.9434364619742, longitude: -74.07257080078125, region: 'Mid Atlantic' },
+
+		// SOUTH EAST
+		{ name: 'All Cities', latitude: 34.66484057821928, longitude: -76.9427490234375, region: 'South East' },
+		{ name: 'Emerald Isle', latitude: 34.66484057821928, longitude: -76.9427490234375, region: 'South East' },
+		{ name: 'Wrightsville Beach', latitude: 34.17090836352573, longitude: -77.80517578125, region: 'South East' },
+		{ name: 'Surf City', latitude: 34.42956713470528, longitude: -77.5469970703125, region: 'South East' },
+		{ name: 'Myrtle Beach', latitude: 33.69235234723729, longitude: -78.8873291015625, region: 'South East' },
+		{ name: 'Charleston', latitude: 32.78265637602964, longitude: -79.9310302734375, region: 'South East' },
+		{ name: 'Folly Beach', latitude: 32.654407116645416, longitude: -79.9420166015625, region: 'South East' },
+		{ name: 'Hilton Head', latitude: 32.20582936513577, longitude: -80.738525390625, region: 'South East' },
+		{ name: 'Tybee Island', latitude: 31.99643007718664, longitude: -80.84976196289062, region: 'South East' },
+		{ name: 'Brunswick', latitude: 31.15053220759678, longitude: -81.47872924804688, region: 'South East' },
+
+		// EAST FLORIDA
+		{ name: 'All Cities', latitude: 28.101057958669447, longitude: -80.5517578125, region: 'East Florida' },
+		{ name: 'St. Augustine', latitude: 29.91685223307017, longitude: -81.32080078125, region: 'East Florida' },
+		{ name: 'Cocoa Beach', latitude: 28.321306762152954, longitude: -80.60943603515625, region: 'East Florida' },
+		{ name: 'Palm Beach', latitude: 26.698998877374333, longitude: -80.05050659179688, region: 'East Florida' },
+		{ name: 'Delray', latitude: 26.45950861170239, longitude: -80.07522583007812, region: 'East Florida' },
+		{ name: 'Miami', latitude: 25.764030136696327, longitude: -80.20294189453125, region: 'East Florida' },
+
+		// HAWAII
+		{ name: 'All Cities', latitude: 21.299610604945606, longitude: -157.862548828125, region: 'Hawaii' },
+		{ name: "O'ahu", latitude: 21.442843107187656, longitude: -157.9998779296875, region: 'Hawaii' },
+		{ name: 'Maui', latitude: 20.87677672772702, longitude: -156.6705322265625, region: 'Hawaii' },
+		{ name: 'Hawaii', latitude: 20.035289711352377, longitude: -155.85617065429688, region: 'Hawaii' },
+
+		// SOUTH AFRICA
+		{ name: 'All Cities', latitude: -33.934245311173115, longitude: 18.4185791015625, region: 'South Africa' },
+		{ name: 'Cape Town', latitude: -33.934245311173115, longitude: 18.4185791015625, region: 'South Africa' },
+
+		// AUSTRALIA
+		{ name: 'All Cities', latitude: -37.71859032558814, longitude: 144.931640625, region: 'Australia' },
+		{ name: 'Melbourne', latitude: -37.85750715625203, longitude: 145.01953125, region: 'Australia' },
+		{ name: 'Sydney', latitude: -33.87041555094182, longitude: 151.083984375, region: 'Australia'}
+
+
+	],
 
 	dropDownCityList: [
 		{ name: 'All Cities', latitude: 33.985787115598434, longitude: -118.47003936767578 },
@@ -497,6 +646,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

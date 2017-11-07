@@ -54,7 +54,7 @@ class Inventory extends Component {
       console.log(date);
 
       boardItems.push(
-        <div  key={key} onClick={() => this.handlePost(key).bind(this)} className="table-row">
+        <div key={key} onClick={() => this.handlePost(key)} className="table-row">
           <div className="t-sans f-11 t-upper fw-500 ls-2 w-40p">
             {value.name}
           </div>

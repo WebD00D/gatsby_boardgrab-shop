@@ -1,7 +1,7 @@
 .board {
  display: flex;
  flex-direction: column;
- max-width: 200px;
+ max-width: 250px;
  margin-left: 10px;
  margin-right: 10px;
  margin-bottom: 22px;
@@ -11,8 +11,8 @@
     margin-bottom: 8px;
     position: relative;
     float: left;
-    width: 200px;
-    height: 300px;
+    width: 250px;
+    height: 350px;
     background-position: 50% 50%;
     background-repeat:  no-repeat;
     background-size: cover; 

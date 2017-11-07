@@ -85,7 +85,7 @@ class Authentication extends PureComponent {
             <input className="authentication-field" onChange={e => { this.setState({ email: e.target.value }) }} type="text" />
             <label className="authentication-label">Password</label>
             <input className="authentication-field" onChange={e => { this.setState({ password: e.target.value }) }} type="password" />
-            <button onClick={()=> this._handleSignIn()} className="auth-button">Sign In</button>
+            <button onClick={()=> this._handleSignIn()} className="auth-button" style={{marginTop: '22px'}}>Sign In</button>
             <hr />
         
             <div className="authentication-header">Create Account </div>
@@ -95,7 +95,7 @@ class Authentication extends PureComponent {
             <input className="authentication-field" onChange={e => { this.setState({ email: e.target.value }) }} type="text" />
             <label className="authentication-label">Password</label>
             <input className="authentication-field" onChange={e => { this.setState({ password: e.target.value }) }} type="password" />
-            <button onClick={()=> this._handleSignup()} className="auth-button auth-button--black">Submit</button>
+            <button onClick={()=> this._handleSignup()} className="auth-button auth-button--black" style={{marginTop: '22px'}}>Submit</button>
             
         </div>
     )
