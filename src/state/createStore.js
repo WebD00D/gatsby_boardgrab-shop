@@ -11,6 +11,14 @@ const reducer = (state, action) => {
 	}
 
 	if (action.type === `CREATE_AND_SIGNIN_USER`) {
+
+		fire.database().ref('users/' + action.userId).set({
+			username: action.account_username,
+			email: action.email,
+			paypal_email: '', 
+			hasNotifications: false
+		  })
+
 		return { 
 			...state, 
 			userId: action.userId, 
@@ -20,12 +28,15 @@ const reducer = (state, action) => {
 	}
 
 	if (action.type === `SET_CURRENT_USER`) {
-		console.log('setting curret user', action.userId)
+		console.log('setting curret user', action.userId, action.username)
+
 		return {
 			...state,
 			userId: action.userId,
+			account_username: action.username,
 			userAuthenticated: true,
 		};
+
 	}
 
 	if (action.type === `LOGOUT_USER`) {
@@ -245,6 +256,7 @@ const initialState = {
 	selectedCity: 'All Cities',
 	mapZoom: 8,
 	regionHasNoBoards: 'not set',
+	userNotification: false,
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [

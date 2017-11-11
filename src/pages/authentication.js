@@ -31,7 +31,13 @@ class Authentication extends PureComponent {
 		.auth()
 		.signInWithEmailAndPassword(this.state.email, this.state.password)
 		.then(function(user) {
-				this.props.setCurrentUser(user.uid);
+
+      fire.database().ref('users/' + user.uid).once('value').then(function(snapshot){
+        console.log("SIGN IN SNAPSHOT", snapshot);
+        this.props.setCurrentUser(user.uid, snapshot.val().username);
+
+      }.bind(this))
+
 			}.bind(this))
 		.catch(function(error) {
 			// Handle Errors here.
@@ -55,9 +61,13 @@ class Authentication extends PureComponent {
 		.then(function(user) {
 			const newUser = fire.auth().currentUser;
 
-            this.props.createAndSignInUser(user.uid, this.state.username);
+            this.props.createAndSignInUser(user.uid, this.state.username, this.state.email);
             
+          
+            // HIT THE BOARDGRAB API TO SEND A WELCOME EMAIL. 
+
             this.setState({ loading: false})
+
 		}.bind(this))
 		.catch(function(error) {
 			// handle errors.
@@ -110,8 +120,8 @@ const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTim
 
   const mapDispatchToProps = dispatch => {
     return { 
-      createAndSignInUser: (userId, account_username) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username }),
-      setCurrentUser: (userId) => dispatch({ type: `SET_CURRENT_USER`, userId })   
+      createAndSignInUser: (userId, account_username, email) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username, email }),
+      setCurrentUser: (userId, username) => dispatch({ type: `SET_CURRENT_USER`, userId, username })   
     }
   }
   

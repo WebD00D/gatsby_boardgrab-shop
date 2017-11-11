@@ -32,6 +32,14 @@ font-family: 'Montserrat', sans-serif;
   font-size: 11px;
 }
 
+.f-13 {
+  font-size: 13px;
+}
+
+.f-16 {
+  font-size: 16px;
+}
+
 .fw-300 {
   font-weight: 300;
 }
@@ -72,6 +80,7 @@ font-family: 'Montserrat', sans-serif;
 .fx-j-c { justify-content: center; }
 .fx-s-b { justify-content: space-between;}
 .fx-a-c { align-items: center; }
+.fx-a-end { align-items: end !important;}
 
 
 .mx-992 { max-width: 992px; width: 100%; margin-left: auto; margin-right: auto; }

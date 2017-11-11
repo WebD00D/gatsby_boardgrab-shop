@@ -124,7 +124,7 @@ class IndexPage extends PureComponent {
 
     } else {
       boards = Object.keys(this.props.boardsToDisplay).map(function(key) {
-        return <Link style={{textDecoration: 'none', color: '#404040'}} to={`/board-detail/?board=${key}`} ><Board key={`boards-${Number(key)}`} board={this.props.boardsToDisplay[key]} onClick={()=> this._handleBoardClick(this.props.boardsToDisplay[key]) } /> </Link>
+        return <Link key={key} style={{textDecoration: 'none', color: '#404040'}} to={`/board-detail/?board=${key}`} ><Board key={`boards-${Number(key)}`} board={this.props.boardsToDisplay[key]} /> </Link>
       }.bind(this));
     }
 
@@ -153,9 +153,7 @@ class IndexPage extends PureComponent {
    
 		return (
 			<div id="container" style={{display: 'flex'}}>
-    
-      {this.props.account_username}
-      
+          
         <div id="boards" style={{width: '70%', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'}}>
 
           <div style={{

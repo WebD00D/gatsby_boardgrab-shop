@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Link from "gatsby-link";
 import { Route, Redirect } from "react-router-dom";
 import fire from "../fire";
+//import boardfax from "../boardfax";
 import FatherTime from "../utils/fatherTime";
 import FileUploader from "react-firebase-file-uploader";
 import { connect } from "react-redux";
@@ -57,7 +58,11 @@ class ListABoard extends Component {
 			tag_advanced: false,
 			tag_greatforanybody: false,
 			tag_smallwaves: false,
-			tag_budget: false
+			tag_budget: false,
+
+			newShaper: false,
+			newModel: true,
+
 		};
 	}
 
@@ -113,7 +118,74 @@ class ListABoard extends Component {
 	handleListing() {
     const dateTime = Date.now();
     
-    console.log(this.state.region)
+		// SAVE TO THE BOARDFAX DATABASE.. 
+		
+		// if it's a new shaper, then it's def a new model
+		// if ( this.state.newShaper ) {
+		// 	boardfax
+		// 		.database()
+		// 		.ref(`shapers/${dateTime}/`)
+		// 		.set({
+		// 			name: this.state.brandShaper
+		// 		})
+
+		// 	boardfax
+		// 		.database()
+		// 		.ref(`modelsByShaper/${this.state.brandShaper}/${dateTime}`)
+		// 		.set({
+		// 			name: this.state.model
+		// 		})
+		// }
+
+		// // may just be a new model not catalouged. 
+		// if ( this.state.newModel && !this.state.newShaper ) {
+
+		// 	boardfax
+		// 		.database()
+		// 		.ref(`modelsByShaper/${this.state.brandShaper}/${dateTime}`)
+		// 		.set({
+		// 			name: this.state.model
+		// 		})
+
+		// }
+
+		// // register this board in Boardfax. 
+
+		// boardfax
+		// 	.database()
+		// 	.ref(`registeredBoards/BG-${dateTime}`)
+		// 	.set({
+		// 		name: this.state.listingTitle,
+		// 		brand: this.state.brandShaper,
+		// 		model: this.state.model,
+		// 		dimensions: this.state.dimensions,
+		// 		fins: this.state.fins,
+		// 		condition: this.state.condition,
+		// 		dimensions: this.state.dimensions,
+		// 		shaperInfo: this.state.shaperInfo,
+		// 		featurePhotoURL: this.state.avatar,
+		// 	})
+
+		// 	boardfax
+		// 	.database()
+		// 	.ref(`sellingHistory/BG-${dateTime}/${dateTime}`)
+		// 	.set({
+		// 		listDate: Date.now(),
+		// 		userId: this.props.userId,
+		// 		region: this.state.region,
+		// 		city: this.state.city,
+		// 		name: this.state.listingTitle,
+		// 		brand: this.state.brandShaper,
+		// 		model: this.state.model,
+		// 		dimensions: this.state.dimensions,
+		// 		fins: this.state.fins,
+		// 		condition: this.state.condition,
+		// 		dimensions: this.state.dimensions,
+		// 		shaperInfo: this.state.shaperInfo,
+		// 		price: this.state.price,
+		// 		featurePhotoURL: this.state.avatar,
+		// 	})
+
 
 		// 1)  SAVE BOARD BY REGION
 		fire
@@ -122,7 +194,7 @@ class ListABoard extends Component {
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,
-				status: 'PENDING',
+				status: 'PUBLISHED',
 				region: this.state.region,
 				city: this.state.city,
 				name: this.state.listingTitle,
@@ -156,7 +228,7 @@ class ListABoard extends Component {
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,
-				status: 'PENDING',
+				status: 'PUBLISHED',
 				region: this.state.region,
 				city: this.state.city,
 				name: this.state.listingTitle,
@@ -190,7 +262,7 @@ class ListABoard extends Component {
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,
-				status: 'PENDING',
+				status: 'PUBLISHED',
 				region: this.state.region,
 				city: this.state.city,
 				name: this.state.listingTitle,
@@ -224,7 +296,7 @@ class ListABoard extends Component {
 			.set({
 				listDate: Date.now(),
 				userId: this.props.userId,
-				status: 'PENDING',
+				status: 'PUBLISHED',
 				region: this.state.region,
 				city: this.state.city,
 				name: this.state.listingTitle,

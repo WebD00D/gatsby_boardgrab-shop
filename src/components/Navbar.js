@@ -121,8 +121,8 @@ class Navbar extends PureComponent {
 				<div style={{ display: 'flex' }}>
 
 
-				  { this.props.userAuthenticated ? <Link className="navbar__link hover" to="/list-a-board">New Listing</Link> : '' }
-					{ this.props.userAuthenticated ? <Link className="navbar__link hover" to="/inventory">My Quiver</Link> : '' }
+				  { this.props.userAuthenticated ? <Link className="navbar__link hover" to="/list-a-board">SELL A BOARD</Link> : '' }
+					{ this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">{this.props.account_username}</Link> : '' }
 					 { !this.props.userAuthenticated ? <Link className="navbar__link" to="/sell-with-us">Start Selling with Boardgrab</Link> : '' }
 					
 
@@ -141,9 +141,7 @@ class Navbar extends PureComponent {
 					<a className="navbar__subnav__link" target="_blank" href="https://medium.com/boardgrab">
 						Blog
 					</a>
-					<Link className="navbar__subnav__link" to="/text-us">
-						Text Us
-					</Link>
+
 				</div>
 				<div className="navbar__subnav--right navbar_subnav__section">
 					<Link className="navbar__subnav__link" to="/">
@@ -155,12 +153,7 @@ class Navbar extends PureComponent {
 					<Link className="navbar__subnav__link" to="/">
 						Logs
 					</Link>
-					<Link className="navbar__subnav__link" to="/">
-						Fins
-					</Link>
-					<Link className="navbar__subnav__link" to="/">
-						Suits
-					</Link>
+
 				</div>
 			</div>
 		</div>;
@@ -176,8 +169,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated }) => {
-  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated }
+const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username }) => {
+  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps )(Navbar)

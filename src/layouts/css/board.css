@@ -162,3 +162,189 @@
     background-size: cover; 
     border-radius: 4px;
 }
+
+
+.board-info {
+    display: flex; 
+    margin-bottom: 32px;  
+}
+
+.board-info__header {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-info__column {
+    width: 50%;
+}
+
+.board-info__column__lg {
+    width: 60%;
+}
+
+.board-info__column__sm {
+    width: 40%;
+}
+
+.board-info__img-main {
+    border-radius: 4px;
+}
+
+.board-info__title {
+    margin-bottom: 18px;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: 0.92px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-info__location {
+    font-size: 14px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    font-weight: 700;
+    letter-spacing: 0.92px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-info__short-desc {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-info__section {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.board-info__section-row {
+    display: flex;
+    align-items: center;
+}
+
+.board-info__tags {
+    display: flex;
+    height: 60px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    align-items: center;
+    border-top: 1px dashed #f5f5f5;
+    border-bottom: 1px dashed #f5f5f5;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.board-info__price {
+    display: flex;
+    height: 60px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px dashed #f5f5f5;
+    border-bottom: 1px dashed #f5f5f5;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-info__price button {
+    background-color: #ff5a5f;
+    color: white;
+    border-radius: 4px;
+    border: none;
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 20px; 
+    transition: .2s ease;
+    width: 225px;
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+button:focus, button:active {
+    outline: none;
+}
+
+.board-info__tags label {
+    text-transform: uppercase;
+    letter-spacing: 0.92px;
+    font-size: 10px;
+}
+
+.board-info__tag {
+    border-radius: 4px;
+    padding-left: 11px;
+    padding-right: 11px;
+    background-color: #f5f5f5;
+    color: #cccccc;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.92px;
+    
+}
+
+hr {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.b-top-solid {
+    border-top: 1px solid #f5f5f5;
+}
+
+.p-t-18 {
+    padding-top: 18px;
+}
+
+.about-seller { 
+    min-width: 150px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-pricing {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.board-info__images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.board-info__image {
+    margin-right: 10px;
+    margin-bottom: 8px;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 75px;
+    background-size: 50% 50%;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    position: relative;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 4px;
+}
+

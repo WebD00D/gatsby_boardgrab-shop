@@ -17,10 +17,7 @@ export default class BoardFlyOut extends PureComponent {
             </div>
 
             <div className="board-photos">
-
-                    <div className="board-photo" style={{backgroundImage: `url(${board.featurePhotoURL})`}}></div>
-
-               
+                <div className="board-photo" style={{backgroundImage: `url(${board.featurePhotoURL})`}}></div>               
             </div>
 
             <div className="board-feature-list">
