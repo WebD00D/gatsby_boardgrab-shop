@@ -40,6 +40,10 @@ font-family: 'Montserrat', sans-serif;
   font-size: 16px;
 }
 
+.f-28 {
+  font-size: 28px;
+}
+
 .fw-300 {
   font-weight: 300;
 }
@@ -62,6 +66,10 @@ font-family: 'Montserrat', sans-serif;
 
 .m-b-20 {
   margin-bottom: 20px;
+}
+
+.m-b-30 {
+  margin-bottom: 30px;
 }
 
 

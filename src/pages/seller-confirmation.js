@@ -44,25 +44,32 @@ class SellerConfirmation extends Component {
       }.bind(this)).then(function(){
 
         // handle the api request to officially register the user..
+        
         const code = this.getQueryVariable("code");
 
-        //  endpoint-> /stripe-registration?code=thecode
-        fetch(`https://boardgrab-api.herokuapp.com/stripe-registration?code=${code}`)
-        .then(function(response) {
-          return response.json()
-        }).then(function(r) {
-          console.log('parsed json from stripe-registration', r)
+        if ( code ) {
 
-          let s = JSON.parse(r.text)
-          console.log("SAVE THIS STRIPE USER ID!!!!!!!", s.stripe_user_id);
+            //  endpoint-> /stripe-registration?code=thecode
+            fetch(`https://boardgrab-api.herokuapp.com/stripe-registration?code=${code}`)
+            .then(function(response) {
+              return response.json()
+            }).then(function(r) {
+              console.log('parsed json from stripe-registration', r)
+
+              let s = JSON.parse(r.text)
+              console.log("SAVE THIS STRIPE USER ID!!!!!!!", s.stripe_user_id);
 
 
-        }.bind(this)).catch(function(ex) {
-          console.log('parsing failed', ex)
-        })
+            }.bind(this)).catch(function(ex) {
+              console.log('parsing failed', ex)
+            })
+
+        } else {
+          console.log("NO CODE!");
+        }
+
+        
    
-
-
       }.bind(this))
 
 
@@ -98,7 +105,31 @@ class SellerConfirmation extends Component {
 	}
 
 	render() {
-		return <div className="site-container--sm">Seller Confirmation</div>;
+		return (
+      <div className="site-container--sm">
+        
+        <div className="t-sans fw-500 f-28 m-b-30">You're all setup!</div>
+        <div className="t-sans ">
+         Welcome to the Boardgrab seller's community. You're what keeps this whole ship afloat. So, first 
+         and foremost, thank you.
+         <br /><br />
+          Now that you are all good to go with Stripe, there's a few handy things to know as seller.
+        <br/><br />
+        You can find the secure link to your stripe sellers dashboard by going to your Boardgrab account page, clicking on settings,
+        then the "Stripe Dashboard" link. In your Stripe dashboard, you'll be able to view your Boardgrab payout history,
+        as well as update settings like bank info, linked accounts, and more. If you'd like to learn a bit more
+        about our payment partner, check out this link <a href="#" className="fc-green">here.</a>
+
+         <br /><br />
+         If you have any questions at all, feel free to check out the <a href="#" className="fc-green">Boardgrab Support Site</a>,
+         or reach out to us directly via email at <a className="fc-green" href="#">help@boardgrab.com</a>.
+        <br /><br />
+        ...
+
+        </div>
+
+      </div>
+    );
 	}
 }
 
