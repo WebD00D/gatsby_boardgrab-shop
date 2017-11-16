@@ -33,8 +33,15 @@ class Authentication extends PureComponent {
 		.then(function(user) {
 
       fire.database().ref('users/' + user.uid).once('value').then(function(snapshot){
-        console.log("SIGN IN SNAPSHOT", snapshot);
-        this.props.setCurrentUser(user.uid, snapshot.val().username);
+        console.log("SIGN IN SNAPSHOT", snapshot.val());
+        this.props.setCurrentUser(
+          user.uid, 
+          snapshot.val().username, 
+          snapshot.val().email, 
+          snapshot.val().hasNotifications,
+          snapshot.val().paypal_email,
+          snapshot.val().seller
+        );
 
       }.bind(this))
 
@@ -63,7 +70,6 @@ class Authentication extends PureComponent {
 
             this.props.createAndSignInUser(user.uid, this.state.username, this.state.email);
             
-          
             // HIT THE BOARDGRAB API TO SEND A WELCOME EMAIL. 
 
             this.setState({ loading: false})
@@ -121,8 +127,9 @@ const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTim
   const mapDispatchToProps = dispatch => {
     return { 
       createAndSignInUser: (userId, account_username, email) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username, email }),
-      setCurrentUser: (userId, username) => dispatch({ type: `SET_CURRENT_USER`, userId, username })   
+      setCurrentUser: (userId, username, email, hasNotifications, paypal_email, seller) => dispatch({ type: `SET_CURRENT_USER`, userId, username, email, hasNotifications, paypal_email, seller })   
     }
   }
   
 export default connect(mapStateToProps, mapDispatchToProps)(Authentication);
+

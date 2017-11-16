@@ -1,15 +1,20 @@
 import React from 'react';
 import "../layouts/css/site.css";
+import "../layouts/css/stripe.css";
 
 const SellWithUs = () => (
   <div className="site-container">
     <h1 className="t-primary">Selling with Boardgrab</h1>
-    <p className="t-primary" style={{fontWeight: 400, fontSize: 14}}>We started Boardgrab because we want to create a single source to browse every used surfboard 
-     for sale across the country. After getting burned on Craigslist one too many times, 
-     we decided to make something easier, friendlier and way more extensive.
-      It’s a big idea but a really simple one. Every used board in surf shops from coast to coast. 
-      Everything is easily searchable, with honest, clear descriptions and hi-res photos. 
-      If you have a question or want a measurement or more photos, we’re always available.</p>
+    <p className="t-primary" style={{fontWeight: 400, fontSize: 14}}>
+     Boardgrab uses Stripe to get you paid quickly and keep your personal and payment information secure. 
+     Thousands of companies around the world trust Stripe to process payments for their users. 
+     Set up a Stripe account to get paid with Boardgrab.
+    </p>
+    <a 
+      href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8000/seller-confirmation/&client_id=ca_BktaykED2idsi5jlNomAw6kFOPYn9af2&state=VA" 
+      className="stripe-connect">
+      <span>Connect with Stripe</span>
+   </a>
   </div>
 )
 

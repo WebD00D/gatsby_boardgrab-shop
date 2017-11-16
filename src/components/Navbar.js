@@ -60,7 +60,7 @@ class Navbar extends PureComponent {
     return <div className="navbar__wrapper">
 			<div className="navbar">
 				<div className="navbar__logo-wrap">
-					<img className="navbar__logo" src={require('../layouts/images/bg-logo-color.svg')} />
+					<Link to="/"><img className="navbar__logo" src={require('../layouts/images/bg-logo-color.svg')} /></Link>
 					<div className="navbar__logo__divider" />
 					<div className="navbar__location-selector" onClick={this.handleLocationDropDown}>
 						<div className="navbar__location">{this.props.selectedRegion}</div>
@@ -121,9 +121,10 @@ class Navbar extends PureComponent {
 				<div style={{ display: 'flex' }}>
 
 
-				  { this.props.userAuthenticated ? <Link className="navbar__link hover" to="/list-a-board">SELL A BOARD</Link> : '' }
-					{ this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">{this.props.account_username}</Link> : '' }
-					 { !this.props.userAuthenticated ? <Link className="navbar__link" to="/sell-with-us">Start Selling with Boardgrab</Link> : '' }
+				  {  this.props.userAuthenticated && this.props.isSeller ? <Link className="navbar__link hover" to="/list-a-board">List a Board</Link> : '' }
+					{  this.props.userAuthenticated && !this.props.isSeller ? <Link className="navbar__link" to="/sell-with-us">Start Selling</Link> : '' }
+					{  this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">My Account</Link> : '' }
+				
 					
 
 					{ this.props.userAuthenticated ? <div onClick={this.props.signOutUser} className="navbar__link hover">Signout</div> : <Link className="navbar__link " to="/authentication">Login / Register</Link> }
@@ -132,7 +133,7 @@ class Navbar extends PureComponent {
 			</div>
 			<div className="navbar__subnav ">
 				<div className="navbar__subnav--left navbar_subnav__section">
-				<Link className="navbar__subnav__link" to="/">
+				<Link className="navbar__subnav__link" to="/buy-boards">
 						Shop
 					</Link>
 					<Link className="navbar__subnav__link" to="/about">
@@ -169,8 +170,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username }) => {
-  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username }
+const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller }) => {
+  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps )(Navbar)

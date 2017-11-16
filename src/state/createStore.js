@@ -16,7 +16,8 @@ const reducer = (state, action) => {
 			username: action.account_username,
 			email: action.email,
 			paypal_email: '', 
-			hasNotifications: false
+			hasNotifications: false,
+			seller: false
 		  })
 
 		return { 
@@ -24,17 +25,24 @@ const reducer = (state, action) => {
 			userId: action.userId, 
 			account_username: action.account_username, 
 			firstTimeLogin: true, 
+			isSeller: false,
 			userAuthenticated: true };
 	}
 
 	if (action.type === `SET_CURRENT_USER`) {
 		console.log('setting curret user', action.userId, action.username)
 
+		document.cookie = `boardgrab_user=${action.userId}`;
+
 		return {
 			...state,
 			userId: action.userId,
 			account_username: action.username,
 			userAuthenticated: true,
+			currentUserEmail: action.email,
+			hasNotifications: action.hasNotifications,
+			paypal_email: action.paypal_email,
+			isSeller: action.seller
 		};
 
 	}
@@ -257,6 +265,11 @@ const initialState = {
 	mapZoom: 8,
 	regionHasNoBoards: 'not set',
 	userNotification: false,
+	isSeller: false,
+	currentUserEmail: '',
+	hasNotifications: false,
+	paypal_email: '',
+	isSeller: false,
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
