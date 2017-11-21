@@ -23,6 +23,8 @@ class BoardDetail extends PureComponent {
         isOffer: false,
         message: '',
         offer: 0,
+        messageStatus: '',
+        messageId: false
     }
   }
 
@@ -43,7 +45,52 @@ class BoardDetail extends PureComponent {
   }
 
   sendMessage() {
-    alert('hello')
+    const sellerId = this.state.board.userId;
+    const buyerId = this.props.userId;
+    const message = this.state.message;
+    const messageDate = new Date();
+
+    let messageThreadId = this.state.messageId ? this.state.messageId : sellerId + '-' + buyerId + '-' + this.state.boardId;
+    const singleMessageId = Date.now();
+
+    
+    // Set for Seller
+    fire.database().ref('users/' + sellerId + '/messages/' + messageThreadId + '/' + singleMessageId).set({
+      isBuyer: false,
+      isSeller: true,
+      from: buyerId,
+      to: sellerId,
+      message: message,
+      messageDate: messageDate
+    });   
+
+    // Set Notification for Seller..
+    var updates = {};
+    updates['/users/' + sellerId + '/hasNotifications'] = true;
+  
+    fire.database().ref().update(updates);
+
+    
+    // Set for Potential Buyer 
+    fire.database().ref('users/' + buyerId + '/messages/' + messageThreadId + '/' + singleMessageId).set({
+      isBuyer: true,
+      isSeller: false,
+      from: buyerId,
+      to: sellerId,
+      message: message,
+      messageDate: messageDate
+    }); 
+
+    this.setState({ messageStatus: 'Message Sent!' })
+
+    setTimeout(function(){
+      this.setState({
+        messageId: messageThreadId,
+        messageStatus: '',
+        isQuestion: false,
+        isOffer: false,
+      })
+    }.bind(this), 2000)
   }
 
   getQueryVariable(variable) {
@@ -81,12 +128,14 @@ class BoardDetail extends PureComponent {
                     ? 
 
                     <div>
-                      <textarea className="message-box__textarea"></textarea>
-                      <button onClick={ () => this.sendMessage()} className="message-box__button">Send</button>
+                      <textarea className="message-box__textarea" onChange={e => {this.setState({ message: e.target.value });	}}></textarea>
+                      <button onClick={ () => this.sendMessage()}  className="message-box__button">Send</button>
                     </div>
                     :
                     ''
                     }
+
+                    <div className="t-sans f-13 fc-green ">{this.state.messageStatus}</div>
 
               </div>
           </div>
@@ -114,7 +163,7 @@ class BoardDetail extends PureComponent {
             <div className="board-info__header">
               <div className="board-info__title">{this.state.board.name}</div>
               <div className="board-info__location"><span>{this.state.board.city}, </span><span>{this.state.board.region}</span></div>
-              <div className="board-info__short-desc">Lorem ipsum dolar set amit. Water tight and ready to rip!</div>
+              {/* <div className="board-info__short-desc">Lorem ipsum dolar set amit. Water tight and ready to rip!</div> */}
               
             </div>
 
@@ -125,7 +174,7 @@ class BoardDetail extends PureComponent {
             </div>
 
             <div className="board-info__tags" style={{marginTop: '0px'}}>
-              <label>Perfect For: </label>
+              <label style={{display: 'block', width: '100%;'}}>Perfect For: </label>
               {this.state.board.tag_advanced ? <div className="board-info__tag">Advanced Rider</div>: '' }
               {this.state.board.tag_beginner ? <div className="board-info__tag">Beginners</div>: '' }
               {this.state.board.tag_greatforanybody ? <div className="board-info__tag">Anybody</div>: '' }

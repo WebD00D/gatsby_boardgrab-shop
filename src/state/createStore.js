@@ -30,6 +30,10 @@ const reducer = (state, action) => {
 			userAuthenticated: true };
 	}
 
+	if (action.type === `CLEAR_NOTIFICATIONS`) {
+		return { ...state, hasNotifications: false };
+	}
+
 	if (action.type === `SET_CURRENT_USER`) {
 		console.log('setting curret user', action.userId, action.username)
 
@@ -685,6 +689,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

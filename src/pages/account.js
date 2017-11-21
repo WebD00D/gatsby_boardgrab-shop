@@ -34,6 +34,13 @@ class Account extends PureComponent {
     })
   }
  
+  componentWillMount() {
+        // clear notifications..
+        var updates = {};
+        updates['users/' + this.props.userId + '/hasNotifications'] = false 
+        fire.database().ref().update(updates)
+        this.props.clearNotifications();
+  }
 
   render () {
 
@@ -73,6 +80,7 @@ const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTim
       createAndSignInUser: (userId, account_username) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username }),
       setCurrentUser: (userId) => dispatch({ type: `SET_CURRENT_USER`, userId }),
       getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards}),
+      clearNotifications: () => dispatch({ type: `CLEAR_NOTIFICATIONS` })
     }
   }
   

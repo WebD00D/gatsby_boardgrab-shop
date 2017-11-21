@@ -123,7 +123,7 @@ class Navbar extends PureComponent {
 
 				  {  this.props.userAuthenticated && this.props.isSeller ? <Link className="navbar__link hover" to="/list-a-board">List a Board</Link> : '' }
 					{  this.props.userAuthenticated && !this.props.isSeller ? <Link className="navbar__link" to="/sell-with-us">Start Selling</Link> : '' }
-					{  this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">My Account</Link> : '' }
+					{  this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">My Account { this.props.hasNotifications ? <i className="fa fa-bell fc-red"></i> : '' } </Link> : '' }
 				
 					
 					{ this.props.userAuthenticated ? <div onClick={this.props.signOutUser} className="navbar__link hover">Signout</div> : <Link className="navbar__link " to="/authentication">Login / Register</Link> }
@@ -169,8 +169,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller }) => {
-  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller }
+const mapStateToProps = ({ count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller, hasNotifications }) => {
+  return { count, userId, shop_name, regions, citesByRegion, selectedRegion, currentCityList, selectedCity, userAuthenticated, account_username, isSeller, hasNotifications }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps )(Navbar)
