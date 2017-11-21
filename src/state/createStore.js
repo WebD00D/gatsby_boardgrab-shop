@@ -30,8 +30,15 @@ const reducer = (state, action) => {
 			userAuthenticated: true };
 	}
 
+	// if ( action.type === `CLEAR_NOTIFICATIONS` ) {
+	// 	return {
+	// 		...state,
+	// 		hasNotifications: false
+	// 	}
+	// }
+
 	if (action.type === `SET_CURRENT_USER`) {
-		console.log('setting curret user', action.userId, action.username)
+		console.log('setting curret user', action.userId, action.username, action.hasNotifications)
 
 		document.cookie = `boardgrab_user=${action.userId}`;
 

@@ -294,7 +294,7 @@ button:focus, button:active {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 8px;
+    margin-right: 8px;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.92px;

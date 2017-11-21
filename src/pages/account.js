@@ -13,6 +13,7 @@ import Disqus from "../components/Disqus";
 import Messages from "../components/Messages";
 import MyQuiver from "../components/MyQuiver";
 import Settings from "../components/Settings";
+import { disconnect } from 'cluster';
 
 
 class Account extends PureComponent {
@@ -33,12 +34,18 @@ class Account extends PureComponent {
         activeTab: tab
     })
   }
+
+  componentWillMount() {
+    // clear notifications..
+
+
+   // this.props.clearNotifications();
+  }
  
 
   render () {
 
     
-
     return (
       <div className="site-container">
 
@@ -53,7 +60,6 @@ class Account extends PureComponent {
          { this.state.activeTab === "Messages" ?  <div className="tab"><Messages /></div> : '' }
          { this.state.activeTab === "My Quiver" ?  <div className="tab"><MyQuiver /></div> : '' }
          { this.state.activeTab === "Settings" ?  <div className="tab"><Settings /></div> : '' }
-
 
 
      </div>
@@ -72,7 +78,9 @@ const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTim
     return { 
       createAndSignInUser: (userId, account_username) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username }),
       setCurrentUser: (userId) => dispatch({ type: `SET_CURRENT_USER`, userId }),
-      getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards}),
+      getAllBoards: (boards) => dispatch({type: `GET_ALL_BOARDS`,boards})
+      //clearNotifications: () => dispatch({ type: `CLEAR_NOTIFICATIONS` })
+
     }
   }
   
