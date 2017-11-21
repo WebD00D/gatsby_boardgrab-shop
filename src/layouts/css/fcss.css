@@ -104,8 +104,14 @@ font-family: 'Montserrat', sans-serif;
 .w-20p {
   width: 20%;
 }
+.w-30p {
+  width: 30%;
+}
 .w-40p {
   width: 40%;
+}
+.w-50p {
+  width: 50%;
 }
 
 
