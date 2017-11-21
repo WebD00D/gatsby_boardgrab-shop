@@ -53,7 +53,7 @@ class BoardDetail extends PureComponent {
     let messageThreadId = this.state.messageId ? this.state.messageId : sellerId + '-' + buyerId + '-' + this.state.boardId;
     const singleMessageId = Date.now();
 
-    
+
     // Set for Seller
     fire.database().ref('users/' + sellerId + '/messages/' + messageThreadId + '/' + singleMessageId).set({
       isBuyer: false,
@@ -64,13 +64,7 @@ class BoardDetail extends PureComponent {
       messageDate: messageDate
     });   
 
-    // Set Notification for Seller..
-    var updates = {};
-    updates['/users/' + sellerId + '/hasNotifications'] = true;
-  
-    fire.database().ref().update(updates);
-
-    
+       
     // Set for Potential Buyer 
     fire.database().ref('users/' + buyerId + '/messages/' + messageThreadId + '/' + singleMessageId).set({
       isBuyer: true,
@@ -80,6 +74,41 @@ class BoardDetail extends PureComponent {
       message: message,
       messageDate: messageDate
     }); 
+
+
+    // MESSAGE PREVIEWS.. These are what we will pull from in the user's account, that just show a snapshot of the latest message.
+
+    // fire.database().ref('users/' + sellerId + '/messagePreviews/' + messageThreadId).set({
+    //   lastMessageDate: messageDate,
+    //   lastMessage: message,
+    //   from: buyerId,
+    //   to: sellerId,
+    //   read: false
+    // })
+
+
+    // fire.database().ref('users/' + buyerId + '/messagePreviews/' + messageThreadId).set({
+    //   lastMessageDate: messageDate,
+    //   lastMessage: message,
+    //   from: buyerId,
+    //   to: sellerId,
+    //   read: true // because it was sent from them.. 
+    // })
+
+    // Set Notification for Seller..
+    var updates = {};
+    updates['/users/' + sellerId + '/hasNotifications'] = true;
+    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
+    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/from'] = buyerId;
+    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/read'] = false;
+    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
+    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
+    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/to'] = sellerId;
+    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/read'] = true;
+    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
+  
+    fire.database().ref().update(updates);
+
 
     this.setState({ messageStatus: 'Message Sent!' })
 
