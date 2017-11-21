@@ -26,21 +26,7 @@ class IndexPage extends PureComponent {
 
   componentWillMount() {
    
-   //  
-
-   fetch('https://boardgrab-api.herokuapp.com/get-login-link?link=acct_1BNQhXBgiIHRkhRw')
-   .then(function(response) {
-     return response.json()
-   }).then(function(json) {
-     console.log('parsed json', json)
-     this.setState({
-       loginLink: json.url
-     })
-   }.bind(this)).catch(function(ex) {
-     console.log('parsing failed', ex)
-   })
-
-
+   
 
   }
 
