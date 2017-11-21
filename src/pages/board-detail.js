@@ -123,10 +123,8 @@ class BoardDetail extends PureComponent {
 
                   <div className="message-box__header">{ this.state.isOffer ? 'Make an Offer' : 'Ask a Question' }</div>
                   <div className="t-sans f-13 lh-18" style={{opacity: '0.6'}}> Do not send payments offsite. If you do not pay through Boardgrab you are not eligible for Grailed or Stripe Fraud Protection.</div>
-
                   { this.state.isQuestion 
                     ? 
-
                     <div>
                       <textarea className="message-box__textarea" onChange={e => {this.setState({ message: e.target.value });	}}></textarea>
                       <button onClick={ () => this.sendMessage()}  className="message-box__button">Send</button>
@@ -175,6 +173,7 @@ class BoardDetail extends PureComponent {
 
             <div className="board-info__tags" style={{marginTop: '0px'}}>
               <label style={{display: 'block', width: '100%;'}}>Perfect For: </label>
+
               {this.state.board.tag_advanced ? <div className="board-info__tag">Advanced Rider</div>: '' }
               {this.state.board.tag_beginner ? <div className="board-info__tag">Beginners</div>: '' }
               {this.state.board.tag_greatforanybody ? <div className="board-info__tag">Anybody</div>: '' }
