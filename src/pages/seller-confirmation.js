@@ -18,9 +18,11 @@ import "../layouts/css/button.css";
 class SellerConfirmation extends Component {
 	constructor(props) {
     super(props);
-    
+
     this.getCookie = this.getCookie.bind(this);
     this.getQueryVariable = this.getQueryVariable.bind(this);
+
+
 	}
 
 	componentWillMount() {
@@ -33,9 +35,9 @@ class SellerConfirmation extends Component {
       fire.database().ref('users/' + bgcookie).once('value').then(function(snapshot){
         console.log("SIGN IN SNAPSHOT", snapshot.val());
         this.props.setCurrentUser(
-          bgcookie, 
-          snapshot.val().username, 
-          snapshot.val().email, 
+          bgcookie,
+          snapshot.val().username,
+          snapshot.val().email,
           snapshot.val().hasNotifications,
           snapshot.val().paypal_email,
           snapshot.val().seller
@@ -44,7 +46,7 @@ class SellerConfirmation extends Component {
       }.bind(this)).then(function(){
 
         // handle the api request to officially register the user..
-        
+
         const code = this.getQueryVariable("code");
 
         if ( code ) {
@@ -57,7 +59,16 @@ class SellerConfirmation extends Component {
               console.log('parsed json from stripe-registration', r)
 
               let s = JSON.parse(r.text)
-              console.log("SAVE THIS STRIPE USER ID!!!!!!!", s.stripe_user_id);
+              //  console.log("SAVE THIS STRIPE USER ID!!!!!!!", s.stripe_user_id);
+
+							let updates = {};
+							updates['users/' + this.props.userId + '/seller'] = true
+							updates['users/' + this.props.userId + '/stripe'] = s.stripe_user_id
+
+							fire.database().ref().update(updates)
+
+              // UPDATE STATE..
+              this.props.updateSellerInfo(true, s.stripe_user_id);
 
 
             }.bind(this)).catch(function(ex) {
@@ -68,15 +79,15 @@ class SellerConfirmation extends Component {
           console.log("NO CODE!");
         }
 
-        
-   
+
+
       }.bind(this))
 
 
     }
-    
+
   }
-  
+
   getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -86,7 +97,7 @@ class SellerConfirmation extends Component {
     }
     return (false);
   }
- 
+
 
 	getCookie(cname) {
 		var name = cname + '=';
@@ -107,10 +118,10 @@ class SellerConfirmation extends Component {
 	render() {
 		return (
       <div className="site-container--sm">
-        
+
         <div className="t-sans fw-500 f-28 m-b-30">You're all setup!</div>
         <div className="t-sans ">
-         Welcome to the Boardgrab seller's community. You're what keeps this whole ship afloat. So, first 
+         Welcome to the Boardgrab seller's community. You're what keeps this whole ship afloat. So, first
          and foremost, thank you.
          <br /><br />
           Now that you are all good to go with Stripe, there's a few handy things to know as seller.
@@ -138,12 +149,11 @@ const mapStateToProps = ({ userId, shop_coast, dropDownCityList }) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { 
+  return {
     setListingCities: (region) => dispatch({ type: `SET_LISTING_CITIES`, region }),
-    setCurrentUser: (userId, username, email, hasNotifications, paypal_email, seller) => dispatch({ type: `SET_CURRENT_USER`, userId, username, email, hasNotifications, paypal_email, seller })   
+    setCurrentUser: (userId, username, email, hasNotifications, paypal_email, seller) => dispatch({ type: `SET_CURRENT_USER`, userId, username, email, hasNotifications, paypal_email, seller }),
+		updateSellerInfo: ( seller, stripe ) => dispatch({ type: `SET_NEW_SELLER_INFO`, seller, stripe })
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SellerConfirmation);
-
-

@@ -13,13 +13,18 @@ class BoardDetail extends PureComponent {
 
   constructor(props) {
     super(props);
+
+    this.sendMessage = this.sendMessage.bind(this);
     
     this.state = {
         boardId: '',
         board: {},
+        isQuestion: false,
+        isOffer: false,
+        message: '',
+        offer: 0,
     }
   }
-
 
 
   componentDidMount() {
@@ -35,6 +40,10 @@ class BoardDetail extends PureComponent {
       })
     }.bind(this))
 
+  }
+
+  sendMessage() {
+    alert('hello')
   }
 
   getQueryVariable(variable) {
@@ -57,6 +66,33 @@ class BoardDetail extends PureComponent {
 
     return (
       <div className="site-container">
+
+        { this.state.isOffer || this.state.isQuestion 
+        ? 
+        <div className="inquiry-popup">
+          <div className="message-box">
+              <a href="#" style={{color: '#404040'}} onClick={ () => { this.setState({ isOffer: false, isQuestion: false  }) } }><i className="fa fa-close" style={{ fontSize: '13px', position: 'absolute', right: '10px', top: '10px'}}></i></a>
+              <div className="message-box__content">
+
+                  <div className="message-box__header">{ this.state.isOffer ? 'Make an Offer' : 'Ask a Question' }</div>
+                  <div className="t-sans f-13 lh-18" style={{opacity: '0.6'}}> Do not send payments offsite. If you do not pay through Boardgrab you are not eligible for Grailed or Stripe Fraud Protection.</div>
+
+                  { this.state.isQuestion 
+                    ? 
+
+                    <div>
+                      <textarea className="message-box__textarea"></textarea>
+                      <button onClick={ () => this.sendMessage()} className="message-box__button">Send</button>
+                    </div>
+                    :
+                    ''
+                    }
+
+              </div>
+          </div>
+        </div>
+         : '' }
+       
 
         <div className="board-info">
 
@@ -84,7 +120,8 @@ class BoardDetail extends PureComponent {
 
             <div className="board-info__price" style={{borderBottom: 'none', marginBottom: '0px'}}>
               <div style={{fontSize: '28px'}} className="fc-green">${this.state.board.price}</div>
-              <button>Make an Offer</button>
+              <button onClick={ () => { this.setState({ isOffer: true, isQuestion: false })} }>Make an Offer</button>
+              <button onClick={ () => { this.setState({ isOffer: false, isQuestion: true })} } style={{backgroundColor: '#498144'}}>Ask a Question</button>
             </div>
 
             <div className="board-info__tags" style={{marginTop: '0px'}}>
@@ -126,20 +163,9 @@ class BoardDetail extends PureComponent {
 
             <div className="board-info__section b-top-solid p-t-18">
               <div className="board-info__section-row t-sans f-16 fx-a-end">
-                <div className="about-seller">Details</div>
-                <span style={{marginLeft: '14px'}} >
-                 Shaped by the one and only Jon Pyzel. 2 year repeat winner of Stab in the Dark, and
-                 lorem ipsum dolar set amit.
-                </span>
-              </div>
-            </div>
-
-            <div className="board-info__section b-top-solid p-t-18">
-              <div className="board-info__section-row t-sans f-16 fx-a-end">
                 <div className="about-seller">Condition</div>
                 <span style={{marginLeft: '14px'}} >
-                 Shaped by the one and only Jon Pyzel. 2 year repeat winner of Stab in the Dark, and
-                 lorem ipsum dolar set amit.
+                 {this.state.board.condition}
                 </span>
               </div>
             </div>
@@ -148,8 +174,7 @@ class BoardDetail extends PureComponent {
               <div className="board-info__section-row t-sans f-16 fx-a-end">
                 <div className="about-seller">Shaper Info</div>
                 <span style={{marginLeft: '14px'}} >
-                 Shaped by the one and only Jon Pyzel. 2 year repeat winner of Stab in the Dark, and
-                 lorem ipsum dolar set amit.
+                 {this.state.board.shaperInfo}
                 </span>
               </div>
             </div>
@@ -157,10 +182,6 @@ class BoardDetail extends PureComponent {
           </div>
 
           
-
-          
-
-
         </div>
   
         <Disqus title="Board Comments" shortname="boardgrab-comments" identifier={this.state.boardId} />

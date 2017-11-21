@@ -35,12 +35,13 @@ class Authentication extends PureComponent {
       fire.database().ref('users/' + user.uid).once('value').then(function(snapshot){
         console.log("SIGN IN SNAPSHOT", snapshot.val());
         this.props.setCurrentUser(
-          user.uid, 
-          snapshot.val().username, 
-          snapshot.val().email, 
+          user.uid,
+          snapshot.val().username,
+          snapshot.val().email,
           snapshot.val().hasNotifications,
           snapshot.val().paypal_email,
-          snapshot.val().seller
+          snapshot.val().seller,
+          snapshot.val().stripe
         );
 
       }.bind(this))
@@ -61,7 +62,7 @@ class Authentication extends PureComponent {
         loading: true,
         newUser: true
     })
-    
+
     fire
 		.auth()
 		.createUserWithEmailAndPassword(this.state.email, this.state.password)
@@ -69,8 +70,8 @@ class Authentication extends PureComponent {
 			const newUser = fire.auth().currentUser;
 
             this.props.createAndSignInUser(user.uid, this.state.username, this.state.email);
-            
-            // HIT THE BOARDGRAB API TO SEND A WELCOME EMAIL. 
+
+            // HIT THE BOARDGRAB API TO SEND A WELCOME EMAIL.
 
             this.setState({ loading: false})
 
@@ -94,8 +95,8 @@ class Authentication extends PureComponent {
 }
 
     return (
-        <div className="site-container--sm t-primary">  
-        
+        <div className="site-container--sm t-primary">
+
             <div className="authentication-header">Sign in </div>
             <label className="authentication-label">Email</label>
             <input className="authentication-field" onChange={e => { this.setState({ email: e.target.value }) }} type="text" />
@@ -103,7 +104,7 @@ class Authentication extends PureComponent {
             <input className="authentication-field" onChange={e => { this.setState({ password: e.target.value }) }} type="password" />
             <button onClick={()=> this._handleSignIn()} className="auth-button" style={{marginTop: '22px'}}>Sign In</button>
             <hr />
-        
+
             <div className="authentication-header">Create Account </div>
             <label className="authentication-label">Username</label>
             <input className="authentication-field" onChange={e => { this.setState({ username: e.target.value }) }} type="text" />
@@ -112,7 +113,7 @@ class Authentication extends PureComponent {
             <label className="authentication-label">Password</label>
             <input className="authentication-field" onChange={e => { this.setState({ password: e.target.value }) }} type="password" />
             <button onClick={()=> this._handleSignup()} className="auth-button auth-button--black" style={{marginTop: '22px'}}>Submit</button>
-            
+
         </div>
     )
 
@@ -125,11 +126,10 @@ const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTim
   };
 
   const mapDispatchToProps = dispatch => {
-    return { 
+    return {
       createAndSignInUser: (userId, account_username, email) => dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username, email }),
-      setCurrentUser: (userId, username, email, hasNotifications, paypal_email, seller) => dispatch({ type: `SET_CURRENT_USER`, userId, username, email, hasNotifications, paypal_email, seller })   
+      setCurrentUser: (userId, username, email, hasNotifications, paypal_email, seller,stripe) => dispatch({ type: `SET_CURRENT_USER`, userId, username, email, hasNotifications, paypal_email, seller, stripe})
     }
   }
-  
-export default connect(mapStateToProps, mapDispatchToProps)(Authentication);
 
+export default connect(mapStateToProps, mapDispatchToProps)(Authentication);

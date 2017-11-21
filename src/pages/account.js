@@ -45,7 +45,7 @@ class Account extends PureComponent {
      
          <div className="account_tabs t-sans f-13 fw-500 t-upper ls-2 fx-j-c">
             <div onClick={() => this.handleTabChange('Messages')} className={cx(["account_tab hover"], { "account_tab--active": this.state.activeTab === "Messages" })}>Messages</div>
-            <div onClick={() => this.handleTabChange('My Quiver')} className={cx(["account_tab hover"], { "account_tab--active": this.state.activeTab === "My Quiver" })}>My Quiver</div>
+          { this.props.isSeller ? <div onClick={() => this.handleTabChange('My Quiver')} className={cx(["account_tab hover"], { "account_tab--active": this.state.activeTab === "My Quiver" })}>My Quiver</div> : '' }  
             <div onClick={() => this.handleTabChange('Settings')} className={cx(["account_tab hover"], { "account_tab--active": this.state.activeTab === "Settings" })}>Settings</div>
          </div>
 
@@ -64,8 +64,8 @@ class Account extends PureComponent {
 }
 
 
-const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTimeLogin, allBoardsList }) => {
-    return { userId, userAuthenticated, account_username, firstTimeLogin, allBoardsList };
+const mapStateToProps = ({ userId, userAuthenticated, account_username, firstTimeLogin, allBoardsList, isSeller }) => {
+    return { userId, userAuthenticated, account_username, firstTimeLogin, allBoardsList, isSeller };
   };
 
   const mapDispatchToProps = dispatch => {

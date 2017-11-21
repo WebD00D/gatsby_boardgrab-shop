@@ -36,6 +36,7 @@ class ListABoard extends Component {
 			condition: '6',
 			dimensions: '7',
 			height: '',
+			volume: '',
 
 			shaperInfo: '8',
 			price: '655',
@@ -117,9 +118,9 @@ class ListABoard extends Component {
 
 	handleListing() {
     const dateTime = Date.now();
-    
-		// SAVE TO THE BOARDFAX DATABASE.. 
-		
+
+		// SAVE TO THE BOARDFAX DATABASE..
+
 		// if it's a new shaper, then it's def a new model
 		// if ( this.state.newShaper ) {
 		// 	boardfax
@@ -137,7 +138,7 @@ class ListABoard extends Component {
 		// 		})
 		// }
 
-		// // may just be a new model not catalouged. 
+		// // may just be a new model not catalouged.
 		// if ( this.state.newModel && !this.state.newShaper ) {
 
 		// 	boardfax
@@ -149,7 +150,7 @@ class ListABoard extends Component {
 
 		// }
 
-		// // register this board in Boardfax. 
+		// // register this board in Boardfax.
 
 		// boardfax
 		// 	.database()
@@ -218,7 +219,8 @@ class ListABoard extends Component {
 				photoThree: this.state.photoThree,
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix
+				photoSix: this.state.photoSix,
+				volume: this.state.volume
 			});
 
 		// 2) SAVE BOARD BY CITY
@@ -252,7 +254,8 @@ class ListABoard extends Component {
 				photoThree: this.state.photoThree,
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix
+				photoSix: this.state.photoSix,
+				volume: this.state.volume
 			});
 
 		// 3) SAVE TO ALL BOARD LIST
@@ -286,7 +289,8 @@ class ListABoard extends Component {
 				photoThree: this.state.photoThree,
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix
+				photoSix: this.state.photoSix,
+				volume: this.state.volume
 			});
 
 		// 4) SAVE BOARDS BY USER
@@ -320,7 +324,8 @@ class ListABoard extends Component {
 				photoThree: this.state.photoThree,
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix
+				photoSix: this.state.photoSix,
+				volume: this.state.volume
 			});
 
 		this.setState({
@@ -401,6 +406,14 @@ class ListABoard extends Component {
 						name="dimensions"
 						onChange={e => {
 							this.setState({ dimensions: e.target.value });
+						}}
+						type="text"
+					/>
+					<label>Volume </label>
+					<input
+						name="volume"
+						onChange={e => {
+							this.setState({ volume: e.target.value });
 						}}
 						type="text"
 					/>
@@ -750,11 +763,9 @@ const mapStateToProps = ({ userId, shop_coast, dropDownCityList }) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { 
+  return {
     setListingCities: (region) => dispatch({ type: `SET_LISTING_CITIES`, region }),
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListABoard);
-
-

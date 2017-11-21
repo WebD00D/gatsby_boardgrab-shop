@@ -56,6 +56,10 @@ font-family: 'Montserrat', sans-serif;
   letter-spacing: 2px;
 }
 
+.lh-18 {
+  line-height: 18px;
+}
+
 .m-b-10 {
   margin-bottom: 10px;
 }

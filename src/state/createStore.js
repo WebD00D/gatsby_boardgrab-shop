@@ -15,16 +15,17 @@ const reducer = (state, action) => {
 		fire.database().ref('users/' + action.userId).set({
 			username: action.account_username,
 			email: action.email,
-			paypal_email: '', 
+			paypal_email: '',
 			hasNotifications: false,
-			seller: false
+			seller: false,
+			stripe: false,
 		  })
 
-		return { 
-			...state, 
-			userId: action.userId, 
-			account_username: action.account_username, 
-			firstTimeLogin: true, 
+		return {
+			...state,
+			userId: action.userId,
+			account_username: action.account_username,
+			firstTimeLogin: true,
 			isSeller: false,
 			userAuthenticated: true };
 	}
@@ -42,9 +43,18 @@ const reducer = (state, action) => {
 			currentUserEmail: action.email,
 			hasNotifications: action.hasNotifications,
 			paypal_email: action.paypal_email,
-			isSeller: action.seller
+			isSeller: action.seller,
+			stripe: action.stripe
 		};
 
+	}
+
+	if ( action.type === `SET_NEW_SELLER_INFO` ) {
+		return {
+			...state,
+			isSeller: action.seller,
+			stripe: action.stripe
+		}
 	}
 
 	if (action.type === `LOGOUT_USER`) {
@@ -67,24 +77,24 @@ const reducer = (state, action) => {
 			boardsToDisplay: action.boards
 
 		}
-		
+
 	}
 
 	if ( action.type === `GET_ALL_BOARDS_BY_REGION` ) {
 		console.log('BOARDS BY REGION',action.boards)
-		
+
 		return {
 			...state,
-			boardsByRegion: action.boards,		
+			boardsByRegion: action.boards,
 		}
 	}
 
 	if ( action.type === `GET_ALL_BOARDS_BY_CITY` ) {
 		console.log('BOARDS BY CITY',action.boards)
-		
+
 		return {
 			...state,
-			boardsByCity: action.boards,		
+			boardsByCity: action.boards,
 		}
 	}
 
@@ -120,11 +130,11 @@ const reducer = (state, action) => {
 	if (action.type === `SET_CITY_DATA`) {
 		const selectedCity = action.city;
 
-		// TODO: If city selected is all cities, need to load all boards for that single city. 
+		// TODO: If city selected is all cities, need to load all boards for that single city.
 
 		if (selectedCity === "All Cities") {
 
-			// Let's get the region. 
+			// Let's get the region.
 			const regionData = _.find(state.citesByRegion, function(o) {
 				return o.region === state.selectedRegion;
 			});
@@ -160,7 +170,7 @@ const reducer = (state, action) => {
 			return i === selectedCity;
 		});
 
-	
+
 		const boardsByRegionData = _.find(state.boardsByRegion, function(o, i) {
 			return i === state.selectedRegion;
 		});
@@ -200,7 +210,7 @@ const reducer = (state, action) => {
 
 		}
 
-		
+
 		return {
 			...state,
 			latitude: latitude,
@@ -247,7 +257,7 @@ const reducer = (state, action) => {
 		};
 	}
 
-	
+
 
 	return state;
 };
@@ -270,6 +280,7 @@ const initialState = {
 	hasNotifications: false,
 	paypal_email: '',
 	isSeller: false,
+	stripe: '',
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [
@@ -293,7 +304,7 @@ const initialState = {
 
 	cityMeta: [
 
-		// SOUTHERN CALIFORNIA 
+		// SOUTHERN CALIFORNIA
 		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625, region: 'Southern California' },
 		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438, region: 'Southern California' },
 		{ name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125, region: 'Southern California' },
@@ -307,7 +318,7 @@ const initialState = {
 		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375, region: 'Southern California' },
 		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125, region: 'Southern California' },
 
-		// NORTHERN CALIFORNIA 
+		// NORTHERN CALIFORNIA
 		{ name: 'All Cities', latitude: 37.50972584293751, longitude: -122.16796875, region: 'Northern California' },
 		{ name: 'Monterey', latitude: 36.59127365634205, longitude: -121.88507080078125, region: 'Northern California' },
 		{ name: 'Santa Cruz', latitude: 36.97622678464096, longitude: -122.0196533203125, region: 'Northern California' },
@@ -659,7 +670,7 @@ const initialState = {
 
 	// END BOARDS TO DISPLAY
 	users: [
-		{ 
+		{
 			userId: 1,
 			username: 'rva.christian',
 			email: 'rva.christian91@gmail.com',

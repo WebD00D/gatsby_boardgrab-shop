@@ -191,8 +191,8 @@
 }
 
 .board-info__title {
-    margin-bottom: 18px;
-    font-size: 44px;
+    font-size: 32px;
+    line-height: 40px;
     font-weight: 500;
     letter-spacing: 0.92px;
     font-family: 'Montserrat', sans-serif;
@@ -228,7 +228,10 @@
 
 .board-info__tags {
     display: flex;
-    height: 60px;
+    flex-wrap: wrap;
+    min-height: 60px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     margin-top: 18px;
     margin-bottom: 18px;
     align-items: center;
@@ -255,15 +258,15 @@
 }
 
 .board-info__price button {
-    background-color: #ff5a5f;
+    background-color: #1f2342;
     color: white;
     border-radius: 4px;
     border: none;
     height: 40px;
-    padding-left: 20px;
-    padding-right: 20px; 
+    padding-left: 10px;
+    padding-right: 10px; 
     transition: .2s ease;
-    width: 225px;
+    width: 180px;
 }
 
 button:hover {
@@ -295,6 +298,7 @@ button:focus, button:active {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.92px;
+    margin-bottom: 8px;
     
 }
 
