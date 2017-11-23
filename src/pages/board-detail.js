@@ -23,8 +23,8 @@ class BoardDetail extends PureComponent {
 			message: '',
 			offer: 0,
 			messageStatus: '',
-      messageId: false,
-      sellerUserName: '',
+			messageId: false,
+			sellerUserName: ''
 		};
 	}
 
@@ -38,41 +38,29 @@ class BoardDetail extends PureComponent {
 			.once('value')
 			.then(
 				function(snapshot) {
-
 					console.log('SNAPSHOT', snapshot.val());
 					this.setState({
 						boardId: id,
 						board: snapshot.val()
-          });
-          
-          const sellerId = snapshot.val().userId;
+					});
 
+					const sellerId = snapshot.val().userId;
 
-          fire
-          .database()
-          .ref(`/users//${sellerId}`)
-          .once('value')
-          .then(
-            function(s) {
-              console.log('SELLER SNAPSHOT', s.val());
-              this.setState({
-                sellerUserName: s.val().username
-              })
-            }.bind(this)
-          );
-
-
-        }.bind(this)
-      );
-
-     
-      
-
-
-
-  }
-  
-  
+					fire
+						.database()
+						.ref(`/users//${sellerId}`)
+						.once('value')
+						.then(
+							function(s) {
+								console.log('SELLER SNAPSHOT', s.val());
+								this.setState({
+									sellerUserName: s.val().username
+								});
+							}.bind(this)
+						);
+				}.bind(this)
+			);
+	}
 
 	sendMessage() {
 		const sellerId = this.state.board.userId;
@@ -90,12 +78,13 @@ class BoardDetail extends PureComponent {
 			.database()
 			.ref('users/' + sellerId + '/messages/' + messageThreadId + '/' + singleMessageId)
 			.set({
+				date: singleMessageId,
 				isBuyer: false,
 				isSeller: true,
 				from: buyerId,
 				to: sellerId,
 				message: message,
-				messageDate: messageDate
+				otherUsername: this.props.account_username
 			});
 
 		// Set for Potential Buyer
@@ -103,12 +92,13 @@ class BoardDetail extends PureComponent {
 			.database()
 			.ref('users/' + buyerId + '/messages/' + messageThreadId + '/' + singleMessageId)
 			.set({
+				date: singleMessageId,
 				isBuyer: true,
 				isSeller: false,
 				from: buyerId,
 				to: sellerId,
-				message: message,
-				messageDate: messageDate
+				otherUsername: this.state.sellerUserName,
+				message: message
 			});
 
 		// MESSAGE PREVIEWS.. These are what we will pull from in the user's account, that just show a snapshot of the latest message.
@@ -119,20 +109,22 @@ class BoardDetail extends PureComponent {
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/from'] = buyerId;
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/read'] = false;
-    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
-    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/boardName'] = this.state.board.name;
-    updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/buyerUser'] = this.props.account_username;
-    
+		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
+		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/boardName'] = this.state.board.name;
+		updates[
+			'/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/buyerUser'
+		] = this.props.account_username;
 
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/messageType'] = 'BUY';
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/to'] = sellerId;
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/read'] = true;
-    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
-    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/boardName'] = this.state.board.name;
-    updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/sellerUser'] = this.state.sellerUserName;
-    
-    
+		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
+		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/boardName'] = this.state.board.name;
+		updates[
+			'/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/sellerUser'
+		] = this.state.sellerUserName;
+
 		fire
 			.database()
 			.ref()
@@ -197,7 +189,7 @@ class BoardDetail extends PureComponent {
 										<div className="t-sans f-13 lh-18" style={{ opacity: '0.6' }}>
 											{' '}
 											Do not send payments offsite. If you do not pay through Boardgrab you are
-											not eligible for Grailed or Stripe Fraud Protection.
+											not eligible for Boardgrab or Stripe Fraud Protection.
 										</div>
 										{this.state.isQuestion ? (
 											<div>
@@ -220,12 +212,26 @@ class BoardDetail extends PureComponent {
 									</div>
 								) : (
 									<div>
-										<div className="message-box__header" style={{ marginBottom: '20px'}}>Please sign in or register!</div>
-										<div className="t-sans f-13 lh-18" style={{ opacity: '0.6', marginBottom: '28px' }}>
+										<div className="message-box__header" style={{ marginBottom: '20px' }}>
+											Please sign in or register!
+										</div>
+										<div
+											className="t-sans f-13 lh-18"
+											style={{ opacity: '0.6', marginBottom: '28px' }}
+										>
 											To inquire or make an offer on this board, you must have an active Boardgrab
 											account.
 										</div>
-										<Link to="/authentication" style={{textDecoration: 'none', lineHeight: '38px', display: 'block', textAlign: 'center'}} className="message-box__button">
+										<Link
+											to="/authentication"
+											style={{
+												textDecoration: 'none',
+												lineHeight: '38px',
+												display: 'block',
+												textAlign: 'center'
+											}}
+											className="message-box__button"
+										>
 											Sign In / Register
 										</Link>
 									</div>
@@ -278,32 +284,36 @@ class BoardDetail extends PureComponent {
 								<span>{this.state.board.city}, </span>
 								<span>{this.state.board.region}</span>
 							</div>
-							<div className="board-info__short-desc">Sold by <b className="fc-green">{this.state.sellerUserName}</b></div>
+							<div className="board-info__short-desc">
+								Sold by <b className="fc-green">{this.state.sellerUserName}</b>
+							</div>
 						</div>
 
 						<div className="board-info__price" style={{ borderBottom: 'none', marginBottom: '0px' }}>
 							<div style={{ fontSize: '28px' }} className="fc-green">
 								${this.state.board.price}
 							</div>
-							<button
-								onClick={() => {
-									this.setState({ isOffer: true, isQuestion: false });
-								}}
-							>
-								Make an Offer
-							</button>
-							<button
-								onClick={() => {
-									this.setState({ isOffer: false, isQuestion: true });
-								}}
-								style={{ backgroundColor: '#498144' }}
-							>
-								Ask a Question
-							</button>
+							<div>
+								<button
+									onClick={() => {
+										this.setState({ isOffer: false, isQuestion: true });
+									}}
+									style={{ backgroundColor: '#498144', marginRight: '8px' }}
+								>
+									Ask a Question
+								</button>
+								<button
+									onClick={() => {
+										this.setState({ isOffer: true, isQuestion: false });
+									}}
+								>
+									Make an Offer
+								</button>
+							</div>
 						</div>
 
 						<div className="board-info__tags" style={{ marginTop: '0px' }}>
-							<label style={{ display: 'block', width: '100%;' }}>Perfect For: </label>
+							<label style={{ display: 'block', width: '100%' }}>Perfect For: </label>
 
 							{this.state.board.tag_advanced ? <div className="board-info__tag">Advanced Rider</div> : ''}
 							{this.state.board.tag_beginner ? <div className="board-info__tag">Beginners</div> : ''}
@@ -320,19 +330,19 @@ class BoardDetail extends PureComponent {
 						<div className="board-info__section">
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green">
+								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
 									Shortboard
 								</span>
 							</div>
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green">
+								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
 									{this.state.board.dimensions}
 								</span>
 							</div>
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green">
+								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
 									{this.state.board.fins}-Fin
 								</span>
 							</div>
@@ -353,15 +363,19 @@ class BoardDetail extends PureComponent {
 
 						<div className="board-info__section b-top-solid p-t-18">
 							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="about-seller">Condition</div>
-								<span style={{ marginLeft: '14px' }}>{this.state.board.condition}</span>
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Condition</div>
+								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
+									{this.state.board.condition}
+								</span>
 							</div>
 						</div>
 
 						<div className="board-info__section b-top-solid p-t-18">
 							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="about-seller">Shaper Info</div>
-								<span style={{ marginLeft: '14px' }}>{this.state.board.shaperInfo}</span>
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Shaper Info</div>
+								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
+									{this.state.board.shaperInfo}
+								</span>
 							</div>
 						</div>
 					</div>

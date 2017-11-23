@@ -10,12 +10,20 @@
   color: #64c8d2;
 }
 
+.fc-white {
+  color: #FFFFFF !important;
+}
+
 .fc-orange {
   color: #ff6e0a;
 }
 
 .fc-yellow {
   color: #f4d03f;
+}
+
+.bg-light-grey {
+  background-color: #F5F5F5;
 }
 
 .td-none {
@@ -27,6 +35,8 @@ font-family: 'Montserrat', sans-serif;
 }
 
 .t-upper { text-transform: uppercase;}
+.t-right { text-align: right; }
+.t-center { text-align: center; }
 
 .f-11 {
   font-size: 11px;
@@ -93,7 +103,7 @@ font-family: 'Montserrat', sans-serif;
 .fx-s-b { justify-content: space-between;}
 .fx-a-c { align-items: center; }
 .fx-a-end { align-items: end !important;}
-
+.fx-col { flex-direction: column;}
 
 .mx-992 { max-width: 992px; width: 100%; margin-left: auto; margin-right: auto; }
 
@@ -114,7 +124,9 @@ font-family: 'Montserrat', sans-serif;
   width: 50%;
 }
 
-
+.mw-150p {
+  min-width: 150px;
+}
 .hover:hover {
   cursor: pointer;
 }
