@@ -21,14 +21,25 @@ class Message extends PureComponent {
       messageThread: [],
       messageId: "",
       from: "",
-      reply: false
+      reply: false,
+      sendMessageBackTo: ''
     };
+  }
+
+  componentWillMount() {
+
+      const sendMessageTo = this.getQueryVariable("from");
+      this.setState({
+        sendMessageBackTo: sendMessageTo
+      })
+
   }
 
   componentDidMount() {
     // get board param id
     const id = this.getQueryVariable("message");
     const from = this.getQueryVariable("from");
+
     console.log("FROM", from);
 
     var updates = {};
@@ -50,7 +61,6 @@ class Message extends PureComponent {
         this.setState({
           messageThread: snapshot.val(),
           messageId: id,
-          from: from,
           message: ''
         });
       }.bind(this)
@@ -70,7 +80,6 @@ class Message extends PureComponent {
   }
 
   sendMessage() {
-
 
 		const message = this.state.message;
 		const messageDate = new Date();
@@ -92,11 +101,11 @@ class Message extends PureComponent {
 		// Set for reply to
 		fire
 			.database()
-			.ref('users/' + this.state.from + '/messages/' + messageThreadId + '/' + singleMessageId)
+			.ref('users/' + this.state.sendMessageBackTo + '/messages/' + messageThreadId + '/' + singleMessageId)
 			.set({
 				date: singleMessageId,
         from: this.props.userId,
-				to: this.state.from,
+				to: this.state.sendMessageBackTo,
 				otherUsername: this.props.account_username,
 				message: message,
 			});
@@ -104,17 +113,19 @@ class Message extends PureComponent {
 		// MESSAGE PREVIEWS.. These are what we will pull from in the user's account, that just show a snapshot of the latest message.
 
 		var updates = {};
-		updates['/users/' + this.state.from + '/hasNotifications'] = true;
-
+	
+    // FOR CURRENT USERS HISTORY
 		updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/from'] = this.props.userId;
 		updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/read'] = true;
     updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
 
-		updates['/users/' + this.state.from + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
-		updates['/users/' + this.state.from + '/messagePreviews/' + messageThreadId + '/to'] = this.state.from;
-		updates['/users/' + this.state.from + '/messagePreviews/' + messageThreadId + '/read'] = false;
-    updates['/users/' + this.state.from + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
+    // PERSON THEY ARE SENDING THIS MESSAGE TO
+    updates['/users/' + this.state.sendMessageBackTo + '/hasNotifications'] = true;
+		updates['/users/' + this.state.sendMessageBackTo + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
+		updates['/users/' + this.state.sendMessageBackTo + '/messagePreviews/' + messageThreadId + '/to'] = this.state.sendMessageBackTo;
+		updates['/users/' + this.state.sendMessageBackTo + '/messagePreviews/' + messageThreadId + '/read'] = false;
+    updates['/users/' + this.state.sendMessageBackTo + '/messagePreviews/' + messageThreadId + '/lastMessageDate'] = messageDate;
 
 
 		fire
@@ -137,6 +148,9 @@ class Message extends PureComponent {
 	}
 
   render() {
+    
+    console.log( 'MESSAGE THREAD',  this.state.messageThread )
+
     let messages = [];
 
     messages = Object.keys(this.state.messageThread).map(
@@ -167,7 +181,7 @@ class Message extends PureComponent {
       }.bind(this)
     );
 
-    console.log(messages);
+   
 
     let newMessages = _.reverse(messages);
 
@@ -177,6 +191,9 @@ class Message extends PureComponent {
 
     return (
       <div className="site-container">
+
+        <code>ME: {this.props.userId}</code>
+        <code>SEND TO: {this.state.sendMessageBackTo}</code>
 
         {
           this.state.reply
@@ -238,6 +255,7 @@ class Message extends PureComponent {
         >
           Back to Messages
         </Link>
+        
         <div className="message-header">
           <div className="f-13 fw-500 t-sans" style={{marginLeft: "8px"}}>6'0 Chilli Super Nice</div>
           <div

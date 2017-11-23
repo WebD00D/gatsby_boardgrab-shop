@@ -84,7 +84,8 @@ class BoardDetail extends PureComponent {
 				from: buyerId,
 				to: sellerId,
 				message: message,
-				otherUsername: this.props.account_username
+				otherUsername: this.props.account_username,
+				otherPersonsUserId: this.props.userId
 			});
 
 		// Set for Potential Buyer
@@ -98,6 +99,7 @@ class BoardDetail extends PureComponent {
 				from: buyerId,
 				to: sellerId,
 				otherUsername: this.state.sellerUserName,
+				otherPersonsUserId: this.state.board.userId,
 				message: message
 			});
 
@@ -105,6 +107,7 @@ class BoardDetail extends PureComponent {
 
 		var updates = {};
 		updates['/users/' + sellerId + '/hasNotifications'] = true;
+		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/otherPersonsUserId'] = this.props.userId;
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/messageType'] = 'SELL';
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/from'] = buyerId;
@@ -115,6 +118,7 @@ class BoardDetail extends PureComponent {
 			'/users/' + sellerId + '/messagePreviews/' + messageThreadId + '/buyerUser'
 		] = this.props.account_username;
 
+		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/otherPersonsUserId'] = this.state.board.userId;
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/messageType'] = 'BUY';
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + buyerId + '/messagePreviews/' + messageThreadId + '/to'] = sellerId;
@@ -158,11 +162,6 @@ class BoardDetail extends PureComponent {
 	}
 
 	render() {
-		// design based off of
-		//https://www.airbnb.com/experiences/47240?source=p1&currentTab=all_tab&searchId=ed3e2277-d279-4e93-91e7-af3bb068f8f0
-
-		// When User "Reserves" - we will capture charge, but not actually process until seller confirms.
-
 		return (
 			<div className="site-container">
 				{this.state.isOffer || this.state.isQuestion ? (
