@@ -3,7 +3,6 @@ import fire from '../fire';
 import _ from 'lodash';
 
 const reducer = (state, action) => {
-
 	if (action.type === `INCREMENT`) {
 		return Object.assign({}, state, {
 			count: state.count + 1
@@ -11,15 +10,17 @@ const reducer = (state, action) => {
 	}
 
 	if (action.type === `CREATE_AND_SIGNIN_USER`) {
-
-		fire.database().ref('users/' + action.userId).set({
-			username: action.account_username,
-			email: action.email,
-			paypal_email: '',
-			hasNotifications: false,
-			seller: false,
-			stripe: false,
-		  })
+		fire
+			.database()
+			.ref('users/' + action.userId)
+			.set({
+				username: action.account_username,
+				email: action.email,
+				paypal_email: '',
+				hasNotifications: false,
+				seller: false,
+				stripe: false
+			});
 
 		return {
 			...state,
@@ -27,17 +28,16 @@ const reducer = (state, action) => {
 			account_username: action.account_username,
 			firstTimeLogin: true,
 			isSeller: false,
-			userAuthenticated: true };
+			userAuthenticated: true
+		};
 	}
-
 
 	if (action.type === `CLEAR_NOTIFICATIONS`) {
 		return { ...state, hasNotifications: false };
 	}
 
-
 	if (action.type === `SET_CURRENT_USER`) {
-		console.log('setting curret user', action.userId, action.username, action.hasNotifications)
+		console.log('setting curret user', action.userId, action.username, action.hasNotifications);
 
 		document.cookie = `boardgrab_user=${action.userId}`;
 
@@ -52,15 +52,14 @@ const reducer = (state, action) => {
 			isSeller: action.seller,
 			stripe: action.stripe
 		};
-
 	}
 
-	if ( action.type === `SET_NEW_SELLER_INFO` ) {
+	if (action.type === `SET_NEW_SELLER_INFO`) {
 		return {
 			...state,
 			isSeller: action.seller,
 			stripe: action.stripe
-		}
+		};
 	}
 
 	if (action.type === `LOGOUT_USER`) {
@@ -73,37 +72,33 @@ const reducer = (state, action) => {
 		};
 	}
 
-	if ( action.type === `GET_ALL_BOARDS` ) {
-
-		console.log('ALL BOARDS',action.boards)
+	if (action.type === `GET_ALL_BOARDS`) {
+		console.log('ALL BOARDS', action.boards);
 
 		return {
 			...state,
 			allBoardsList: action.boards,
 			boardsToDisplay: action.boards
-
-		}
-
+		};
 	}
 
-	if ( action.type === `GET_ALL_BOARDS_BY_REGION` ) {
-		console.log('BOARDS BY REGION',action.boards)
+	if (action.type === `GET_ALL_BOARDS_BY_REGION`) {
+		console.log('BOARDS BY REGION', action.boards);
 
 		return {
 			...state,
-			boardsByRegion: action.boards,
-		}
+			boardsByRegion: action.boards
+		};
 	}
 
-	if ( action.type === `GET_ALL_BOARDS_BY_CITY` ) {
-		console.log('BOARDS BY CITY',action.boards)
+	if (action.type === `GET_ALL_BOARDS_BY_CITY`) {
+		console.log('BOARDS BY CITY', action.boards);
 
 		return {
 			...state,
-			boardsByCity: action.boards,
-		}
+			boardsByCity: action.boards
+		};
 	}
-
 
 	if (action.type === `SET_REGION_AND_CITIES`) {
 		const selectedRegion = action.region;
@@ -138,8 +133,7 @@ const reducer = (state, action) => {
 
 		// TODO: If city selected is all cities, need to load all boards for that single city.
 
-		if (selectedCity === "All Cities") {
-
+		if (selectedCity === 'All Cities') {
 			// Let's get the region.
 			const regionData = _.find(state.citesByRegion, function(o) {
 				return o.region === state.selectedRegion;
@@ -163,36 +157,28 @@ const reducer = (state, action) => {
 				latitude: state.selectedRegion === 'All Locations' ? 33.97980872872457 : regionData.cities[0].latitude,
 				longitude: state.selectedRegion === 'All Locations' ? -118.0810546875 : regionData.cities[0].longitude
 			};
-
-
 		}
-
 
 		const cityData = _.find(state.currentCityList, function(o) {
 			return o.name === selectedCity;
 		});
 
-		let boardsByCityData = _.find(state.boardsByCity, function(o,i) {
+		let boardsByCityData = _.find(state.boardsByCity, function(o, i) {
 			return i === selectedCity;
 		});
-
 
 		const boardsByRegionData = _.find(state.boardsByRegion, function(o, i) {
 			return i === state.selectedRegion;
 		});
 
-
-
-		console.log("BOARDS BY REGION DATA", boardsByRegionData)
+		console.log('BOARDS BY REGION DATA', boardsByRegionData);
 
 		if (!boardsByCityData) {
 			boardsByCityData = [];
 		}
 
-
-		let latitude =  boardsByCityData.latitude;
-		let longitude =  boardsByCityData.longitude;
-
+		let latitude = boardsByCityData.latitude;
+		let longitude = boardsByCityData.longitude;
 
 		// Sets region if not selected. This would happen if the user clicks on a map icon when the Region has been set
 		// to "All Locations"
@@ -202,20 +188,17 @@ const reducer = (state, action) => {
 		let regionData;
 		let citiesForDropdown;
 
-		if ( state.selectedRegion === "All Locations" ) {
+		if (state.selectedRegion === 'All Locations') {
 			needToSetRegion = true;
-			 regionToSet = _.find(state.cityMeta, function(o) {
-				return o.name === selectedCity
-			})
+			regionToSet = _.find(state.cityMeta, function(o) {
+				return o.name === selectedCity;
+			});
 
-			regionData = _.find(state.citesByRegion,function(o){
-				console.log(o.region, regionToSet.region)
-				return o.region === regionToSet.region
-
-			})
-
+			regionData = _.find(state.citesByRegion, function(o) {
+				console.log(o.region, regionToSet.region);
+				return o.region === regionToSet.region;
+			});
 		}
-
 
 		return {
 			...state,
@@ -227,13 +210,12 @@ const reducer = (state, action) => {
 			selectedRegion: needToSetRegion ? regionToSet.region : state.selectedRegion,
 			currentCityList: needToSetRegion ? regionData.cities : state.currentCityList,
 			regionHasNoBoards: !boardsByRegionData
-
 		};
 	}
 
 	if (action.type === `SET_LISTING_CITIES`) {
 		const selectedRegion = action.region;
-		console.log("SET IT,", action.region )
+		console.log('SET IT,', action.region);
 		const regionData = _.find(state.citesByRegion, function(o) {
 			return o.region === selectedRegion;
 		});
@@ -250,10 +232,9 @@ const reducer = (state, action) => {
 
 		return {
 			...state,
-			dropDownCityList: selectedRegion === 'All Locations' ? [] : regionData.cities,
+			dropDownCityList: selectedRegion === 'All Locations' ? [] : regionData.cities
 		};
 	}
-
 
 	if (action.type === `SET_MAP_POSITION`) {
 		return {
@@ -262,8 +243,6 @@ const reducer = (state, action) => {
 			longitude: action.longitude
 		};
 	}
-
-
 
 	return state;
 };
@@ -309,31 +288,90 @@ const initialState = {
 	// I didn't want to use currentCityList so change on dropdown doesn't effect nav bar.
 
 	cityMeta: [
-
 		// SOUTHERN CALIFORNIA
-		{ name: 'San Diego', latitude: 32.71566625570317, longitude: -117.14996337890625, region: 'Southern California' },
-		{ name: 'La Jolla', latitude: 32.83459674730076, longitude: -117.26669311523438, region: 'Southern California' },
+		{
+			name: 'San Diego',
+			latitude: 32.71566625570317,
+			longitude: -117.14996337890625,
+			region: 'Southern California'
+		},
+		{
+			name: 'La Jolla',
+			latitude: 32.83459674730076,
+			longitude: -117.26669311523438,
+			region: 'Southern California'
+		},
 		{ name: 'Del Mar', latitude: 32.960281958039836, longitude: -117.257080078125, region: 'Southern California' },
-		{ name: 'San Clemente', latitude: 33.42914915719729, longitude: -117.61138916015625, region: 'Southern California' },
+		{
+			name: 'San Clemente',
+			latitude: 33.42914915719729,
+			longitude: -117.61138916015625,
+			region: 'Southern California'
+		},
 		{ name: 'Encinitas', latitude: 33.03399561940715, longitude: -117.279052734375, region: 'Southern California' },
-		{ name: 'Ocean Side', latitude: 33.19847683493303, longitude: -117.36968994140625, region: 'Southern California' },
-		{ name: 'Long Beach', latitude: 33.773439833797745, longitude: -118.19503784179688, region: 'Southern California' },
+		{
+			name: 'Ocean Side',
+			latitude: 33.19847683493303,
+			longitude: -117.36968994140625,
+			region: 'Southern California'
+		},
+		{
+			name: 'Long Beach',
+			latitude: 33.773439833797745,
+			longitude: -118.19503784179688,
+			region: 'Southern California'
+		},
 		{ name: 'Venice', latitude: 33.985787115598434, longitude: -118.47003936767578, region: 'Southern California' },
-		{ name: 'Santa Monica', latitude: 34.021079493306914, longitude: -118.49647521972656, region: 'Southern California' },
+		{
+			name: 'Santa Monica',
+			latitude: 34.021079493306914,
+			longitude: -118.49647521972656,
+			region: 'Southern California'
+		},
 		{ name: 'Malibu', latitude: 34.02990029603907, longitude: -118.78486633300781, region: 'Southern California' },
 		{ name: 'Ventura', latitude: 34.27083595165, longitude: -119.23187255859375, region: 'Southern California' },
-		{ name: 'Santa Barbara', latitude: 34.42730166315869, longitude: -119.70977783203125, region: 'Southern California' },
+		{
+			name: 'Santa Barbara',
+			latitude: 34.42730166315869,
+			longitude: -119.70977783203125,
+			region: 'Southern California'
+		},
 
 		// NORTHERN CALIFORNIA
 		{ name: 'All Cities', latitude: 37.50972584293751, longitude: -122.16796875, region: 'Northern California' },
-		{ name: 'Monterey', latitude: 36.59127365634205, longitude: -121.88507080078125, region: 'Northern California' },
-		{ name: 'Santa Cruz', latitude: 36.97622678464096, longitude: -122.0196533203125, region: 'Northern California' },
+		{
+			name: 'Monterey',
+			latitude: 36.59127365634205,
+			longitude: -121.88507080078125,
+			region: 'Northern California'
+		},
+		{
+			name: 'Santa Cruz',
+			latitude: 36.97622678464096,
+			longitude: -122.0196533203125,
+			region: 'Northern California'
+		},
 		{ name: 'San Jose', latitude: 37.341775502148586, longitude: -121.904296875, region: 'Northern California' },
-		{ name: 'Palo Alto', latitude: 37.45741810262938, longitude: -122.13775634765625, region: 'Northern California' },
-		{ name: 'San Francisco', latitude: 37.77071473849609, longitude: -122.4481201171875, region: 'Northern California' },
+		{
+			name: 'Palo Alto',
+			latitude: 37.45741810262938,
+			longitude: -122.13775634765625,
+			region: 'Northern California'
+		},
+		{
+			name: 'San Francisco',
+			latitude: 37.77071473849609,
+			longitude: -122.4481201171875,
+			region: 'Northern California'
+		},
 		{ name: 'Berkely', latitude: 37.87268533717655, longitude: -122.2833251953125, region: 'Northern California' },
 		{ name: 'Vallejo', latitude: 38.10646650598286, longitude: -122.25860595703125, region: 'Northern California' },
-		{ name: 'Mendacino', latitude: 39.30242456041487, longitude: -123.7774658203125, region: 'Northern California' },
+		{
+			name: 'Mendacino',
+			latitude: 39.30242456041487,
+			longitude: -123.7774658203125,
+			region: 'Northern California'
+		},
 
 		// PACIFIC NORTH WEST
 		{ name: 'All Cities', latitude: 46.042735653846506, longitude: -123.92578125, region: 'Pacific North West' },
@@ -346,7 +384,12 @@ const initialState = {
 		{ name: 'Richmond', latitude: 37.54457732085582, longitude: -77.442626953125, region: 'Mid Atlantic' },
 		{ name: 'Virginia Beach', latitude: 36.85325222344019, longitude: -75.9814453125, region: 'Mid Atlantic' },
 		{ name: 'Outer Banks', latitude: 35.94688293218141, longitude: -75.6243896484375, region: 'Mid Atlantic' },
-		{ name: 'Southern Delaware', latitude: 38.53527591154414, longitude: -75.07232666015625, region: 'Mid Atlantic' },
+		{
+			name: 'Southern Delaware',
+			latitude: 38.53527591154414,
+			longitude: -75.07232666015625,
+			region: 'Mid Atlantic'
+		},
 		{ name: 'Ocean City', latitude: 39.281167913914636, longitude: -74.5806884765625, region: 'Mid Atlantic' },
 		{ name: 'Eastern Shore', latitude: 37.56417412088097, longitude: -75.7122802734375, region: 'Mid Atlantic' },
 		{ name: 'Atlantic City', latitude: 39.37040245787161, longitude: -74.44610595703125, region: 'Mid Atlantic' },
@@ -386,9 +429,7 @@ const initialState = {
 		// AUSTRALIA
 		{ name: 'All Cities', latitude: -37.71859032558814, longitude: 144.931640625, region: 'Australia' },
 		{ name: 'Melbourne', latitude: -37.85750715625203, longitude: 145.01953125, region: 'Australia' },
-		{ name: 'Sydney', latitude: -33.87041555094182, longitude: 151.083984375, region: 'Australia'}
-
-
+		{ name: 'Sydney', latitude: -33.87041555094182, longitude: 151.083984375, region: 'Australia' }
 	],
 
 	dropDownCityList: [
@@ -660,17 +701,17 @@ const initialState = {
 			model: `Dwart`,
 			price: '300',
 			dimensions: ` 5'8" x 32" x 3" `,
-			fins: "3",
-			condition: "Good",
-			description: "Description lorem ipsum dolar set amit",
-			shaperInfo: "Shaper info lorem ipsum dolar set amit.",
+			fins: '3',
+			condition: 'Good',
+			description: 'Description lorem ipsum dolar set amit',
+			shaperInfo: 'Shaper info lorem ipsum dolar set amit.',
 			featurePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
 			photoOneURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
 			photoTwoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
 			photoThreeURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
 			photoFourURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
 			photoFiveURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
+			photoSixURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg'
 		}
 	],
 
@@ -681,8 +722,7 @@ const initialState = {
 			username: 'rva.christian',
 			email: 'rva.christian91@gmail.com',
 			profilePhotoURL: 'https://galvu7hf6k-flywheel.netdna-ssl.com/wp-content/uploads/2017/10/image-16.jpg',
-			boards: [ 1 ], // id's of boards
-
+			boards: [1] // id's of boards
 		}
 	]
 };
@@ -691,6 +731,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;
