@@ -26,48 +26,53 @@ class Message extends PureComponent {
     };
   }
 
-  componentWillMount() {
-
-      const sendMessageTo = this.getQueryVariable("from");
-      this.setState({
-        sendMessageBackTo: sendMessageTo
-      })
-
-  }
+ 
 
   componentDidMount() {
     // get board param id
-    const id = this.getQueryVariable("message");
-    const from = this.getQueryVariable("from");
+    const sendMessageTo = this.getQueryVariable("from");
+    this.setState({
+      sendMessageBackTo: sendMessageTo
+    })
+  
 
-    console.log("FROM", from);
+      const id = this.getQueryVariable("message");
+      const from = this.getQueryVariable("from");
+  
+      console.log("FROM", from);
+  
+      var updates = {};
+      updates[
+        "/users/" + this.props.userId + "/messagePreviews/" + id + "/read"
+      ] = true;
+      fire
+        .database()
+        .ref()
+        .update(updates);
+  
+      var messageRef = fire
+        .database()
+        .ref(`/users/${this.props.userId}/messages/${id}`);
+      messageRef.on(
+        "value",
+        function(snapshot) {
+          console.log("messages", snapshot.val());
+          this.setState({
+            messageThread: snapshot.val(),
+            messageId: id,
+            message: ''
+          });
+        }.bind(this)
+      );
 
-    var updates = {};
-    updates[
-      "/users/" + this.props.userId + "/messagePreviews/" + id + "/read"
-    ] = true;
-    fire
-      .database()
-      .ref()
-      .update(updates);
+    
 
-    var messageRef = fire
-      .database()
-      .ref(`/users/${this.props.userId}/messages/${id}`);
-    messageRef.on(
-      "value",
-      function(snapshot) {
-        console.log("messages", snapshot.val());
-        this.setState({
-          messageThread: snapshot.val(),
-          messageId: id,
-          message: ''
-        });
-      }.bind(this)
-    );
   }
 
   getQueryVariable(variable) {
+
+    // BUG: Failing on Netlify deploy. Window is not defined. 
+    // NOTE: I though since this was in componentDidMount that window would be available.
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
