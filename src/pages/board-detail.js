@@ -14,6 +14,7 @@ class BoardDetail extends PureComponent {
 		super(props);
 
 		this.sendMessage = this.sendMessage.bind(this);
+		this.sendOffer = this.sendOffer.bind(this);
 
 		this.state = {
 			boardId: '',
@@ -48,7 +49,7 @@ class BoardDetail extends PureComponent {
 
 					fire
 						.database()
-						.ref(`/users//${sellerId}`)
+						.ref(`/users/${sellerId}`)
 						.once('value')
 						.then(
 							function(s) {
@@ -61,6 +62,82 @@ class BoardDetail extends PureComponent {
 				}.bind(this)
 			);
 	}
+
+	sendOffer() {
+	
+		const sellerId = this.state.board.userId;
+		const buyerId = this.props.userId;
+		const offer = this.state.offer; 
+		const boardId = this.state.boardId;
+
+		const offerId = buyerId + "-" + boardId;
+	
+		var updates = {};
+		updates[`offers/${boardId}/paidFor`] = false;
+		updates[`offers/${boardId}/paidBy`] = '';
+		updates[`offers/${boardId}/paidOn`] = '';
+		updates[`offers/${boardId}/amountPaid`] = 0;
+		updates[`offers/${boardId}/paymentPending`] = false;
+	
+		fire
+		.database()
+		.ref()
+		.update(updates);
+
+		fire
+			.database()
+			.ref(`offers/${boardId}/offersMade/${offerId}`)
+			.set({
+				offerDate: Date.now(),
+				buyerId: buyerId,
+				buyerUsername: this.props.account_username,
+				amount: offer	
+			})
+
+			
+		// SET OFFERS RECEIVED NODE FOR SELLER
+		fire
+			.database()
+			.ref(`users/${sellerId}/offersReceived/${boardId}/${offerId}`)
+			.set({
+				boardId: boardId,
+				boardName: this.state.board.name,
+				buyerId: this.props.userId,
+				buyerUsername: this.props.account_username,
+				amountOffered: offer,
+				offerDate: Date.now()
+			})
+
+		// SET OFERS MADE NODE FOR BUYER 
+
+		console.log("ANY UNDEFINEDESSSSS??  ", this.state.seller)
+
+		fire
+		.database()
+		.ref(`users/${this.props.userId}/offersMade/${boardId}`)
+		.set({
+			boardId: boardId,
+			boardName: this.state.board.name,
+			sellerId: sellerId,
+			sellerUsername: this.state.sellerUserName,
+			amountOffered: offer,
+			offerDate: Date.now()
+		})
+		
+		this.setState({ messageStatus: 'Message Sent!' });
+		
+				setTimeout(
+					function() {
+						this.setState({
+							messageStatus: '',
+							isQuestion: false,
+							isOffer: false
+						});
+					}.bind(this),
+					2000
+				);
+
+	} // end Send Offer 
 
 	sendMessage() {
 		const sellerId = this.state.board.userId;
@@ -206,7 +283,21 @@ class BoardDetail extends PureComponent {
 												</button>
 											</div>
 										) : (
-											''
+											<div>			
+												<input 
+													type="number"
+													className="message-box__input"
+													onChange={ e => {
+														this.setState({ offer: e.target.value })
+													} }
+													 />
+												<button
+													onClick={() => this.sendOffer()}
+													className="message-box__button"
+												>
+													Send Offer
+												</button>
+											</div>
 										)}
 									</div>
 								) : (

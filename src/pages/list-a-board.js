@@ -220,7 +220,8 @@ class ListABoard extends Component {
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
-				volume: this.state.volume
+				volume: this.state.volume,
+				sold: false
 			});
 
 		// 2) SAVE BOARD BY CITY
@@ -255,7 +256,9 @@ class ListABoard extends Component {
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
-				volume: this.state.volume
+				volume: this.state.volume,
+				sold: false,
+				amountSoldFor: 0
 			});
 
 		// 3) SAVE TO ALL BOARD LIST
@@ -290,7 +293,10 @@ class ListABoard extends Component {
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
-				volume: this.state.volume
+				volume: this.state.volume,
+				sold: false,
+				amountSoldFor: 0
+				
 			});
 
 		// 4) SAVE BOARDS BY USER
@@ -325,7 +331,9 @@ class ListABoard extends Component {
 				photoFour: this.state.photoFour,
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
-				volume: this.state.volume
+				volume: this.state.volume,
+				sold: false,
+				amountSoldFor: 0
 			});
 
 		this.setState({
