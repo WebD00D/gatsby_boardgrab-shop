@@ -94,32 +94,6 @@ class Messages extends PureComponent {
     }.bind(this));
 
 
-
-// boardName
-// :
-// "6'4" Chilli Pretty Sweet "
-// buyerUser
-// :
-// "boardlover69"
-// from
-// :
-// "Eh4dCWSiB6NioRMAPLQ4klDfRWG3"
-// lastMessage
-// :
-// "updated from boardlove69"
-// lastMessageDate
-// :
-// "2017-11-21T12:43:49.038Z"
-// messageType
-// :
-// "SELL"
-// read
-// :
-// false
-
-
-
-
     return (
         <div>
 

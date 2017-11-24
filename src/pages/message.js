@@ -162,7 +162,7 @@ class Message extends PureComponent {
       function(key) {
         console.log("MESSAGE KEY", this.state.messageThread[key]);
         return (
-          <div className={cx(["message-row t-sans f-13", {  "bg-light-grey" : this.state.messageThread[key].from === this.props.userId}])}>
+          <div key={key} className={cx(["message-row t-sans f-13", {  "bg-light-grey" : this.state.messageThread[key].from === this.props.userId}])}>
             <div className="fx fx-col">
               <div>{this.state.messageThread[key].message}</div>
               <div>

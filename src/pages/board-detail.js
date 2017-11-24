@@ -78,6 +78,9 @@ class BoardDetail extends PureComponent {
 		updates[`offers/${boardId}/paidOn`] = '';
 		updates[`offers/${boardId}/amountPaid`] = 0;
 		updates[`offers/${boardId}/paymentPending`] = false;
+		
+		// updagte the boardname on the sellers offer node 
+		updates[`users/${sellerId}/offersReceived/${boardId}/name`] = this.state.board.name;
 	
 		fire
 		.database()
@@ -91,24 +94,28 @@ class BoardDetail extends PureComponent {
 				offerDate: Date.now(),
 				buyerId: buyerId,
 				buyerUsername: this.props.account_username,
-				amount: offer	
+				amount: offer,
+				boardName: this.state.board.name
 			})
 
 			
 		// SET OFFERS RECEIVED NODE FOR SELLER
 		fire
 			.database()
-			.ref(`users/${sellerId}/offersReceived/${boardId}/${offerId}`)
+			.ref(`users/${sellerId}/offersReceived/${boardId}/offers/${offerId}`)
 			.set({
 				boardId: boardId,
 				boardName: this.state.board.name,
 				buyerId: this.props.userId,
 				buyerUsername: this.props.account_username,
 				amountOffered: offer,
-				offerDate: Date.now()
+				offerDate: Date.now(),
+				boardName: this.state.board.name
 			})
 
 		// SET OFERS MADE NODE FOR BUYER 
+
+
 
 		console.log("ANY UNDEFINEDESSSSS??  ", this.state.seller)
 
@@ -121,7 +128,8 @@ class BoardDetail extends PureComponent {
 			sellerId: sellerId,
 			sellerUsername: this.state.sellerUserName,
 			amountOffered: offer,
-			offerDate: Date.now()
+			offerDate: Date.now(),
+			boardName: this.state.board.name
 		})
 		
 		this.setState({ messageStatus: 'Message Sent!' });
