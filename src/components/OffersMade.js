@@ -47,13 +47,17 @@ class OffersMade extends PureComponent {
   
     _.forEach(offersMadeDataSource, function(v, k) {
 
-
-         
                 console.log('DETAILS ABOUT THE SPECIFIC OFFER', v)
+
+  
+             
+               const amount = (parseFloat(v.amountOffered) * 100);
+               const paymentLink = `/pay/?sellerId=${v.sellerId}&boardId=${v.boardId}&boardName=${v.boardName}&amount=${amount}`;
+
 
                 offersMadeItems.push(
 
-                    <div key={k}>
+                    <div key={k} style={{marginBottom: '28px'}}>
                         <div className="offers__header">{v.boardName}</div>
                         <div className="offers__row" >
                             <div>
@@ -66,7 +70,9 @@ class OffersMade extends PureComponent {
                                         ? <div className="fc-yellow t-sans fw-500" style={{fontStyle: 'italic', paddingRight: '30px'}}>Offer Pending</div>
                                         : 
                                         <div style={{paddingRight: '30px'}}>
-                                            <div className="fc-green t-sans fw-500">Offer Accepted! <Link className="fc-green" to="/">Pay Now!</Link></div>
+                                            <div className="fc-green t-sans fw-500">
+                                            Offer Accepted! 
+                                            <Link className="fc-green" to={paymentLink}>Pay Now!</Link></div>
                                         </div>
                                 }
                             </div>  
@@ -79,6 +85,8 @@ class OffersMade extends PureComponent {
 
 
         }.bind(this));
+
+        var offersMadeListReversed = _.reverse(offersMadeItems);
         
         
 
@@ -86,7 +94,7 @@ class OffersMade extends PureComponent {
 			<div className="table-rows">
               
 				{offersMadeItems.length > 0 ? (
-					<div>{offersMadeItems}</div>
+					<div>{offersMadeListReversed}</div>
 				) : (
 					<div className="t-sans f-13 t-center">0 Offers Made</div>
 				)}

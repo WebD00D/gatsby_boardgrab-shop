@@ -14,7 +14,8 @@ export default class Board extends PureComponent {
             <div className="board__image" style={{backgroundImage: `url(${board.featurePhotoURL})` }}></div>
             <div className="board__meta"><label>{board.fins} Fin</label>|<label>{board.dimensions}</label></div>
             <div className="board__name">{board.name}</div>
-            <div className="board__price">${board.price}</div>
+            { board.sold ? <div className="board__price fc-red">SOLD</div> : <div className="board__price">${board.price} </div> }
+            
         </div>
     );
   }

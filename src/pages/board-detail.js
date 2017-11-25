@@ -290,7 +290,12 @@ class BoardDetail extends PureComponent {
 												</button>
 											</div>
 										) : (
-											<div>			
+											<div>
+											<div className="t-sans f-13 lh-18" style={{ opacity: '0.6', marginTop: '20px' }}>
+											{' '}
+											If seller will ship, make sure to include shipping cost in your offer! If you do not know
+											the shipping cost, message them to get a price.
+											</div>			
 												<input 
 													type="number"
 													className="message-box__input"
@@ -387,10 +392,16 @@ class BoardDetail extends PureComponent {
 						</div>
 
 						<div className="board-info__price" style={{ borderBottom: 'none', marginBottom: '0px' }}>
-							<div style={{ fontSize: '28px' }} className="fc-green">
-								${this.state.board.price}
-							</div>
-							<div>
+
+							{ this.state.board.sold
+							? <div style={{ fontSize: '28px' }} className="fc-red">SOLD</div>
+							: <div style={{ fontSize: '28px' }} className="fc-green">${this.state.board.price}</div>
+							 }
+							
+
+							{ this.state.board.sold
+							? ''
+							: <div>
 								<button
 									onClick={() => {
 										this.setState({ isOffer: false, isQuestion: true });
@@ -407,6 +418,9 @@ class BoardDetail extends PureComponent {
 									Make an Offer
 								</button>
 							</div>
+							}
+
+							
 						</div>
 
 						<div className="board-info__tags" style={{ marginTop: '0px' }}>
@@ -420,7 +434,7 @@ class BoardDetail extends PureComponent {
 							) : (
 								''
 							)}
-							{!this.state.board.tag_budget ? <div className="board-info__tag">On a Budget</div> : ''}
+							{this.state.board.tag_budget ? <div className="board-info__tag">On a Budget</div> : ''}
 							{this.state.board.tag_smallwaves ? <div className="board-info__tag">Small Waves</div> : ''}
 						</div>
 
@@ -431,6 +445,7 @@ class BoardDetail extends PureComponent {
 									Shortboard
 								</span>
 							</div>
+							
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />
 								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
@@ -441,6 +456,12 @@ class BoardDetail extends PureComponent {
 								<i className="fa fa-leaf" />
 								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
 									{this.state.board.fins}-Fin
+								</span>
+							</div>
+							<div className="board-info__section-row t-sans f-16">
+								<i className="fa fa-leaf" />
+								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
+									{this.state.board.volume} Liters
 								</span>
 							</div>
 						</div>

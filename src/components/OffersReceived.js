@@ -56,13 +56,15 @@ class OffersReceived extends PureComponent {
   render() {
 
     const offersReceivedDataSource = this.state.offersReceived;
-    const offersReceivedList = [];
-    const offersReceivedItems = [];
-  
+   
+    let offersReceivedList = [];
+    let offersReceivedItems = [];
+
     _.forEach(offersReceivedDataSource, function(value, key) {
 
             console.log('OFFERS RECEIVED LIST',  value);
-
+           
+        
             _.forEach(value.offers, function(v, k) {
 
                 console.log('DETAILS ABOUT THE SPECIFIC OFFEr', v)
@@ -90,7 +92,7 @@ class OffersReceived extends PureComponent {
             let offersReceivedItemsReverse = _.reverse(offersReceivedItems)
 
             offersReceivedList.push (
-                <div key={key}>
+                <div key={key} style={{marginBottom: '28px'}}>
                     <div className="offers__header">{value.name}</div>
                     <div>
                         {offersReceivedItemsReverse}
@@ -98,8 +100,12 @@ class OffersReceived extends PureComponent {
                 </div>
             )
 
+            offersReceivedItems = [];
+
 
         }.bind(this));
+
+        const offersReceivedListReverse = _.reverse(offersReceivedList)
         
         
 
@@ -107,7 +113,7 @@ class OffersReceived extends PureComponent {
 			<div className="table-rows">
               
 				{offersReceivedList.length > 0 ? (
-					<div>{offersReceivedList}</div>
+					<div>{offersReceivedListReverse}</div>
 				) : (
 					<div className="t-sans f-13 t-center">0 Offers Received</div>
 				)}
