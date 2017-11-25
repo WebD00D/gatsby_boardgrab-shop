@@ -10,6 +10,8 @@ import Link from "gatsby-link";
 import Moment from "react-moment";
 import _ from "lodash";
 import { connect } from "react-redux";
+import 'whatwg-fetch';
+
 
 
 class Payment extends PureComponent {
@@ -20,8 +22,10 @@ class Payment extends PureComponent {
     this.handlePayment = this.handlePayment.bind(this);
 
     this.state = {
-        token: '',
-        status: '',
+        stripeUser: '',
+        amount: 0,
+
+        board: `5'8" Rusty Dwart`
     };
 
     
@@ -39,20 +43,36 @@ handlePayment() {
           // You can access the token ID with `token.id`.
           // Get the token ID to your server-side code for use.
           console.log("PAYMENT TOKEN", token)
-          this.setState({
-              token: token.id,
+        //   this.setState({
+        //       token: token.id,
+        //   })
+
+          // SEND TOKEN AND OTHER DEETZ OFF TO BG API..
+
+          //payment?token=tok_1BRuVbADZeBlrWSetjg4gTae&stripeUser=acct_1BQEFpJpXcqqlmC6&amount=7800
+
+          fetch(`https://boardgrab-api.herokuapp.com/payment?token=${token.id}&stripeUser=${this.state.stripeUser}&amount=${this.state.amount}`)
+          .then(function(response) {
+            return response.json()
+          }).then(function(r) {
+            
+            console.log('PAYMENT OBJECT FROM API', r)
+
+
+                
+          }.bind(this)).catch(function(ex) {
+            console.log('parsing failed', ex)
           })
-
-          // SEND TOKEN AND OTHER DEETZ OFF TO BG API.. 
-
+          
+        
 
         }.bind(this)
       });
 
       handler.open({
-        name: 'Boardgrab, LLC',
-        description: '2 widgets',
-        amount: 2000,
+        name: 'BOARDGRAB',
+        description: this.state.board,
+        amount: this.state.amount,
        
       });
 
@@ -60,11 +80,16 @@ handlePayment() {
  
 
   componentDidMount() {
-    // get board param id
-    // const sendMessageTo = this.getQueryVariable("from");
-    // this.setState({
-    //   sendMessageBackTo: sendMessageTo
-    // })
+    
+    const stripeUser = this.getQueryVariable("stripeUser");
+    const amount = this.getQueryVariable("amount");
+
+    this.setState({
+        stripeUser: stripeUser,
+        amount: amount
+    })
+
+
   
     
   }
@@ -85,24 +110,28 @@ handlePayment() {
   }
 
 
-  componentDidMount() {
-    
-  }
-
-
-
-
   render() {
 
     
-   
+    let amountToShow = ( parseFloat(this.state.amount) / 100 );
 
     return (
       <div className="site-container">
-        {this.state.token}
 
-        { this.state.status }
-        <button onClick={() => this.handlePayment()}>Pay $100</button>
+        <div className="f-28 t-sans ls-2 fw-500 m-b-20">Payment</div>
+        <div className="f-16 t-sans">
+            You're one step closer to getting your hands on that new (used) board! Just click
+            the payment button below, fill out your card info, and that's it. We'll send a notification
+            to the seller that you're all squared away, and that the two of you can continue confidently through your transaction.
+        </div>
+        <hr />
+        <div className="f-16 t-sans"> <span className="fw-500">Board:</span> 5'8" Rusty Dwart</div>
+        <div className="f-16 t-sans"> <span className="fw-500">Seller:</span> board_slinger69</div>
+        <div className="f-16 t-sans m-b-20"> <span className="fw-500">Amount:</span> ${amountToShow}</div>
+
+        <button
+          className="message-box__button ls-2"
+         onClick={() => this.handlePayment()}>Pay ${amountToShow}</button>
 
       </div>
     );
