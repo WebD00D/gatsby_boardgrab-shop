@@ -59,7 +59,7 @@ class MyQuiver extends PureComponent {
             <span style={{color: '#404040', fontSize: '9px'}}>Listed on <Moment format="MM/DD/YYYY @ hh:mm A" date={value.listDate} /></span>
           </div>
           <div style={{paddingRight: '8px'}}>
-            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div> : <Link className="f-13 fc-green t-sans" to="/"> <i className="fa fa-pencil"></i> Edit Listing</Link> }
+            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div> : <Link className="f-13 fc-green t-sans" to={`/edit-board?boardId=${key}`}> <i className="fa fa-pencil"></i> Edit Listing</Link> }
           </div>
          
         </div>

@@ -349,32 +349,32 @@ class BoardDetail extends PureComponent {
 
 				<div className="board-info">
 					<div className="board-info__column__sm">
-						<img style={{ borderRadius: '4px' }} src={this.state.board.featurePhotoURL} />
+						<img className="hover" style={{ borderRadius: '4px' }} src={this.state.board.featurePhotoURL} />
 
 						<div className="board-info__images">
 							<div
-								className="board-info__image"
+								className="board-info__image hover"
 								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
 							/>
 							<div
 								className="board-info__image"
-								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
+								style={{ backgroundImage: 'url(' + this.state.board.photoTwo + ')' }}
 							/>
 							<div
 								className="board-info__image"
-								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
+								style={{ backgroundImage: 'url(' + this.state.board.photoThree + ')' }}
 							/>
 							<div
 								className="board-info__image"
-								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
+								style={{ backgroundImage: 'url(' + this.state.board.photoFour + ')' }}
 							/>
 							<div
 								className="board-info__image"
-								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
+								style={{ backgroundImage: 'url(' + this.state.board.photoFive + ')' }}
 							/>
 							<div
 								className="board-info__image"
-								style={{ backgroundImage: 'url(' + this.state.board.photoOne + ')' }}
+								style={{ backgroundImage: 'url(' + this.state.board.photoSix + ')' }}
 							/>
 						</div>
 					</div>
@@ -478,6 +478,15 @@ class BoardDetail extends PureComponent {
 								</span>
 							</div>
 						</div> */}
+
+						<div className="board-info__section b-top-solid p-t-18">
+							<div className="board-info__section-row t-sans f-16 fx-a-end">
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Description</div>
+								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
+									{this.state.board.description}
+								</span>
+							</div>
+						</div>
 
 						<div className="board-info__section b-top-solid p-t-18">
 							<div className="board-info__section-row t-sans f-16 fx-a-end">

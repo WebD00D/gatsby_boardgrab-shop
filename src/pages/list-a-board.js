@@ -26,17 +26,17 @@ class ListABoard extends Component {
 		this.handlePostAnother = this.handlePostAnother.bind(this);
 
 		this.state = {
-			region: 'Southern California',
-			city: 'San Diego',
-			listingTitle: '1',
-			brandShaper: '2',
-			model: '3',
-			dimensions: '4',
-			fins: '5',
-			condition: '6',
-			dimensions: '7',
+			region: '',
+			city: '',
+			listingTitle: '',
+			brandShaper: '',
+			model: '',
+			dimensions: '',
+			fins: '',
+			condition: '',
 			height: '',
 			volume: '',
+			description: '',
 
 			shaperInfo: '8',
 			price: '655',
@@ -152,7 +152,8 @@ class ListABoard extends Component {
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
-				sold: false
+				sold: false,
+				description: this.state.description
 			});
 
 		// 2) SAVE BOARD BY CITY
@@ -189,7 +190,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+				amountSoldFor: 0,
+				description: this.state.description
 			});
 
 		// 3) SAVE TO ALL BOARD LIST
@@ -226,7 +228,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+				amountSoldFor: 0,
+				description: this.state.description
 				
 			});
 
@@ -264,7 +267,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+				amountSoldFor: 0,
+				description: this.state.description
 			});
 
 		this.setState({

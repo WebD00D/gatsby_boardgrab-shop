@@ -26,20 +26,23 @@ class ListABoard extends Component {
 		this.handlePostAnother = this.handlePostAnother.bind(this);
 
 		this.state = {
-			region: 'Southern California',
-			city: 'San Diego',
-			listingTitle: '1',
-			brandShaper: '2',
-			model: '3',
-			dimensions: '4',
-			fins: '5',
-			condition: '6',
-			dimensions: '7',
-			height: '',
-			volume: '',
+            userCanEdit: true,
+            boardId: '',
 
-			shaperInfo: '8',
-			price: '655',
+			region: '',
+			city: '',
+			listingTitle: '',
+			brandShaper: '',
+			model: '',
+			dimensions: '',
+			fins: '',
+			condition: '',
+			height: '',
+            volume: '',
+            description: '',
+
+			shaperInfo: '',
+			price: '',
 
 			avatar: '',
 			photoOne: '',
@@ -65,7 +68,81 @@ class ListABoard extends Component {
 			newModel: true,
 
 		};
-	}
+    }
+    
+
+    componentDidMount() {
+        const boardId = this.getQueryVariable("boardId");
+
+
+        fire
+        .database()
+        .ref(`/allBoardsList/boards/${boardId}`)
+        .once('value')
+        .then(
+            function(snapshot) {
+                console.log('EDIT SNAPSHOT', snapshot.val());
+
+                if ( this.props.userId != snapshot.val().userId ) {
+                    this.setState({
+                        userCanEdit: false
+                    })
+                } else {
+
+                    const board = snapshot.val()
+
+                    this.setState({
+                        boardId: boardId,
+                        region: board.region,
+                        city: board.city,
+                        listingTitle: board.name,
+                        brandShaper: board.brand,
+                        model: board.model,
+                        dimensions: board.dimensions,
+                        fins: board.fins,
+                        condition: board.condition,
+                        description: board.description,
+                        volume: board.volume,
+            
+                        shaperInfo: board.shaperInfo,
+                        price: board.price,
+            
+                        avatar: board.featurePhotoURL,
+                        photoOne: board.photoOne,
+                        photoTwo: board.photoTwo,
+                        photoThree: board.photoThree,
+                        photoFour: board.photoFour,
+                        photoFive: board.photoFive,
+                        photoSix: board.photoSix,
+                        imageName: '',
+                        isUploading: false,
+                        photoOneProgress: 0,
+                        photoOneURL: '',
+                        boardJustPosted: false,
+            
+                        tag_beginner: board.tag_beginner,
+                        tag_intermediate: board.tag_intermediate,
+                        tag_advanced: board.tag_advanced,
+                        tag_greatforanybody: board.tag_greatforanybody,
+                        tag_smallwaves: board.tag_smallwaves,
+                        tag_budget: board.tag_budget,
+            
+                        newShaper: false,
+                        newModel: true,
+
+                    })
+
+                    this.props.setListingCities(board.region)
+                }
+               
+
+            }.bind(this)
+        );
+
+        
+
+
+    }
 
     getQueryVariable(variable) {
 		var query = window.location.search.substring(1);
@@ -129,7 +206,8 @@ class ListABoard extends Component {
 	};
 
 	handleListing() {
-    const dateTime = Date.now();
+
+    const dateTime = this.state.boardId;
 
 		// 1)  SAVE BOARD BY REGION
 		fire
@@ -164,7 +242,8 @@ class ListABoard extends Component {
 				photoFive: this.state.photoFive,
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
-				sold: false
+                sold: false,
+                description: this.state.description
 			});
 
 		// 2) SAVE BOARD BY CITY
@@ -201,7 +280,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+                amountSoldFor: 0,
+                description: this.state.description,
 			});
 
 		// 3) SAVE TO ALL BOARD LIST
@@ -238,7 +318,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+                amountSoldFor: 0,
+                description: this.state.description
 				
 			});
 
@@ -276,7 +357,8 @@ class ListABoard extends Component {
 				photoSix: this.state.photoSix,
 				volume: this.state.volume,
 				sold: false,
-				amountSoldFor: 0
+                amountSoldFor: 0,
+                description: this.state.description
 			});
 
 		this.setState({
@@ -302,12 +384,9 @@ class ListABoard extends Component {
 		if (this.state.boardJustPosted) {
 			return (
 				<div className="create-account">
-					<div className="create-account__headline m-b-20">Board submitted.</div>
-					<button onClick={this.handlePostAnother} className="button button--green button--small m-b-20">
-						Post another?
-					</button>
-					<Link to="/inventory" className="td-none t-sans fc-green f-11 m-t-30">
-						Go to my quiver.
+					<div className="create-account__headline m-b-20">Board Edited.</div>
+					<Link to={`/board-detail/?board=${this.state.boardId}`} className="td-none t-sans fc-green f-11 m-t-30">
+						View Listing
 					</Link>
 				</div>
 			);
@@ -315,9 +394,15 @@ class ListABoard extends Component {
 
 		return (
 			<div className="create-account">
-				<div className="create-account__headline m-b-10">List a Board </div>
-				<Link to="/inventory" className="td-none t-sans fc-green f-11 ">
-					Cancel and return to inventory
+
+                { !this.state.userCanEdit 
+                    ? 
+                        <div>Permission Denied</div>
+                    :
+                        <div>
+                        <div className="create-account__headline m-b-10">Edit Listing </div>
+				<Link to="/account" className="td-none t-sans fc-green f-11 ">
+					Cancel and return to account page
 				</Link>
 
 				<div className="login-form__field m-t-30">
@@ -329,6 +414,7 @@ class ListABoard extends Component {
 								this.setState({ listingTitle: e.target.value });
 							}}
 							type="text"
+                            value={this.state.listingTitle}
 						/>
 					</div>
 					<label>Brand / Shaper </label>
@@ -338,6 +424,7 @@ class ListABoard extends Component {
 							this.setState({ brandShaper: e.target.value });
 						}}
 						type="text"
+                        value={this.state.brandShaper}
 					/>
 				</div>
 
@@ -350,6 +437,7 @@ class ListABoard extends Component {
 								this.setState({ model: e.target.value });
 							}}
 							type="text"
+                            value={this.state.model}
 						/>
 					</div>
 					<label>Dimensions </label>
@@ -359,6 +447,7 @@ class ListABoard extends Component {
 							this.setState({ dimensions: e.target.value });
 						}}
 						type="text"
+                        value={this.state.dimensions}
 					/>
 					<label>Volume </label>
 					<input
@@ -367,6 +456,7 @@ class ListABoard extends Component {
 							this.setState({ volume: e.target.value });
 						}}
 						type="text"
+                        value={this.state.volume}
 					/>
 				</div>
 
@@ -379,6 +469,7 @@ class ListABoard extends Component {
 								this.setState({ fins: e.target.value });
 							}}
 							type="text"
+                            value={this.state.fins}
 						/>
 					</div>
 					<label>Condition </label>
@@ -388,6 +479,7 @@ class ListABoard extends Component {
 							this.setState({ condition: e.target.value });
 						}}
 						type="text"
+                        value={this.state.condition}
 					/>
 				</div>
 
@@ -400,6 +492,7 @@ class ListABoard extends Component {
 								this.setState({ description: e.target.value });
 							}}
 							type="text"
+                            value={this.state.description}
 						/>
 					</div>
 					<label>Shaper Info </label>
@@ -409,6 +502,7 @@ class ListABoard extends Component {
 							this.setState({ shaperInfo: e.target.value });
 						}}
 						type="text"
+                        value={this.state.shaperInfo}
 					/>
 				</div>
 
@@ -420,7 +514,8 @@ class ListABoard extends Component {
 							onChange={e => {
 								this.setState({ price: e.target.value });
 							}}
-							type="text"
+							type="number"
+                            value={this.state.price}
 						/>
 					</div>
 				</div>
@@ -433,12 +528,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_beginner"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_beginner').checked;
 										this.setState({ tag_beginner: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_beginner}
 								/>
 								<div className="tag">Beginner</div>
 							</div>
@@ -446,12 +542,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_intermediate"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_intermediate').checked;
 										this.setState({ tag_intermediate: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_intermediate}
 								/>
 								<div className="tag">Intermediate</div>
 							</div>
@@ -459,12 +556,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_advanced"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_advanced').checked;
 										this.setState({ tag_advanced: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_advanced}
 								/>
 								<div className="tag">Advanced</div>
 							</div>
@@ -472,12 +570,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_greatforanybody"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_greatforanybody').checked;
 										this.setState({ tag_greatforanybody: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_greatforanybody}
 								/>
 								<div className="tag">Great for anybody</div>
 							</div>
@@ -485,12 +584,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_smallwaves"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_smallwaves').checked;
 										this.setState({ tag_smallwaves: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_smallwaves}
 								/>
 								<div className="tag">Small Waves</div>
 							</div>
@@ -498,12 +598,13 @@ class ListABoard extends Component {
 								<input
 									id="tag_budget"
 									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
+									
 									onChange={e => {
 										let checked = document.getElementById('tag_budget').checked;
 										this.setState({ tag_budget: checked });
 									}}
 									type="checkbox"
+                                    checked={this.state.tag_budget}
 								/>
 								<div className="tag">On a Budget</div>
 							</div>
@@ -519,6 +620,7 @@ class ListABoard extends Component {
 								this.setState({ region: e.target.value });
 								this.props.setListingCities(e.target.value);
 							}}
+                            value={this.state.region}
 						>
 							<option value="Southern California">Southern California</option>
 							<option value="Northern California">Northern California</option>
@@ -536,7 +638,7 @@ class ListABoard extends Component {
 				<div className="login-form__field">
 					<div className="login-form__field">
 						<label>City</label>
-						<select onChange={e => this.setState({ city: e.target.value })}>{cities}</select>
+						<select value={this.state.city} onChange={e => this.setState({ city: e.target.value })}>{cities}</select>
 					</div>
 				</div>
 
@@ -702,8 +804,14 @@ class ListABoard extends Component {
 				</div>
 
 				<button onClick={this.handleListing} className="button button--green button--large">
-					Publish Listing
+					Update Listing
 				</button>
+                        </div>
+                }
+
+
+
+				
 			</div>
 		);
 	}

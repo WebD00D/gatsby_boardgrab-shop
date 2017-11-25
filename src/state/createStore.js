@@ -257,7 +257,7 @@ const initialState = {
 	longitude: -118.47003936767578,
 	selectedRegion: 'All Locations',
 	selectedCity: 'All Cities',
-	mapZoom: 8,
+	mapZoom: 4,
 	regionHasNoBoards: 'not set',
 	userNotification: false,
 	isSeller: false,
