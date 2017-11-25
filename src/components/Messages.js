@@ -23,7 +23,7 @@ class Messages extends PureComponent {
       this.handleMessageTabChange = this.handleMessageTabChange.bind(this);
 
       this.state = {
-        activeTab: 'buy',
+        activeTab: 'sell',
         messages: {}
       }
 
@@ -54,6 +54,10 @@ class Messages extends PureComponent {
     const messages = this.state.messages;
     const buyMessages = [];
     const sellMessages = [];
+
+    let buyMessagesReveresed;
+    let sellMessagesReversed;
+
     _.forEach(messages, function(value, key) {
 
       if ( value.messageType === "SELL") {
@@ -67,7 +71,7 @@ class Messages extends PureComponent {
             </div>
             <div className={cx(["t-sans f-11  fw-500 ls-2 w-20p t-right fx fx-col fc-green", { "fc-white": !value.read }])} style={{paddingRight:'8px'}}>
               <div>{value.buyerUser}</div>
-              <div><Moment format="MM/DD/YYYY HH:mm A" date={value.lastMessageDate} /></div>
+              <div><Moment format="MM/DD/YYYY hh:mm A" date={value.lastMessageDate} /></div>
             </div>
           </Link>
         );
@@ -83,7 +87,7 @@ class Messages extends PureComponent {
             </div>
             <div className={cx(["t-sans f-11  fw-500 ls-2 w-20p t-right fx fx-col fc-green", { "fc-white": !value.read }])} style={{paddingRight:'8px'}}>
               <div>{value.buyerUser}</div>
-              <div><Moment format="MM/DD/YYYY HH:mm A" date={value.lastMessageDate} /></div>
+              <div><Moment format="MM/DD/YYYY hh:mm A" date={value.lastMessageDate} /></div>
             </div>
           </Link>
 
@@ -92,6 +96,9 @@ class Messages extends PureComponent {
 
 
     }.bind(this));
+
+    buyMessagesReveresed = _.reverse(buyMessages);
+    sellMessagesReversed = _.reverse(sellMessages)
 
 
     return (
@@ -109,7 +116,7 @@ class Messages extends PureComponent {
              <div className="table-rows">
               {
                 buyMessages.length > 0
-                ? <div>{buyMessages}</div>
+                ? <div>{buyMessagesReveresed}</div>
                 : <div className='t-sans f-13 t-center'>0 Buy Messages Found</div>
               }
             </div>
@@ -119,7 +126,7 @@ class Messages extends PureComponent {
              <div className="table-rows">
                {
                  sellMessages.length > 0
-                 ? <div>{sellMessages}</div>
+                 ? <div>{sellMessagesReversed}</div>
                  : <div className="t-sans f-13 t-center">0 Sell Messages Found</div>
                }
              </div>

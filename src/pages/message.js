@@ -160,7 +160,7 @@ class Message extends PureComponent {
 
     messages = Object.keys(this.state.messageThread).map(
       function(key) {
-        console.log("MESSAGE KEY", this.state.messageThread[key]);
+        
         return (
           <div key={key} className={cx(["message-row t-sans f-13", {  "bg-light-grey" : this.state.messageThread[key].from === this.props.userId}])}>
             <div className="fx fx-col">
@@ -176,7 +176,7 @@ class Message extends PureComponent {
             </div>
             <div>
               { this.state.messageThread[key].date
-                ? <Moment format="MM/DD/YYYY HH:mm A" date={this.state.messageThread[key].date} />
+                ? <Moment format="MM/DD/YYYY hh:mm A" date={this.state.messageThread[key].date} />
                 : ''
               }
 
@@ -197,8 +197,6 @@ class Message extends PureComponent {
     return (
       <div className="site-container">
 
-        <code>ME: {this.props.userId}</code>
-        <code>SEND TO: {this.state.sendMessageBackTo}</code>
 
         {
           this.state.reply

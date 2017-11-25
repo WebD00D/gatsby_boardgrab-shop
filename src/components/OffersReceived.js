@@ -18,6 +18,8 @@ class OffersReceived extends PureComponent {
   constructor(props) {
       super(props);
 
+      this.handleOfferAccept = this.handleOfferAccept.bind(this);
+
       this.state = {
         offersReceived: {}
       }
@@ -37,54 +39,78 @@ class OffersReceived extends PureComponent {
   }
 
 
+  handleOfferAccept(offerId, buyerId, boardId) {
+    
+    var updates = {};
+    updates[`offers/${boardId}/offersMade/${offerId}/offerAccepted`] = true;
+    updates[`users/${this.props.userId}/offersReceived/${boardId}/offers/${offerId}/offerAccepted`] = true;
+    updates[`users/${buyerId}/offersMade/${boardId}/offerAccepted`] = true;
+
+    fire
+    .database()
+    .ref()
+    .update(updates);
+  }
+
 
   render() {
 
-
     const offersReceivedDataSource = this.state.offersReceived;
     const offersReceivedList = [];
+    const offersReceivedItems = [];
   
     _.forEach(offersReceivedDataSource, function(value, key) {
 
             console.log('OFFERS RECEIVED LIST',  value);
 
-            // offersReceivedList.push(
-            //                 <div key={key}>
-            //                     <div style={{ paddingLeft: '8px' }} className={cx([
-            //                             't-sans f-11 ls-2 w-40p fc-green',
-            //                             { 'fc-white': !value.read }
-            //                         ])}>
-            //                         {value.boardName}
-            //                     </div>
-            //                     <div
-            //                         className={cx([
-            //                             't-sans f-11 ls-2 w-40p fc-green',
-            //                             { 'fc-white': !value.read }
-            //                         ])}
-            //                     >
-            //                         {value.lastMessage.substr(0, 30)}...
-            //                     </div>
-            //                     <div className={cx([
-            //                             't-sans f-11  fw-500 ls-2 w-20p t-right fx fx-col fc-green',
-            //                             { 'fc-white': !value.read }
-            //                         ])} style={{ paddingRight: '8px' }}>
-            //                         <div>{value.buyerUser}</div>
-            //                         <div>
-            //                             <Moment format="MM/DD/YYYY HH:mm A" date={value.lastMessageDate} />
-            //                         </div>
-            //                     </div>
-            //                 </div>
-            //             );
-		}.bind(this));
+            _.forEach(value.offers, function(v, k) {
+
+                console.log('DETAILS ABOUT THE SPECIFIC OFFEr', v)
+
+                offersReceivedItems.push(
+
+                        <div className="offers__row" key={k}>
+                            <div>
+                                <div className="f-16 fw-500">${v.amountOffered}</div>
+                                <div><Moment format="MM/DD/YYYY @ hh:mm A" date={v.offerDate} /> from {v.buyerUsername}</div>
+                            </div>
+                            <div>
+                                {
+                                    v.offerAccepted 
+                                        ? <div className="fc-green t-sans fw-500" style={{fontStyle: 'italic', paddingRight: '30px'}}>Offer Accepted</div>
+                                        : <button onClick={ () => this.handleOfferAccept( k, v.buyerId, v.boardId ) } className="message-box__button">Accept Offer</button>
+                                }
+                            </div>  
+                        </div>
+
+                )
+
+            }.bind(this))
+
+            let offersReceivedItemsReverse = _.reverse(offersReceivedItems)
+
+            offersReceivedList.push (
+                <div key={key}>
+                    <div className="offers__header">{value.name}</div>
+                    <div>
+                        {offersReceivedItemsReverse}
+                    </div>
+                </div>
+            )
+
+
+        }.bind(this));
+        
+        
 
 	return (<div>
 			<div className="table-rows">
-            Testing
-				{/* {offersReceivedList.length > 0 ? (
+              
+				{offersReceivedList.length > 0 ? (
 					<div>{offersReceivedList}</div>
 				) : (
 					<div className="t-sans f-13 t-center">0 Offers Received</div>
-				)} */}
+				)}
 			</div>
             </div>);
   }

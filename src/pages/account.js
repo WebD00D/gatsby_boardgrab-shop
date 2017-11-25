@@ -14,6 +14,8 @@ import Messages from "../components/Messages";
 import MyQuiver from "../components/MyQuiver";
 import Settings from "../components/Settings";
 import OffersReceived from "../components/OffersReceived";
+import OffersMade from "../components/OffersMade";
+
 
 
 class Account extends PureComponent {
@@ -68,7 +70,7 @@ class Account extends PureComponent {
 
          
          { this.state.activeTab === "Messages" ?  <div className="tab"><Messages /></div> : '' }
-         { this.state.activeTab === "Made" ? <div className="tab">Offers Made</div>: '' }
+         { this.state.activeTab === "Made" ? <div className="tab"><OffersMade /></div>: '' }
          { this.state.activeTab === "Received" ? <div className="tab"><OffersReceived /></div>: '' }
          { this.state.activeTab === "My Quiver" ?  <div className="tab"><MyQuiver /></div> : '' }
          { this.state.activeTab === "Settings" ?  <div className="tab"><Settings /></div> : '' }

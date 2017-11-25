@@ -95,7 +95,8 @@ class BoardDetail extends PureComponent {
 				buyerId: buyerId,
 				buyerUsername: this.props.account_username,
 				amount: offer,
-				boardName: this.state.board.name
+				boardName: this.state.board.name,
+				offerAccepted: false
 			})
 
 			
@@ -110,14 +111,11 @@ class BoardDetail extends PureComponent {
 				buyerUsername: this.props.account_username,
 				amountOffered: offer,
 				offerDate: Date.now(),
-				boardName: this.state.board.name
+				boardName: this.state.board.name,
+				offerAccepted: false
 			})
 
 		// SET OFERS MADE NODE FOR BUYER 
-
-
-
-		console.log("ANY UNDEFINEDESSSSS??  ", this.state.seller)
 
 		fire
 		.database()
@@ -129,7 +127,8 @@ class BoardDetail extends PureComponent {
 			sellerUsername: this.state.sellerUserName,
 			amountOffered: offer,
 			offerDate: Date.now(),
-			boardName: this.state.board.name
+			boardName: this.state.board.name,
+			offerAccepted: false
 		})
 		
 		this.setState({ messageStatus: 'Message Sent!' });

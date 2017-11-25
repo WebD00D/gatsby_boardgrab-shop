@@ -34,6 +34,9 @@ module.exports = props => {
         {css}
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/9aa665cf7f.js"></script>
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+
+
       </head>
       <body className="sans-serif black">
         <div className="site-wrapper">
