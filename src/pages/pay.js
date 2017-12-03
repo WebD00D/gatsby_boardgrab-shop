@@ -74,26 +74,25 @@ class Payment extends PureComponent {
 								updates[`offers/${this.state.boardId}/paidBy`] = this.props.account_username;
 								updates[`offers/${this.state.boardId}/paidById`] = this.props.userId;
 								updates[`offers/${this.state.boardId}/paidOn`] = Date.now();
-                                updates[`offers/${this.state.boardId}/amountPaid`] = this.state.amount;
-                                
-                               // `boardsByRegion/${this.state.region}/${this.state.boardId}`
-                               // `boardsByCity/${this.state.city}/boards/${this.state.boardId}`
-                               // `allBoardsList/boards/${this.state.boardId}`
-                               // `boardsByUser/${this.state.sellerId}/${this.state.boardId}`
+                updates[`offers/${this.state.boardId}/amountPaid`] = this.state.amount;
 
-                               updates[`boardsByRegion/${this.state.boardRegion}/${this.state.boardId}/sold`] = true;
-                               updates[`boardsByRegion/${this.state.boardRegion}/${this.state.boardId}/amountSoldFor`] = this.state.amount;
+               // `boardsByRegion/${this.state.region}/${this.state.boardId}`
+               // `boardsByCity/${this.state.city}/boards/${this.state.boardId}`
+               // `allBoardsList/boards/${this.state.boardId}`
+               // `boardsByUser/${this.state.sellerId}/${this.state.boardId}`
 
-                               updates[`boardsByCity/${this.state.boardCity}/boards/${this.state.boardId}/sold`] = true;
-                               updates[`boardsByCity/${this.state.boardCity}/boards/${this.state.boardId}/amountSoldFor`] = this.state.amount;
+               updates[`boardsByRegion/${this.state.boardRegion}/${this.state.boardId}/sold`] = true;
+               updates[`boardsByRegion/${this.state.boardRegion}/${this.state.boardId}/amountSoldFor`] = this.state.amount;
 
-                               updates[`allBoardsList/boards/${this.state.boardId}/sold`] = true;
-                               updates[`allBoardsList/boards/${this.state.boardId}/amountSoldFor`] = this.state.amount;
+               updates[`boardsByCity/${this.state.boardCity}/boards/${this.state.boardId}/sold`] = true;
+               updates[`boardsByCity/${this.state.boardCity}/boards/${this.state.boardId}/amountSoldFor`] = this.state.amount;
 
-                               updates[`boardsByUser/${this.state.sellerId}/${this.state.boardId}/sold`] = true;
-                               updates[`boardsByUser/${this.state.sellerId}/${this.state.boardId}/amountSoldFor`] = this.state.amount;
+               updates[`allBoardsList/boards/${this.state.boardId}/sold`] = true;
+               updates[`allBoardsList/boards/${this.state.boardId}/amountSoldFor`] = this.state.amount;
 
-                               
+               updates[`boardsByUser/${this.state.sellerId}/${this.state.boardId}/sold`] = true;
+               updates[`boardsByUser/${this.state.sellerId}/${this.state.boardId}/amountSoldFor`] = this.state.amount;
+
 								fire
 									.database()
 									.ref()
@@ -118,6 +117,7 @@ class Payment extends PureComponent {
 	}
 
 	componentDidMount() {
+
 		const sellerId = this.getQueryVariable('sellerId');
 		const boardId = this.getQueryVariable('boardId');
 		const boardName = this.getQueryVariable('boardName');
@@ -141,20 +141,20 @@ class Payment extends PureComponent {
 							.then(
 								function(snapshot) {
 									this.setState({
-                                        amount: amount,
-                                        boardId: boardId,
+                    amount: amount,
+                    boardId: boardId,
 										stripeUser: snapshot.val().stripe,
-                                        sellerUsername: snapshot.val().username,
-                                        sellerId: sellerId,
+                    sellerUsername: snapshot.val().username,
+                    sellerId: sellerId,
 										sellerEmail: snapshot.val().email,
 										buyerEmail: this.props.currentUserEmail,
-										amount: amount,
+										amount: parseFloat(amount),
 										board: decodeURIComponent(boardName)
 									});
 								}.bind(this)
                             );
-                            
-                    // Get Board Meta.. 
+
+                    // Get Board Meta..
                     fire
                     .database()
                     .ref(`/allBoardsList/boards/${boardId}`)
@@ -173,7 +173,7 @@ class Payment extends PureComponent {
 							boardAlreadySold: true
                         });
                         // Send an email to the BG Team that this buyer was just about to checkout with this board,
-                        // and got snaked. 
+                        // and got snaked.
 					}
 				}.bind(this)
 			);
@@ -213,11 +213,11 @@ class Payment extends PureComponent {
                     <div>
 
                         { this.state.status === "succeeded"
-                        ? 
+                        ?
                             <div>
                                 <div className="f-28 t-sans ls-2 fw-500 m-b-20">Payment Succeeded!</div>
                                 <div className="f-16 t-sans">
-                                    Payment has been sent, and we've notified the seller that you're all squared away. 
+                                    Payment has been sent, and we've notified the seller that you're all squared away.
                                     If you haven't already, now is the time to message them and arrange your pickup / shipment.
 						        </div>
 
@@ -278,7 +278,7 @@ class Payment extends PureComponent {
                     </div>
 
 
-					
+
 				)}
 			</div>
 		);

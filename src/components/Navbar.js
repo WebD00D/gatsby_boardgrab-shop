@@ -46,14 +46,14 @@ class Navbar extends PureComponent {
   handleCityChange(city) {
     this.props.setCityData(city);
 	}
-	
+
 
   render(){
 
     const cities = this.props.currentCityList.map((city, key) =>
     <div key={key} onClick={()=> this.handleCityChange(city.name)} className="navbar__location__dropdown__item">{city.name}</div>
   );
-    
+
 
     const shopUser = this.props.userId ? <span className="navbar__logo-title td-none fc-green">Welcome, {this.props.shop_name} | <a href="#" onClick={this.props.signOutUser} className="navbar__logo-title td-none">Logout</a></span> : '';
 
@@ -124,8 +124,8 @@ class Navbar extends PureComponent {
 				  {  this.props.userAuthenticated && this.props.isSeller ? <Link className="navbar__link hover" to="/list-a-board">List a Board</Link> : '' }
 					{  this.props.userAuthenticated && !this.props.isSeller ? <Link className="navbar__link" to="/sell-with-us">Start Selling</Link> : '' }
 					{  this.props.userAuthenticated ? <Link className="navbar__link hover" to="/account">My Account { this.props.hasNotifications ? <i className="fa fa-bell fc-red"></i> : '' } </Link> : '' }
-				
-					
+
+
 					{ this.props.userAuthenticated ? <div onClick={this.props.signOutUser} className="navbar__link hover">Signout</div> : <Link className="navbar__link " to="/authentication">Login / Register</Link> }
 
 				</div>
@@ -137,6 +137,9 @@ class Navbar extends PureComponent {
 					</Link>
 					<Link className="navbar__subnav__link" to="/about">
 						Who we are
+					</Link>
+          <Link className="navbar__subnav__link" to="/faqs">
+						Faqs
 					</Link>
 					<a className="navbar__subnav__link" target="_blank" href="https://medium.com/boardgrab">
 						Blog
@@ -162,7 +165,7 @@ class Navbar extends PureComponent {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { 
+  return {
     signOutUser: () => dispatch({ type: `LOGOUT_USER` }),
     setRegionData: (region) => dispatch({ type: `SET_REGION_AND_CITIES`, region }),
     setCityData: (city) => dispatch({ type: `SET_CITY_DATA`, city })

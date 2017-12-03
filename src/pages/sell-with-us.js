@@ -11,7 +11,7 @@ const SellWithUs = () => (
      Set up a Stripe account to get paid with Boardgrab.
     </p>
     <a
-      href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8009/seller-confirmation/&client_id=ca_BktaykED2idsi5jlNomAw6kFOPYn9af2&state=VA" 
+      href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8000/seller-confirmation/&client_id=ca_BktaykED2idsi5jlNomAw6kFOPYn9af2&state=VA"
       className="stripe-connect">
       <span>Connect with Stripe</span>
    </a>
