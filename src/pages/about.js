@@ -4,12 +4,11 @@ import "../layouts/css/site.css";
 const About = () => (
   <div className="site-container">
     <h1 className="t-primary">About Us</h1>
-    <p className="t-primary" style={{fontWeight: 400, fontSize: 14}}>We started Boardgrab because we want to create a single source to browse every used surfboard 
-     for sale across the country. After getting burned on Craigslist one too many times, 
-     we decided to make something easier, friendlier and way more extensive.
-      It’s a big idea but a really simple one. Every used board in surf shops from coast to coast. 
-      Everything is easily searchable, with honest, clear descriptions and hi-res photos. 
-      If you have a question or want a measurement or more photos, we’re always available.</p>
+    <p className="t-primary" style={{fontWeight: 400, fontSize: 14}}>
+    Buying and selling used surfboards has always kind of sucked.
+    Paying massive commissions to a third party , or dealing with the inconvenient/shady nuances of Craigslist doesn’t exactly give surfers many options.
+    'Until now. Boardgrab is making selling used surfboards suck less.  Sell for free, sell conveniently, and become part of a community of sellers just like you.  Our hope, sellers will work together, share knowledge, and experience to make board selling better for everyone.  Don’t miss out on surfing’s latest revolution, “join here”.
+    </p>
   </div>
 )
 
