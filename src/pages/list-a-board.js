@@ -230,7 +230,7 @@ class ListABoard extends Component {
 				sold: false,
 				amountSoldFor: 0,
 				description: this.state.description
-				
+
 			});
 
 		// 4) SAVE BOARDS BY USER

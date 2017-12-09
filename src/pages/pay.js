@@ -38,14 +38,13 @@ class Payment extends PureComponent {
 
 	handlePayment() {
 
-		
-
 		const handler = StripeCheckout.configure({
 			key: 'pk_test_1cazrtmAqKca0bS7yjBlPNsC',
 			image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
 			locale: 'auto',
 			zipCode: true,
 			token: function(token) {
+
 				fetch(
 					`https://boardgrab-api.herokuapp.com/payment?token=${token.id}&stripeUser=${
 						this.state.stripeUser
