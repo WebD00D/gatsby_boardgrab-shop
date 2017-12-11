@@ -70,6 +70,8 @@ class Payment extends PureComponent {
 									status: 'succeeded'
 								});
 
+								// hit the mail BG mail api.
+
 								// Update offers/boardid/ meta..
 								var updates = {};
 								updates[`offers/${this.state.boardId}/paidFor`] = true;

@@ -64,24 +64,24 @@ class BoardDetail extends PureComponent {
 	}
 
 	sendOffer() {
-	
+
 		const sellerId = this.state.board.userId;
 		const buyerId = this.props.userId;
-		const offer = this.state.offer; 
+		const offer = this.state.offer;
 		const boardId = this.state.boardId;
 
 		const offerId = buyerId + "-" + boardId;
-	
+
 		var updates = {};
 		updates[`offers/${boardId}/paidFor`] = false;
 		updates[`offers/${boardId}/paidBy`] = '';
 		updates[`offers/${boardId}/paidOn`] = '';
 		updates[`offers/${boardId}/amountPaid`] = 0;
 		updates[`offers/${boardId}/paymentPending`] = false;
-		
-		// updagte the boardname on the sellers offer node 
+
+		// updagte the boardname on the sellers offer node
 		updates[`users/${sellerId}/offersReceived/${boardId}/name`] = this.state.board.name;
-	
+
 		fire
 		.database()
 		.ref()
@@ -99,7 +99,7 @@ class BoardDetail extends PureComponent {
 				offerAccepted: false
 			})
 
-			
+
 		// SET OFFERS RECEIVED NODE FOR SELLER
 		fire
 			.database()
@@ -115,7 +115,7 @@ class BoardDetail extends PureComponent {
 				offerAccepted: false
 			})
 
-		// SET OFERS MADE NODE FOR BUYER 
+		// SET OFERS MADE NODE FOR BUYER
 
 		fire
 		.database()
@@ -130,9 +130,9 @@ class BoardDetail extends PureComponent {
 			boardName: this.state.board.name,
 			offerAccepted: false
 		})
-		
+
 		this.setState({ messageStatus: 'Message Sent!' });
-		
+
 				setTimeout(
 					function() {
 						this.setState({
@@ -144,7 +144,7 @@ class BoardDetail extends PureComponent {
 					2000
 				);
 
-	} // end Send Offer 
+	} // end Send Offer
 
 	sendMessage() {
 		const sellerId = this.state.board.userId;
@@ -248,6 +248,16 @@ class BoardDetail extends PureComponent {
 	render() {
 		return (
 			<div className="site-container">
+
+			<div className="ad-container" style={{paddingLeft: '0px', paddingRight: '0px'}}>
+				<a href="https://us.billabong.com/shop/mens-boardshorts">
+					<img
+						className="ad"
+						src="https://us.billabong.com/media/transfer/img/lbib_unplug_hp_banner.jpg"
+					/>
+				</a>
+			</div>
+
 				{this.state.isOffer || this.state.isQuestion ? (
 					<div className="inquiry-popup">
 						<div className="message-box">
@@ -295,8 +305,8 @@ class BoardDetail extends PureComponent {
 											{' '}
 											If seller will ship, make sure to include shipping cost in your offer! If you do not know
 											the shipping cost, message them to get a price.
-											</div>			
-												<input 
+											</div>
+												<input
 													type="number"
 													className="message-box__input"
 													onChange={ e => {
@@ -397,7 +407,7 @@ class BoardDetail extends PureComponent {
 							? <div style={{ fontSize: '28px' }} className="fc-red">SOLD</div>
 							: <div style={{ fontSize: '28px' }} className="fc-green">${this.state.board.price}</div>
 							 }
-							
+
 
 							{ this.state.board.sold
 							? ''
@@ -420,7 +430,7 @@ class BoardDetail extends PureComponent {
 							</div>
 							}
 
-							
+
 						</div>
 
 						<div className="board-info__tags" style={{ marginTop: '0px' }}>
@@ -445,7 +455,7 @@ class BoardDetail extends PureComponent {
 									Shortboard
 								</span>
 							</div>
-							
+
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />
 								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">

@@ -31,7 +31,9 @@ class IndexPage extends PureComponent {
       width: 0,
       height: 0,
       flyout: false,
-      board: 0
+      board: 0,
+
+      bestForMenuOpen: false
     };
   }
 
@@ -200,69 +202,37 @@ class IndexPage extends PureComponent {
 
     return (
       <div id="container" style={{ display: "flex" }}>
-        <div
-          id="boards"
-          style={{
-            width: "70%",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "flex-start"
-          }}
-        >
-          <div
-            style={{
-              height: "40px",
-              width: "70%",
-              position: "fixed",
-              top: "100px",
-              backgroundColor: "#FFFFFF",
-              borderBottom: "1px solid #f5f5f5",
-              zIndex: 3,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <div
-              style={{
-                paddingLeft: "30px",
-                paddingRight: "30px",
-                width: "100%",
-                display: "flex"
-              }}
-            >
-              <div className="filter__text">
-                Best for{" "}
-                <img src={require("../layouts/images/dropdownarrow.png")} />
-              </div>
-              <div className="filter__text">
-                Price{" "}
-                <img src={require("../layouts/images/dropdownarrow.png")} />
-              </div>
-              <div className="filter__text">
-                Type{" "}
-                <img src={require("../layouts/images/dropdownarrow.png")} />
-              </div>
+        <div id="boards" className="boards-page-container">
 
-            </div>
+          <div className="ad-container">
+            <a href="https://us.billabong.com/shop/mens-boardshorts">
+              <img
+                className="ad"
+                src="https://us.billabong.com/media/transfer/img/lbib_unplug_hp_banner.jpg"
+              />
+            </a>
           </div>
 
-          <div
-            style={{
-              width: "100%",
-              paddingLeft: "30px",
-              paddingRight: "30px",
-              display: "flex",
-              flexWrap: "wrap"
-            }}
-          >
-            { _.reverse(boards)}
+          <div className="boards-pages-secondary-container">
+            {_.reverse(boards)}
           </div>
+
+          <div className="ad-container">
+            <a href="https://futuresfins.com/freestone-control.html">
+              <img
+                className="ad"
+                src="https://futuresfins.com/wp/wp-content/uploads/2016/05/Homepage_Freestone_Con_1520X700.jpg"
+              />
+            </a>
+          </div>
+
+
         </div>
         <div
           id="map"
+          className="board-map"
           style={{
-            width: "30%",
+            width: "40%",
             position: "fixed",
             top: "100px",
             bottom: 0,

@@ -70,7 +70,7 @@ class Navbar extends PureComponent {
       ""
     );
 
-    return;
+    return (
     <div className="navbar__wrapper">
       <div className="navbar">
         <div className="navbar__logo-wrap">
@@ -242,7 +242,8 @@ class Navbar extends PureComponent {
           </a>
         </div>
       </div>
-    </div>;
+    </div>
+  )
   }
 }
 
