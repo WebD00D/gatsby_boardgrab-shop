@@ -350,11 +350,9 @@ hr {
     border-radius: 4px;
 }
 
-
-
 .board-list-item {
   margin-bottom: 30px;
-  background-color: #FFFFFF;
+  background-color: rgb(245,245,245,0.6);
   padding: 16px;
   margin-left: 10px;
   margin-right: 10px;

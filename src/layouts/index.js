@@ -44,7 +44,7 @@ class TemplateWrapper extends React.Component {
         />
         <Navbar />
         {/* <ConnectedCounter /> */}
-        <div style={{ margin: "0 auto",paddingTop: 130, paddingBottom: 100, backgroundColor: '#F5F5F5' }}>
+        <div style={{ margin: "0 auto",paddingTop: 130, paddingBottom: 100 }}>
         {this.props.children()}
       </div>
       </div>

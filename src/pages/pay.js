@@ -265,13 +265,10 @@ class Payment extends PureComponent {
 							{' '}
 							<span className="fw-500">Buyer Email:</span> {this.state.buyerEmail}
 						</div>
+                      
                         <div className="f-16 t-sans">
 							{' '}
-							<span className="fw-500">Buyer Email:</span> {this.state.boardRegion}
-						</div>
-                        <div className="f-16 t-sans">
-							{' '}
-							<span className="fw-500">Buyer Email:</span> {this.state.boardCity}
+							<span className="fw-500">Board City:</span> {this.state.boardCity}
 						</div>
 
 						<button className="message-box__button ls-2" onClick={() => this.handlePayment()}>
