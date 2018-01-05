@@ -449,12 +449,6 @@ class BoardDetail extends PureComponent {
 						</div>
 
 						<div className="board-info__section">
-							<div className="board-info__section-row t-sans f-16">
-								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
-									Shortboard
-								</span>
-							</div>
 
 							<div className="board-info__section-row t-sans f-16">
 								<i className="fa fa-leaf" />

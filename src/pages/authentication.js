@@ -17,7 +17,9 @@ class Authentication extends PureComponent {
       password: "",
       newUser: false,
       returningUser: false,
-      loading: false
+      loading: false,
+      error: ''
+
     };
   }
 
@@ -54,8 +56,11 @@ class Authentication extends PureComponent {
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log("LOGIN ERROR", errorCode, errorMessage);
+        this.setState({
+          error: errorMessage
+        })
         // ...
-      });
+      }.bind(this));
   }
 
   _handleSignup() {
@@ -90,7 +95,10 @@ class Authentication extends PureComponent {
         // handle errors.
         const errorCode = error.code;
         const errorMessage = error.message;
-      });
+        this.setState({
+          error: errorMessage
+        })
+      }.bind(this));
   }
 
   render() {
@@ -104,6 +112,9 @@ class Authentication extends PureComponent {
 
     return (
       <div className="site-container--sm t-primary">
+
+        <div style={{width: '100%', marginBottom: '30px', backgroundColor: '#EC644B', color: '#FFFFFF', fontSize: '12px', borderRadius: '6px', textAlign: 'center' }}>{this.state.error}</div>
+
         <div className="authentication-header">Sign in </div>
         <label className="authentication-label">Email</label>
         <input

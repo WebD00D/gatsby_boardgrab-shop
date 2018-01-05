@@ -32,7 +32,6 @@ class IndexPage extends PureComponent {
       height: 0,
       flyout: false,
       board: 0,
-
       bestForMenuOpen: false
     };
   }
@@ -81,11 +80,13 @@ class IndexPage extends PureComponent {
   }
 
   _updateDims() {
-    const containerWidth = document.getElementById("map").clientWidth;
-    this.setState({
-      width: containerWidth,
-      height: window.innerHeight
-    });
+    if (document.getElementById("map")) {
+      const containerWidth = document.getElementById("map").clientWidth;
+      this.setState({
+        width: containerWidth,
+        height: window.innerHeight
+      });
+    }
   }
 
   _renderBoards = (board, index) => {
@@ -139,20 +140,22 @@ class IndexPage extends PureComponent {
     if (!this.props.boardsToDisplay || this.props.boardsToDisplay.length == 0) {
       if (!this.props.boardsToDisplay) {
         boards = (
-          <div className="t-sans">
-            No boards found! Be the first to{" "}
-            <Link className="fc-green" to="/list-a-board">
-              list a board for {this.props.selectedCity}
-            </Link>
+          <div className="t-sans" style={{minHeight: '300px', paddingBottom: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+            <div style={{marginBottom: '13px'}}><b>No Boards Found!</b></div>
+            <div style={{marginBottom: '13px'}}>Why not be the first to sell?</div>
+            { this.props.isSeller ? <Link className="auth-button" to="/list-a-board">list a board</Link> : '' }
+            { this.props.userAuthenticated && !this.props.isSeller ? <Link className="auth-button" to="/sell-with-us">Start selling</Link> : '' }
+            { !this.props.userAuthenticated ? <Link className="auth-button" to="/authentication">Create Account</Link> : '' }
           </div>
         );
       } else {
         boards = (
-          <div className="t-sans">
-            No boards found! Be the first to{" "}
-            <Link className="fc-green" to="/list-a-board">
-              list a board for this region
-            </Link>
+          <div className="t-sans" style={{minHeight: '300px', paddingBottom: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+            <div style={{marginBottom: '13px'}}><b>No Boards Found!</b></div>
+            <div style={{marginBottom: '13px'}}>Why not be the first to sell?</div>
+            { this.props.isSeller ? <Link className="auth-button" to="/list-a-board">list a board</Link> : '' }
+            { this.props.userAuthenticated && !this.props.isSeller ? <Link className="auth-button" to="/sell-with-us">Start selling</Link> : '' }
+            { !this.props.userAuthenticated ? <Link className="auth-button" to="/authentication">Create Account</Link> : '' }
           </div>
         );
       }
@@ -175,37 +178,40 @@ class IndexPage extends PureComponent {
       );
     }
 
-    let boardsByCity = Object.keys(this.props.boardsByCity).map(
-      function(key) {
-        const size = _.size(this.props.boardsByCity[key].boards);
-        console.log("SIZE", size);
+    let boardsByCity;
+    if ( this.props.boardsByCity ) {
+       boardsByCity = Object.keys(this.props.boardsByCity).map(
+        function(key) {
+          const size = _.size(this.props.boardsByCity[key].boards);
 
-        if (size == 0) {
-          return;
-        }
+          if (size == 0) {
+            return;
+          }
 
-        return (
-          <Marker
-            key={`marker-${key}`}
-            longitude={this.props.boardsByCity[key].longitude}
-            latitude={this.props.boardsByCity[key].latitude}
-          >
-            <CityPin
-              size={20}
-              boardCount={_.size(this.props.boardsByCity[key].boards)}
-              onClick={() => this.handleCityChange(key)}
-            />
-          </Marker>
-        );
-      }.bind(this)
-    );
+          return (
+            <Marker
+              key={`marker-${key}`}
+              longitude={this.props.boardsByCity[key].longitude}
+              latitude={this.props.boardsByCity[key].latitude}
+            >
+              <CityPin
+                size={20}
+                boardCount={_.size(this.props.boardsByCity[key].boards)}
+                onClick={() => this.handleCityChange(key)}
+              />
+            </Marker>
+          );
+        }.bind(this)
+      );
+    }
+
+
 
     return (
       <div id="container" style={{ display: "flex" }}>
         <div id="boards" className="boards-page-container">
-
           <div className="ad-container">
-            <a href="https://us.billabong.com/shop/mens-boardshorts">
+            <a target="_blank" href="https://us.billabong.com/shop/mens-boardshorts">
               <img
                 className="ad"
                 src="https://us.billabong.com/media/transfer/img/lbib_unplug_hp_banner.jpg"
@@ -218,15 +224,13 @@ class IndexPage extends PureComponent {
           </div>
 
           <div className="ad-container">
-            <a href="https://futuresfins.com/freestone-control.html">
+            <a target="_blank"  href="https://futuresfins.com/freestone-control.html">
               <img
                 className="ad"
                 src="https://futuresfins.com/wp/wp-content/uploads/2016/05/Homepage_Freestone_Con_1520X700.jpg"
               />
             </a>
           </div>
-
-
         </div>
         <div
           id="map"
@@ -275,7 +279,9 @@ const mapStateToProps = ({
   account_username,
   selectedCity,
   regionHasNoBoards,
-  selectedRegion
+  selectedRegion,
+  isSeller,
+  userAuthenticated
 }) => {
   return {
     userId,
@@ -290,7 +296,9 @@ const mapStateToProps = ({
     account_username,
     selectedCity,
     regionHasNoBoards,
-    selectedRegion
+    selectedRegion,
+    isSeller,
+    userAuthenticated
   };
 };
 

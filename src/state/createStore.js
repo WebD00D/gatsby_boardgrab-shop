@@ -364,8 +364,13 @@ const initialState = {
 			longitude: -122.4481201171875,
 			region: 'Northern California'
 		},
-		{ name: 'Berkely', latitude: 37.87268533717655, longitude: -122.2833251953125, region: 'Northern California' },
-		{ name: 'Vallejo', latitude: 38.10646650598286, longitude: -122.25860595703125, region: 'Northern California' },
+		{ name: 'Berkely',
+		latitude: 37.87268533717655,
+		longitude: -122.2833251953125, region: 'Northern California' },
+
+		{ name: 'Vallejo',
+		latitude: 38.10646650598286,
+		longitude: -122.25860595703125, region: 'Northern California' },
 		{
 			name: 'Mendacino',
 			latitude: 39.30242456041487,
@@ -731,6 +736,6 @@ const createStore = () =>
 	reduxCreateStore(
 		reducer,
 		initialState,
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	);
 export default createStore;

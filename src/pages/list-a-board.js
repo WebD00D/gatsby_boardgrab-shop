@@ -15,690 +15,1107 @@ import "../layouts/css/fcss.css";
 import "../layouts/css/button.css";
 
 class ListABoard extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.handleListing = this.handleListing.bind(this);
-		this.handleUploadStart = this.handleUploadStart.bind(this);
-		this.handleProgress = this.handleProgress.bind(this);
-		this.handleUploadError = this.handleUploadError.bind(this);
-		this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
-		this.handlePostAnother = this.handlePostAnother.bind(this);
+    this.handleListing = this.handleListing.bind(this);
+    this.handleUploadStart = this.handleUploadStart.bind(this);
+    this.handleProgress = this.handleProgress.bind(this);
+    this.handleUploadError = this.handleUploadError.bind(this);
+    this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
+    this.handlePostAnother = this.handlePostAnother.bind(this);
+    this.updateCityFromRegionChange = this.updateCityFromRegionChange.bind(
+      this
+    );
+    this.updateCityLongitudeLatitude = this.updateCityLongitudeLatitude.bind(
+      this
+    );
 
-		this.state = {
-			region: '',
-			city: '',
-			listingTitle: '',
-			brandShaper: '',
-			model: '',
-			dimensions: '',
-			fins: '',
-			condition: '',
-			height: '',
-			volume: '',
-			description: '',
+    this.state = {
+      region: "Southern California",
+      city: "San Diego",
+      longitude: -117.14996337890625,
+      latitude: 32.71566625570317,
 
-			shaperInfo: '8',
-			price: '655',
+      listingTitle: "",
+      brandShaper: "",
+      model: "",
+      dimensions: "",
+      fins: "",
+      condition: "",
+      height: "",
+      volume: "",
+      description: "",
 
-			avatar: '',
-			photoOne: '',
-			photoTwo: '',
-			photoThree: '',
-			photoFour: '',
-			photoFive: '',
-			photoSix: '',
-			imageName: '',
-			isUploading: false,
-			photoOneProgress: 0,
-			photoOneURL: '',
-			boardJustPosted: false,
+      shaperInfo: "8",
+      price: "655",
 
-			tag_beginner: false,
-			tag_intermediate: false,
-			tag_advanced: false,
-			tag_greatforanybody: false,
-			tag_smallwaves: false,
-			tag_budget: false,
+      avatar: "",
+      photoOne: "",
+      photoTwo: "",
+      photoThree: "",
+      photoFour: "",
+      photoFive: "",
+      photoSix: "",
+      imageName: "",
+      isUploading: false,
+      photoOneProgress: 0,
+      photoOneURL: "",
+      boardJustPosted: false,
 
-			newShaper: false,
-			newModel: true,
+      tag_beginner: false,
+      tag_intermediate: false,
+      tag_advanced: false,
+      tag_greatforanybody: false,
+      tag_smallwaves: false,
+      tag_budget: false,
 
-		};
-	}
+      newShaper: false,
+      newModel: true
+    };
+  }
 
-	handlePostAnother() {
-		this.setState({
-			boardJustPosted: false
-		});
-	}
+  updateCityFromRegionChange(region) {
+    let city, longitude, latitude;
 
-	handleUploadStart = name => this.setState({ isUploading: true, progress: 0, imageName: name });
-	handleProgress = progress => this.setState({ progress });
-	handleUploadError = error => {
-		this.setState({ isUploading: false });
-		console.error(error);
-	};
-	handleUploadSuccess = filename => {
-		const imageName = this.state.imageName;
-		this.setState({ progress: 100, isUploading: false });
-		fire
-			.storage()
-			.ref('images')
-			.child(filename)
-			.getDownloadURL()
-			.then(url => {
-				switch (this.state.imageName) {
-					case 'primary':
-						this.setState({ avatar: url });
-						break;
-					case 'one':
-						this.setState({ photoOne: url });
-						break;
-					case 'two':
-						this.setState({ photoTwo: url });
-						break;
-					case 'three':
-						this.setState({ photoThree: url });
-						break;
-					case 'four':
-						this.setState({ photoFour: url });
-						break;
-					case 'five':
-						this.setState({ photoFive: url });
-						break;
-					case 'six':
-						this.setState({ photoSix: url });
-						break;
-					default:
-						break;
-				}
-			});
-	};
+    switch (region) {
+      case "Southern California":
+        city = "San Diego";
+        longitude = -117.14996337890625;
+        latitude = 32.71566625570317;
+        break;
+      case "Northern California":
+        city = "Monterey";
+        longitude = -121.904296875;
+        latitude = 37.341775502148586;
+        break;
+      case "Pacific North West":
+        city = "Portland";
+        longitude = -122.684326171875;
+        latitude = 45.51404592560424;
+        break;
+      case "Mid Atlantic":
+        city = "Richmond";
+        longitude = -77.442626953125;
+        latitude = 37.54457732085582;
+        break;
+      case "South East":
+        city = "Emerald Isle";
+        longitude = -76.9427490234375;
+        latitude = 34.66484057821928;
+        break;
+      case "East Florida":
+        city = "St. Augustine";
+        longitude = -81.32080078125;
+        latitude = 29.91685223307017;
+        break;
+      case "Hawaii":
+        city = "O'ahu";
+        longitude = -157.9998779296875;
+        latitude = 21.442843107187656;
+        break;
+      case "Australia":
+        city = "Melbourne";
+        longitude = 145.01953125;
+        latitude = -37.85750715625203;
+        break;
+      case "South Africa":
+        city = "Cape Town";
+        longitude = 18.4185791015625;
+        latitude = -33.934245311173115;
+        break;
+      default:
+    }
 
-	handleListing() {
+    this.setState({
+      city,
+      longitude,
+      latitude
+    });
+  }
+
+  updateCityLongitudeLatitude(c) {
+    // set city , longitiude, and latitude....
+
+		let city, longitude, latitude;
+
+    switch (c) {
+      // SOUTHERN CALIFORNIA ..
+      case "San Diego":
+        city = "San Diego";
+        longitude = -117.14996337890625;
+        latitude = 32.71566625570317;
+        break;
+      case "La Jolla":
+        city = "La Jolla";
+        longitude = -117.26669311523438;
+        latitude = 32.83459674730076;
+        break;
+      case "Del Mar":
+        city = "Del Mar";
+        longitude = -117.257080078125;
+        latitude = 32.960281958039836;
+        break;
+      case "San Clemente":
+        city = "San Clemente";
+        longitude = -117.61138916015625;
+        latitude = 33.42914915719729;
+        break;
+      case "Encinitas":
+        city = "San Clemente";
+        longitude = -117.279052734375;
+        latitude = 33.03399561940715;
+        break;
+      case "Ocean Side":
+        city = "Ocean Side";
+        longitude = -117.36968994140625;
+        latitude = 33.19847683493303;
+        break;
+      case "Long Beach":
+        city = "Long Beach";
+        longitude = -118.19503784179688;
+        latitude = 33.773439833797745;
+        break;
+      case "Venice":
+        city = "Venice";
+        longitude = -118.47003936767578;
+        latitude = 33.985787115598434;
+        break;
+      case "Santa Monica":
+        city = "Santa Monica";
+        longitude = -118.49647521972656;
+        latitude = 34.021079493306914;
+        break;
+      case "Malibu":
+        city = "Malibu";
+        longitude = -118.78486633300781;
+        latitude = 34.02990029603907;
+        break;
+      case "Ventura":
+        city = "Ventura";
+        longitude = -119.23187255859375;
+        latitude = 34.27083595165;
+        break;
+      case "Santa Barbara":
+        city = "Santa Barbara";
+        longitude = -119.70977783203125;
+        latitude = 34.42730166315869;
+        break;
+
+      // NORTHERN CALIFORNIA
+      case "Monterey":
+        city = "Monterey";
+        longitude = -121.88507080078125;
+        latitude = 36.59127365634205;
+        break;
+      case "Santa Cruz":
+        city = "Santa Cruz";
+        longitude = -122.0196533203125;
+        latitude = 36.97622678464096;
+        break;
+      case "San Jose":
+        city = "San Jose";
+        longitude = -121.904296875;
+        latitude = 37.341775502148586;
+        break;
+      case "Palo Alto":
+        city = "Palo Alto";
+        longitude = -122.13775634765625;
+        latitude = 37.45741810262938;
+        break;
+      case "San Francisco":
+        city = "San Francisco";
+        longitude = -122.4481201171875;
+        latitude = 37.77071473849609;
+        break;
+      case "Berkely":
+        city = "Berkely";
+        longitude = -122.2833251953125;
+        latitude = 37.87268533717655;
+        break;
+      case "Vallejo":
+        city = "Vallejo";
+        longitude = -122.25860595703125;
+        latitude = 38.10646650598286;
+        break;
+      case "Mendacino":
+        city = "Mendacino";
+        longitude = -123.7774658203125;
+        latitude = 39.30242456041487;
+        break;
+
+      // PACIFIC NORTH WEST
+
+      case "Portland":
+        city = "Portland";
+        longitude = -122.684326171875;
+        latitude = 45.51404592560424;
+        break;
+      case "Seattle":
+        city = "Seattle";
+        longitude = -122.36572265625;
+        latitude = 47.60616304386874;
+        break;
+      case "Astoria":
+        city = "Astoria";
+        longitude = -123.8851244;
+        latitude = 46.1916157;
+        break;
+
+      // MID ATLANTIC
+
+      case "Richmond":
+        city = "Richmond";
+        longitude = -77.442626953125;
+        latitude = 37.54457732085582;
+        break;
+      case "Virginia Beach":
+        city = "Virginia Beach";
+        longitude = -75.9814453125;
+        latitude = 36.85325222344019;
+        break;
+      case "Outer Banks":
+        city = "Outer Banks";
+        longitude = -75.6243896484375;
+        latitude = 35.94688293218141;
+        break;
+      case "Southern Delaware":
+        city = "Southern Delaware";
+        longitude = -75.07232666015625;
+        latitude = 38.53527591154414;
+        break;
+      case "Ocean City":
+        city = "Ocean City";
+        longitude = -74.5806884765625;
+        latitude = 39.281167913914636;
+        break;
+      case "Eastern Shore":
+        city = "Eastern Shore";
+        longitude = -75.7122802734375;
+        latitude = 37.56417412088097;
+        break;
+      case "Atlantic City":
+        city = "Atlantic City";
+        longitude = -74.44610595703125;
+        latitude = 39.37040245787161;
+        break;
+      case "Long Beach Island":
+        city = "Long Beach Island";
+        longitude = -74.190673828125;
+        latitude = 39.65434146406167;
+        break;
+      case "Seaside Heights":
+        city = "Seaside Heights";
+        longitude = -74.07257080078125;
+        latitude = 39.9434364619742;
+        break;
+
+      // SOUTH EAST
+      case "Emerald Isle":
+        city = "Emerald Isle";
+        longitude = -76.9427490234375;
+        latitude = 34.66484057821928;
+        break;
+      case "Wrightsville Beach":
+        city = "Wrightsville Beach";
+        longitude = -77.80517578125;
+        latitude = 34.17090836352573;
+        break;
+      case "Surf City":
+        city = "Surf City";
+        longitude = -77.5469970703125;
+        latitude = 34.42956713470528;
+        break;
+      case "Myrtle Beach":
+        city = "Myrtle Beach";
+        longitude = -78.8873291015625;
+        latitude = 33.69235234723729;
+        break;
+      case "Charleston":
+        city = "Charleston";
+        longitude = -79.9310302734375;
+        latitude = 32.78265637602964;
+        break;
+      case "Folly Beach":
+        city = "Folly Beach";
+        longitude = -79.9420166015625;
+        latitude = 32.654407116645416;
+        break;
+      case "Hilton Head":
+        city = "Hilton Head";
+        longitude = -80.738525390625;
+        latitude = 32.20582936513577;
+        break;
+      case "Tybee Island":
+        city = "Tybee Island";
+        longitude = -80.84976196289062;
+        latitude = 31.99643007718664;
+        break;
+      case "Brunswick":
+        city = "Brunswick";
+        longitude = -81.47872924804688;
+        latitude = 31.15053220759678;
+        break;
+
+      // EAST FLORIDA
+      case "St. Augustine":
+        city = "St. Augustine";
+        longitude = -81.32080078125;
+        latitude = 29.91685223307017;
+        break;
+      case "Cocoa Beach":
+        city = "Cocoa Beach";
+        longitude = -80.60943603515625;
+        latitude = 28.321306762152954;
+        break;
+      case "Palm Beach":
+        city = "Palm Beach";
+        longitude = -80.05050659179688;
+        latitude = 26.698998877374333;
+        break;
+      case "Delray":
+        city = "Delray";
+        longitude = -80.07522583007812;
+        latitude = 26.45950861170239;
+        break;
+      case "Miami":
+        city = "Miami";
+        longitude = -80.20294189453125;
+        latitude = 25.764030136696327;
+        break;
+
+      // HAWAII
+      case "O'ahu":
+        city = "O'ahu";
+        longitude = -157.9998779296875;
+        latitude = 21.442843107187656;
+        break;
+      case "Maui":
+        city = "Maui";
+        longitude = -156.6705322265625;
+        latitude = 20.87677672772702;
+        break;
+      case "Hawaii":
+        city = "Hawaii";
+        longitude = -155.85617065429688;
+        latitude = 20.035289711352377;
+        break;
+
+      // SOUTH AFRICA
+      case "Cape Town":
+        city = "Cape Town";
+        longitude = 18.4185791015625;
+        latitude = -33.934245311173115;
+        break;
+
+      // AUSTRALIA
+      case "Melbourne":
+        city = "Melbourne";
+        longitude = 145.01953125;
+        latitude = -37.85750715625203;
+        break;
+      case "Sydney":
+        city = "Sydney";
+        longitude = 151.083984375;
+        latitude = -33.87041555094182;
+        break;
+
+      default:
+    }
+
+    this.setState({
+      city,
+      longitude,
+      latitude
+    });
+  }
+
+  handlePostAnother() {
+    this.setState({
+      boardJustPosted: false
+    });
+  }
+
+  handleUploadStart = name =>
+    this.setState({ isUploading: true, progress: 0, imageName: name });
+  handleProgress = progress => this.setState({ progress });
+  handleUploadError = error => {
+    this.setState({ isUploading: false });
+    console.error(error);
+  };
+  handleUploadSuccess = filename => {
+    const imageName = this.state.imageName;
+    this.setState({ progress: 100, isUploading: false });
+    fire
+      .storage()
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then(url => {
+        switch (this.state.imageName) {
+          case "primary":
+            this.setState({ avatar: url });
+            break;
+          case "one":
+            this.setState({ photoOne: url });
+            break;
+          case "two":
+            this.setState({ photoTwo: url });
+            break;
+          case "three":
+            this.setState({ photoThree: url });
+            break;
+          case "four":
+            this.setState({ photoFour: url });
+            break;
+          case "five":
+            this.setState({ photoFive: url });
+            break;
+          case "six":
+            this.setState({ photoSix: url });
+            break;
+          default:
+            break;
+        }
+      });
+  };
+
+  handleListing() {
     const dateTime = Date.now();
 
-		// 1)  SAVE BOARD BY REGION
-		fire
-			.database()
-			.ref(`boardsByRegion/${this.state.region}/${dateTime}`)
-			.set({
-				listDate: Date.now(),
-				userId: this.props.userId,
-				status: 'PUBLISHED',
-				region: this.state.region,
-				city: this.state.city,
-				name: this.state.listingTitle,
-				brand: this.state.brandShaper,
-				model: this.state.model,
-				dimensions: this.state.dimensions,
-				fins: this.state.fins,
-				condition: this.state.condition,
-				dimensions: this.state.dimensions,
-				shaperInfo: this.state.shaperInfo,
-				price: this.state.price,
-				tag_beginner: this.state.tag_beginner,
-				tag_intermediate: this.state.tag_intermediate,
-				tag_advanced: this.state.tag_advanced,
-				tag_greatforanybody: this.state.tag_greatforanybody,
-				tag_smallwaves: this.state.tag_smallwaves,
-				tag_budget: this.state.tag_budget,
-				featurePhotoURL: this.state.avatar,
-				photoOne: this.state.photoOne,
-				photoTwo: this.state.photoTwo,
-				photoThree: this.state.photoThree,
-				photoFour: this.state.photoFour,
-				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix,
-				volume: this.state.volume,
-				sold: false,
-				description: this.state.description
-			});
 
-		// 2) SAVE BOARD BY CITY
-		fire
-			.database()
-			.ref(`boardsByCity/${this.state.city}/boards/${dateTime}`)
-			.set({
-				listDate: Date.now(),
-				userId: this.props.userId,
-				status: 'PUBLISHED',
-				region: this.state.region,
-				city: this.state.city,
-				name: this.state.listingTitle,
-				brand: this.state.brandShaper,
-				model: this.state.model,
-				dimensions: this.state.dimensions,
-				fins: this.state.fins,
-				condition: this.state.condition,
-				dimensions: this.state.dimensions,
-				shaperInfo: this.state.shaperInfo,
-				price: this.state.price,
-				tag_beginner: this.state.tag_beginner,
-				tag_intermediate: this.state.tag_intermediate,
-				tag_advanced: this.state.tag_advanced,
-				tag_greatforanybody: this.state.tag_greatforanybody,
-				tag_smallwaves: this.state.tag_smallwaves,
-				tag_budget: this.state.tag_budget,
-				featurePhotoURL: this.state.avatar,
-				photoOne: this.state.photoOne,
-				photoTwo: this.state.photoTwo,
-				photoThree: this.state.photoThree,
-				photoFour: this.state.photoFour,
-				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix,
-				volume: this.state.volume,
-				sold: false,
-				amountSoldFor: 0,
-				description: this.state.description
-			});
 
-		// 3) SAVE TO ALL BOARD LIST
-		fire
-			.database()
-			.ref(`allBoardsList/boards/${dateTime}`)
-			.set({
-				listDate: Date.now(),
-				userId: this.props.userId,
-				status: 'PUBLISHED',
-				region: this.state.region,
-				city: this.state.city,
-				name: this.state.listingTitle,
-				brand: this.state.brandShaper,
-				model: this.state.model,
-				dimensions: this.state.dimensions,
-				fins: this.state.fins,
-				condition: this.state.condition,
-				dimensions: this.state.dimensions,
-				shaperInfo: this.state.shaperInfo,
-				price: this.state.price,
-				tag_beginner: this.state.tag_beginner,
-				tag_intermediate: this.state.tag_intermediate,
-				tag_advanced: this.state.tag_advanced,
-				tag_greatforanybody: this.state.tag_greatforanybody,
-				tag_smallwaves: this.state.tag_smallwaves,
-				tag_budget: this.state.tag_budget,
-				featurePhotoURL: this.state.avatar,
-				photoOne: this.state.photoOne,
-				photoTwo: this.state.photoTwo,
-				photoThree: this.state.photoThree,
-				photoFour: this.state.photoFour,
-				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix,
-				volume: this.state.volume,
-				sold: false,
-				amountSoldFor: 0,
-				description: this.state.description
+    // 1)  SAVE BOARD BY REGION
+    fire
+      .database()
+      .ref(`boardsByRegion/${this.state.region}/${dateTime}`)
+      .set({
+        listDate: Date.now(),
+        userId: this.props.userId,
+        status: "PUBLISHED",
+        region: this.state.region,
+        city: this.state.city,
+        name: this.state.listingTitle,
+        brand: this.state.brandShaper,
+        model: this.state.model,
+        dimensions: this.state.dimensions,
+        fins: this.state.fins,
+        condition: this.state.condition,
+        dimensions: this.state.dimensions,
+        shaperInfo: this.state.shaperInfo,
+        price: this.state.price,
+        tag_beginner: this.state.tag_beginner,
+        tag_intermediate: this.state.tag_intermediate,
+        tag_advanced: this.state.tag_advanced,
+        tag_greatforanybody: this.state.tag_greatforanybody,
+        tag_smallwaves: this.state.tag_smallwaves,
+        tag_budget: this.state.tag_budget,
+        featurePhotoURL: this.state.avatar,
+        photoOne: this.state.photoOne,
+        photoTwo: this.state.photoTwo,
+        photoThree: this.state.photoThree,
+        photoFour: this.state.photoFour,
+        photoFive: this.state.photoFive,
+        photoSix: this.state.photoSix,
+        volume: this.state.volume,
+        sold: false,
+        description: this.state.description
+      });
 
-			});
+    // 2) SAVE BOARD BY CITY
 
-		// 4) SAVE BOARDS BY USER
-		fire
-			.database()
-			.ref(`boardsByUser/${this.props.userId}/${dateTime}`)
-			.set({
-				listDate: Date.now(),
-				userId: this.props.userId,
-				status: 'PUBLISHED',
-				region: this.state.region,
-				city: this.state.city,
-				name: this.state.listingTitle,
-				brand: this.state.brandShaper,
-				model: this.state.model,
-				dimensions: this.state.dimensions,
-				fins: this.state.fins,
-				condition: this.state.condition,
-				dimensions: this.state.dimensions,
-				shaperInfo: this.state.shaperInfo,
-				price: this.state.price,
-				tag_beginner: this.state.tag_beginner,
-				tag_intermediate: this.state.tag_intermediate,
-				tag_advanced: this.state.tag_advanced,
-				tag_greatforanybody: this.state.tag_greatforanybody,
-				tag_smallwaves: this.state.tag_smallwaves,
-				tag_budget: this.state.tag_budget,
-				featurePhotoURL: this.state.avatar,
-				photoOne: this.state.photoOne,
-				photoTwo: this.state.photoTwo,
-				photoThree: this.state.photoThree,
-				photoFour: this.state.photoFour,
-				photoFive: this.state.photoFive,
-				photoSix: this.state.photoSix,
-				volume: this.state.volume,
-				sold: false,
-				amountSoldFor: 0,
-				description: this.state.description
-			});
+    // DO AN UPDATE FOR THE CITY LONGITUDE AND LATITUDE...
+    let cityMeta = {};
+    cityMeta[`boardsByCity/${this.state.city}/latitude`] = this.state.latitude;
+    cityMeta[`boardsByCity/${this.state.city}/longitude`] = this.state.longitude;
 
-		this.setState({
-			boardJustPosted: true
-		});
-	}
+    fire
+      .database()
+      .ref()
+      .update(cityMeta);
 
-	render() {
-		const cities = this.props.dropDownCityList.map((city, key) => {
-			if (city.name != 'All Cities') {
-				return (
-					<option key={key} value={city.name}>
-						{city.name}
-					</option>
-				);
-			}
-		});
+    fire
+      .database()
+      .ref(`boardsByCity/${this.state.city}/boards/${dateTime}`)
+      .set({
+        listDate: Date.now(),
+        userId: this.props.userId,
+        status: "PUBLISHED",
+        region: this.state.region,
+        city: this.state.city,
+        name: this.state.listingTitle,
+        brand: this.state.brandShaper,
+        model: this.state.model,
+        dimensions: this.state.dimensions,
+        fins: this.state.fins,
+        condition: this.state.condition,
+        dimensions: this.state.dimensions,
+        shaperInfo: this.state.shaperInfo,
+        price: this.state.price,
+        tag_beginner: this.state.tag_beginner,
+        tag_intermediate: this.state.tag_intermediate,
+        tag_advanced: this.state.tag_advanced,
+        tag_greatforanybody: this.state.tag_greatforanybody,
+        tag_smallwaves: this.state.tag_smallwaves,
+        tag_budget: this.state.tag_budget,
+        featurePhotoURL: this.state.avatar,
+        photoOne: this.state.photoOne,
+        photoTwo: this.state.photoTwo,
+        photoThree: this.state.photoThree,
+        photoFour: this.state.photoFour,
+        photoFive: this.state.photoFive,
+        photoSix: this.state.photoSix,
+        volume: this.state.volume,
+        sold: false,
+        amountSoldFor: 0,
+        description: this.state.description
+      });
 
-		if (!this.props.userId) {
-			return <Redirect to="/authentication" />;
-		}
+    // 3) SAVE TO ALL BOARD LIST
+    fire
+      .database()
+      .ref(`allBoardsList/boards/${dateTime}`)
+      .set({
+        listDate: Date.now(),
+        userId: this.props.userId,
+        status: "PUBLISHED",
+        region: this.state.region,
+        city: this.state.city,
+        name: this.state.listingTitle,
+        brand: this.state.brandShaper,
+        model: this.state.model,
+        dimensions: this.state.dimensions,
+        fins: this.state.fins,
+        condition: this.state.condition,
+        dimensions: this.state.dimensions,
+        shaperInfo: this.state.shaperInfo,
+        price: this.state.price,
+        tag_beginner: this.state.tag_beginner,
+        tag_intermediate: this.state.tag_intermediate,
+        tag_advanced: this.state.tag_advanced,
+        tag_greatforanybody: this.state.tag_greatforanybody,
+        tag_smallwaves: this.state.tag_smallwaves,
+        tag_budget: this.state.tag_budget,
+        featurePhotoURL: this.state.avatar,
+        photoOne: this.state.photoOne,
+        photoTwo: this.state.photoTwo,
+        photoThree: this.state.photoThree,
+        photoFour: this.state.photoFour,
+        photoFive: this.state.photoFive,
+        photoSix: this.state.photoSix,
+        volume: this.state.volume,
+        sold: false,
+        amountSoldFor: 0,
+        description: this.state.description
+      });
 
-		if (this.state.boardJustPosted) {
-			return (
-				<div className="create-account">
-					<div className="create-account__headline m-b-20">Board submitted.</div>
-					<button onClick={this.handlePostAnother} className="button button--green button--small m-b-20">
-						Post another?
-					</button>
-					<Link to="/inventory" className="td-none t-sans fc-green f-11 m-t-30">
-						Go to my quiver.
-					</Link>
-				</div>
-			);
-		}
+    // 4) SAVE BOARDS BY USER
+    fire
+      .database()
+      .ref(`boardsByUser/${this.props.userId}/${dateTime}`)
+      .set({
+        listDate: Date.now(),
+        userId: this.props.userId,
+        status: "PUBLISHED",
+        region: this.state.region,
+        city: this.state.city,
+        name: this.state.listingTitle,
+        brand: this.state.brandShaper,
+        model: this.state.model,
+        dimensions: this.state.dimensions,
+        fins: this.state.fins,
+        condition: this.state.condition,
+        dimensions: this.state.dimensions,
+        shaperInfo: this.state.shaperInfo,
+        price: this.state.price,
+        tag_beginner: this.state.tag_beginner,
+        tag_intermediate: this.state.tag_intermediate,
+        tag_advanced: this.state.tag_advanced,
+        tag_greatforanybody: this.state.tag_greatforanybody,
+        tag_smallwaves: this.state.tag_smallwaves,
+        tag_budget: this.state.tag_budget,
+        featurePhotoURL: this.state.avatar,
+        photoOne: this.state.photoOne,
+        photoTwo: this.state.photoTwo,
+        photoThree: this.state.photoThree,
+        photoFour: this.state.photoFour,
+        photoFive: this.state.photoFive,
+        photoSix: this.state.photoSix,
+        volume: this.state.volume,
+        sold: false,
+        amountSoldFor: 0,
+        description: this.state.description
+      });
 
-		return (
-			<div className="create-account">
-				<div className="create-account__headline m-b-10">List a Board </div>
-				<Link to="/inventory" className="td-none t-sans fc-green f-11 ">
-					Cancel and return to inventory
-				</Link>
+    this.setState({
+      boardJustPosted: true
+    });
+  }
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Listing Title </label>
-						<input
-							name="listingTitle"
-							onChange={e => {
-								this.setState({ listingTitle: e.target.value });
-							}}
-							type="text"
-						/>
-					</div>
-					<label>Brand / Shaper </label>
-					<input
-						name="brandShaper"
-						onChange={e => {
-							this.setState({ brandShaper: e.target.value });
-						}}
-						type="text"
-					/>
-				</div>
+  render() {
+    const cities = this.props.dropDownCityList.map((city, key) => {
+      if (city.name != "All Cities") {
+        return (
+          <option key={key} value={city.name}>
+            {city.name}
+          </option>
+        );
+      }
+    });
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Model </label>
-						<input
-							name="model"
-							onChange={e => {
-								this.setState({ model: e.target.value });
-							}}
-							type="text"
-						/>
-					</div>
-					<label>Dimensions </label>
-					<input
-						name="dimensions"
-						onChange={e => {
-							this.setState({ dimensions: e.target.value });
-						}}
-						type="text"
-					/>
-					<label>Volume </label>
-					<input
-						name="volume"
-						onChange={e => {
-							this.setState({ volume: e.target.value });
-						}}
-						type="text"
-					/>
-				</div>
+    // if (!this.props.userId) {
+    //   return <Redirect to="/authentication" />;
+    // }
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Fins </label>
-						<input
-							name="fins"
-							onChange={e => {
-								this.setState({ fins: e.target.value });
-							}}
-							type="text"
-						/>
-					</div>
-					<label>Condition </label>
-					<input
-						name="condition"
-						onChange={e => {
-							this.setState({ condition: e.target.value });
-						}}
-						type="text"
-					/>
-				</div>
+    if (this.state.boardJustPosted) {
+      return (
+        <div className="create-account">
+          <div className="create-account__headline m-b-20" style={{marginTop: '20px'}}>
+            Nice work.
+          </div>
+          <button
+            onClick={this.handlePostAnother}
+            className="button button--green button--small m-b-20"
+          >
+            Post another?
+          </button>
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Description </label>
-						<input
-							name="description"
-							onChange={e => {
-								this.setState({ description: e.target.value });
-							}}
-							type="text"
-						/>
-					</div>
-					<label>Shaper Info </label>
-					<input
-						name="shaperInfo"
-						onChange={e => {
-							this.setState({ shaperInfo: e.target.value });
-						}}
-						type="text"
-					/>
-				</div>
+        </div>
+      );
+    }
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Price </label>
-						<input
-							name="price"
-							onChange={e => {
-								this.setState({ price: e.target.value });
-							}}
-							type="text"
-						/>
-					</div>
-				</div>
+    return (
+      <div className="create-account">
+        <div className="create-account__headline m-b-10">List a Board </div>
+        <Link to="/inventory" className="td-none t-sans fc-green f-11 ">
+          Cancel and return to inventory
+        </Link>
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Tags </label>
-						<div style={{ display: 'flex', flexDirection: 'column' }}>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_beginner"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_beginner').checked;
-										this.setState({ tag_beginner: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">Beginner</div>
-							</div>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_intermediate"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_intermediate').checked;
-										this.setState({ tag_intermediate: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">Intermediate</div>
-							</div>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_advanced"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_advanced').checked;
-										this.setState({ tag_advanced: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">Advanced</div>
-							</div>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_greatforanybody"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_greatforanybody').checked;
-										this.setState({ tag_greatforanybody: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">Great for anybody</div>
-							</div>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_smallwaves"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_smallwaves').checked;
-										this.setState({ tag_smallwaves: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">Small Waves</div>
-							</div>
-							<div style={{ display: 'flex', alignItems: 'center' }}>
-								<input
-									id="tag_budget"
-									style={{ width: '30px', marginBottom: '0px', height: '20px' }}
-									name="beginners"
-									onChange={e => {
-										let checked = document.getElementById('tag_budget').checked;
-										this.setState({ tag_budget: checked });
-									}}
-									type="checkbox"
-								/>
-								<div className="tag">On a Budget</div>
-							</div>
-						</div>
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Listing Title </label>
+            <input
+              name="listingTitle"
+              onChange={e => {
+                this.setState({ listingTitle: e.target.value });
+              }}
+              type="text"
+            />
+          </div>
+          <label>Brand / Shaper </label>
+          <input
+            name="brandShaper"
+            onChange={e => {
+              this.setState({ brandShaper: e.target.value });
+            }}
+            type="text"
+          />
+        </div>
 
-				<div className="login-form__field m-t-30">
-					<div className="login-form__field">
-						<label>Region</label>
-						<select
-							onChange={e => {
-								this.setState({ region: e.target.value });
-								this.props.setListingCities(e.target.value);
-							}}
-						>
-							<option value="Southern California">Southern California</option>
-							<option value="Northern California">Northern California</option>
-							<option value="Pacific North West">Pacific North West</option>
-							<option value="Mid Atlantic">Mid Atlantic</option>
-							<option value="South East">South East</option>
-							<option value="East Florida">East Florida</option>
-							<option value="Hawaii">Hawaii</option>
-							<option value="Australia">Australia</option>
-							<option value="South Africa">South Africa</option>
-						</select>
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Model </label>
+            <input
+              name="model"
+              onChange={e => {
+                this.setState({ model: e.target.value });
+              }}
+              type="text"
+            />
+          </div>
+          <label>Dimensions </label>
+          <input
+            name="dimensions"
+            onChange={e => {
+              this.setState({ dimensions: e.target.value });
+            }}
+            type="text"
+          />
+          <label>Volume </label>
+          <input
+            name="volume"
+            onChange={e => {
+              this.setState({ volume: e.target.value });
+            }}
+            type="text"
+          />
+        </div>
 
-				<div className="login-form__field">
-					<div className="login-form__field">
-						<label>City</label>
-						<select onChange={e => this.setState({ city: e.target.value })}>{cities}</select>
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Fins </label>
+            <input
+              name="fins"
+              onChange={e => {
+                this.setState({ fins: e.target.value });
+              }}
+              type="text"
+            />
+          </div>
+          <label>Condition </label>
+          <input
+            name="condition"
+            onChange={e => {
+              this.setState({ condition: e.target.value });
+            }}
+            type="text"
+          />
+        </div>
 
-				<div className="login-form__field m-t-30 m-b-0">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Primary Photo{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('primary')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.avatar && <img src={this.state.avatar} />}
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Description </label>
+            <input
+              name="description"
+              onChange={e => {
+                this.setState({ description: e.target.value });
+              }}
+              type="text"
+            />
+          </div>
+          <label>Shaper Info </label>
+          <input
+            name="shaperInfo"
+            onChange={e => {
+              this.setState({ shaperInfo: e.target.value });
+            }}
+            type="text"
+          />
+        </div>
 
-				<div className="login-form__field m-b-0 ">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #1{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('one')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoOne && <img src={this.state.photoOne} />}
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Price </label>
+            <input
+              name="price"
+              onChange={e => {
+                this.setState({ price: e.target.value });
+              }}
+              type="text"
+            />
+          </div>
+        </div>
 
-				<div className="login-form__field m-b-0 ">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #2{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('two')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoTwo && <img src={this.state.photoTwo} />}
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Tags </label>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_beginner"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_beginner")
+                      .checked;
+                    this.setState({ tag_beginner: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">Beginner</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_intermediate"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_intermediate")
+                      .checked;
+                    this.setState({ tag_intermediate: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">Intermediate</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_advanced"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_advanced")
+                      .checked;
+                    this.setState({ tag_advanced: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">Advanced</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_greatforanybody"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_greatforanybody")
+                      .checked;
+                    this.setState({ tag_greatforanybody: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">Great for anybody</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_smallwaves"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_smallwaves")
+                      .checked;
+                    this.setState({ tag_smallwaves: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">Small Waves</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                  id="tag_budget"
+                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
+                  name="beginners"
+                  onChange={e => {
+                    let checked = document.getElementById("tag_budget").checked;
+                    this.setState({ tag_budget: checked });
+                  }}
+                  type="checkbox"
+                />
+                <div className="tag">On a Budget</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-				<div className="login-form__field m-b-0">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #3{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('three')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoThree && <img src={this.state.photoThree} />}
-					</div>
-				</div>
+        <div className="login-form__field m-t-30">
+          <div className="login-form__field">
+            <label>Region</label>
+            <select
+              onChange={e => {
+                this.setState({ region: e.target.value });
+                this.props.setListingCities(e.target.value);
+                this.updateCityFromRegionChange(e.target.value);
+              }}
+            >
+              <option value="Southern California">Southern California</option>
+              <option value="Northern California">Northern California</option>
+              <option value="Pacific North West">Pacific North West</option>
+              <option value="Mid Atlantic">Mid Atlantic</option>
+              <option value="South East">South East</option>
+              <option value="East Florida">East Florida</option>
+              <option value="Hawaii">Hawaii</option>
+              <option value="Australia">Australia</option>
+              <option value="South Africa">South Africa</option>
+            </select>
+          </div>
+        </div>
 
-				<div className="login-form__field m-b-0">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #4{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('four')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoFour && <img src={this.state.photoFour} />}
-					</div>
-				</div>
+        <div className="login-form__field">
+          <div className="login-form__field">
+            <label>City</label>
+            <select
+              onChange={e => {
+                this.setState({ city: e.target.value });
+                this.updateCityLongitudeLatitude(e.target.value);
+              }}
+              value={this.state.city}
+            >
+              {cities}
+            </select>
+          </div>
+        </div>
 
-				<div className="login-form__field m-b-0">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #5{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('five')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoFive && <img src={this.state.photoFive} />}
-					</div>
-				</div>
+        <div className="login-form__field m-t-30 m-b-0">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Primary Photo{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("primary")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.avatar && <img src={this.state.avatar} />}
+          </div>
+        </div>
 
-				<div className="login-form__field m-b-0">
-					<div className="login-form__field">
-						<label htmlFor="avatar">
-							Photo #6{' '}
-							{this.state.isUploading && (
-								<span className="f-11 t-sans t-upper fc-green"> {this.state.progress} %</span>
-							)}
-						</label>
-						<FileUploader
-							className="inputFile"
-							accept="image/*"
-							name="avatar"
-							randomizeFilename
-							storageRef={fire.storage().ref('images')}
-							onUploadStart={() => this.handleUploadStart('six')}
-							onUploadError={this.handleUploadError}
-							onUploadSuccess={this.handleUploadSuccess}
-							onProgress={this.handleProgress}
-						/>
-						{this.state.photoSix && <img src={this.state.photoSix} />}
-					</div>
-				</div>
+        <div className="login-form__field m-b-0 ">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #1{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("one")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoOne && <img src={this.state.photoOne} />}
+          </div>
+        </div>
 
-				<button onClick={this.handleListing} className="button button--green button--large">
-					Publish Listing
-				</button>
-			</div>
-		);
-	}
+        <div className="login-form__field m-b-0 ">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #2{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("two")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoTwo && <img src={this.state.photoTwo} />}
+          </div>
+        </div>
+
+        <div className="login-form__field m-b-0">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #3{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("three")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoThree && <img src={this.state.photoThree} />}
+          </div>
+        </div>
+
+        <div className="login-form__field m-b-0">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #4{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("four")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoFour && <img src={this.state.photoFour} />}
+          </div>
+        </div>
+
+        <div className="login-form__field m-b-0">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #5{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("five")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoFive && <img src={this.state.photoFive} />}
+          </div>
+        </div>
+
+        <div className="login-form__field m-b-0">
+          <div className="login-form__field">
+            <label htmlFor="avatar">
+              Photo #6{" "}
+              {this.state.isUploading && (
+                <span className="f-11 t-sans t-upper fc-green">
+                  {" "}
+                  {this.state.progress} %
+                </span>
+              )}
+            </label>
+            <FileUploader
+              className="inputFile"
+              accept="image/*"
+              name="avatar"
+              randomizeFilename
+              storageRef={fire.storage().ref("images")}
+              onUploadStart={() => this.handleUploadStart("six")}
+              onUploadError={this.handleUploadError}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            {this.state.photoSix && <img src={this.state.photoSix} />}
+          </div>
+        </div>
+
+        <button
+          onClick={this.handleListing}
+          className="button button--green button--large"
+        >
+          Publish Listing
+        </button>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ userId, shop_coast, dropDownCityList }) => {
@@ -707,8 +1124,8 @@ const mapStateToProps = ({ userId, shop_coast, dropDownCityList }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setListingCities: (region) => dispatch({ type: `SET_LISTING_CITIES`, region }),
-  }
-}
+    setListingCities: region => dispatch({ type: `SET_LISTING_CITIES`, region })
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListABoard);
