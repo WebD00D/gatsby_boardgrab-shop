@@ -4,9 +4,9 @@ import { Route, Redirect } from "react-router-dom";
 import fire from "../fire";
 //import boardfax from "../boardfax";
 import FatherTime from "../utils/fatherTime";
-import FileUploader from "react-firebase-file-uploader";
 import { connect } from "react-redux";
 import Moment from "react-moment";
+import Dropzone from "react-dropzone";
 
 import "../layouts/css/login.css";
 import "../layouts/css/listing.css";
@@ -19,10 +19,7 @@ class ListABoard extends Component {
     super(props);
 
     this.handleListing = this.handleListing.bind(this);
-    this.handleUploadStart = this.handleUploadStart.bind(this);
-    this.handleProgress = this.handleProgress.bind(this);
-    this.handleUploadError = this.handleUploadError.bind(this);
-    this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
+
     this.handlePostAnother = this.handlePostAnother.bind(this);
     this.updateCityFromRegionChange = this.updateCityFromRegionChange.bind(
       this
@@ -30,6 +27,8 @@ class ListABoard extends Component {
     this.updateCityLongitudeLatitude = this.updateCityLongitudeLatitude.bind(
       this
     );
+
+    this.uploadPhoto = this.uploadPhoto.bind(this);
 
     this.state = {
       region: "Southern California",
@@ -73,6 +72,16 @@ class ListABoard extends Component {
       newShaper: false,
       newModel: true
     };
+  }
+
+  uploadPhoto(files) {
+    const dateTime = Date.now();
+    const storageRef = fire.storage().ref().child(`BG-${dateTime}-${files[0].name}`);
+    storageRef.put(files[0]).then(function(snapshot) {
+      this.setState({
+        avatar: snapshot.metadata.downloadURLs[0]
+      })
+    }.bind(this));
   }
 
   updateCityFromRegionChange(region) {
@@ -137,7 +146,7 @@ class ListABoard extends Component {
   updateCityLongitudeLatitude(c) {
     // set city , longitiude, and latitude....
 
-		let city, longitude, latitude;
+    let city, longitude, latitude;
 
     switch (c) {
       // SOUTHERN CALIFORNIA ..
@@ -436,54 +445,8 @@ class ListABoard extends Component {
     });
   }
 
-  handleUploadStart = name =>
-    this.setState({ isUploading: true, progress: 0, imageName: name });
-  handleProgress = progress => this.setState({ progress });
-  handleUploadError = error => {
-    this.setState({ isUploading: false });
-    console.error(error);
-  };
-  handleUploadSuccess = filename => {
-    const imageName = this.state.imageName;
-    this.setState({ progress: 100, isUploading: false });
-    fire
-      .storage()
-      .ref("images")
-      .child(filename)
-      .getDownloadURL()
-      .then(url => {
-        switch (this.state.imageName) {
-          case "primary":
-            this.setState({ avatar: url });
-            break;
-          case "one":
-            this.setState({ photoOne: url });
-            break;
-          case "two":
-            this.setState({ photoTwo: url });
-            break;
-          case "three":
-            this.setState({ photoThree: url });
-            break;
-          case "four":
-            this.setState({ photoFour: url });
-            break;
-          case "five":
-            this.setState({ photoFive: url });
-            break;
-          case "six":
-            this.setState({ photoSix: url });
-            break;
-          default:
-            break;
-        }
-      });
-  };
-
   handleListing() {
     const dateTime = Date.now();
-
-
 
     // 1)  SAVE BOARD BY REGION
     fire
@@ -527,7 +490,9 @@ class ListABoard extends Component {
     // DO AN UPDATE FOR THE CITY LONGITUDE AND LATITUDE...
     let cityMeta = {};
     cityMeta[`boardsByCity/${this.state.city}/latitude`] = this.state.latitude;
-    cityMeta[`boardsByCity/${this.state.city}/longitude`] = this.state.longitude;
+    cityMeta[
+      `boardsByCity/${this.state.city}/longitude`
+    ] = this.state.longitude;
 
     fire
       .database()
@@ -670,7 +635,10 @@ class ListABoard extends Component {
     if (this.state.boardJustPosted) {
       return (
         <div className="create-account">
-          <div className="create-account__headline m-b-20" style={{marginTop: '20px'}}>
+          <div
+            className="create-account__headline m-b-20"
+            style={{ marginTop: "20px" }}
+          >
             Nice work.
           </div>
           <button
@@ -679,7 +647,6 @@ class ListABoard extends Component {
           >
             Post another?
           </button>
-
         </div>
       );
     }
@@ -687,8 +654,8 @@ class ListABoard extends Component {
     return (
       <div className="create-account">
         <div className="create-account__headline m-b-10">List a Board </div>
-        <Link to="/inventory" className="td-none t-sans fc-green f-11 ">
-          Cancel and return to inventory
+        <Link to="/account" className="td-none t-sans fc-green f-11 ">
+          Cancel and return to account page
         </Link>
 
         <div className="login-form__field m-t-30">
@@ -926,184 +893,19 @@ class ListABoard extends Component {
         </div>
 
         <div className="login-form__field m-t-30 m-b-0">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Primary Photo{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("primary")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.avatar && <img src={this.state.avatar} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0 ">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #1{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("one")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoOne && <img src={this.state.photoOne} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0 ">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #2{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("two")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoTwo && <img src={this.state.photoTwo} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #3{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("three")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoThree && <img src={this.state.photoThree} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #4{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("four")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoFour && <img src={this.state.photoFour} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #5{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("five")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoFive && <img src={this.state.photoFive} />}
-          </div>
-        </div>
-
-        <div className="login-form__field m-b-0">
-          <div className="login-form__field">
-            <label htmlFor="avatar">
-              Photo #6{" "}
-              {this.state.isUploading && (
-                <span className="f-11 t-sans t-upper fc-green">
-                  {" "}
-                  {this.state.progress} %
-                </span>
-              )}
-            </label>
-            <FileUploader
-              className="inputFile"
-              accept="image/*"
-              name="avatar"
-              randomizeFilename
-              storageRef={fire.storage().ref("images")}
-              onUploadStart={() => this.handleUploadStart("six")}
-              onUploadError={this.handleUploadError}
-              onUploadSuccess={this.handleUploadSuccess}
-              onProgress={this.handleProgress}
-            />
-            {this.state.photoSix && <img src={this.state.photoSix} />}
+          <div className="login-form__field" style={{alignItems: 'center'}}>
+            { this.state.avatar ? <img src={this.state.avatar} /> : "" }
+            <Dropzone onDrop={this.uploadPhoto} multiple={false}>
+              <p
+                style={{
+                  textAlign: "center",
+                  paddingTop: "20px",
+                  fontFamily: "Montserrat"
+                }}
+              >
+                Click or drop your board photo.
+              </p>
+            </Dropzone>
           </div>
         </div>
 

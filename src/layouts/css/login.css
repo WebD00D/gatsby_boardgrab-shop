@@ -115,6 +115,15 @@ select:focus {
   margin-right: auto;
 }
 
+
+@media ( max-width: 900px ) {
+  .create-account {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 60px;
+  }
+}
+
 .create-account__headline {
   font-family: 'Montserrat', sans-serif;
   font-size: 36px;

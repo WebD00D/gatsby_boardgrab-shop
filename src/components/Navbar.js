@@ -214,7 +214,7 @@ class Navbar extends PureComponent {
              {mobileCities}
             </div>
 
-          
+
 
             <Link
               to="/buy-boards"
@@ -370,8 +370,8 @@ class Navbar extends PureComponent {
           </div>
           <div style={{ display: "flex" }}>
             {this.props.userAuthenticated && this.props.isSeller ? (
-              <Link className="navbar__link hover" to="/list-a-board">
-                List a Board
+              <Link className="navbar__link hover" to="/sell-a-board">
+                Sell a Board
               </Link>
             ) : (
               ""

@@ -18,6 +18,15 @@
         margin-right: auto;
 }
 
+@media ( max-width: 900px ) {
+  .site-container, .site-container--sm {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 50px;
+    padding-bottom: 100px;
+  }
+}
+
 .authentication-header {
     margin-bottom: 12px;
 }
@@ -258,6 +267,7 @@ hr {
 
   .boards-page-container {
     width: 100%;
+    padding-top: 50px;
   }
 
   .boards-pages-secondary-container {

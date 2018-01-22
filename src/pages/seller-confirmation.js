@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import fire from "../fire";
 //import boardfax from "../boardfax";
 import FatherTime from "../utils/fatherTime";
-import FileUploader from "react-firebase-file-uploader";
+
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import "whatwg-fetch";

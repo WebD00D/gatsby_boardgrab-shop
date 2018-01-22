@@ -143,7 +143,7 @@ class IndexPage extends PureComponent {
           <div className="t-sans" style={{minHeight: '300px', paddingBottom: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             <div style={{marginBottom: '13px'}}><b>No Boards Found!</b></div>
             <div style={{marginBottom: '13px'}}>Why not be the first to sell?</div>
-            { this.props.isSeller ? <Link className="auth-button" to="/list-a-board">list a board</Link> : '' }
+            { this.props.isSeller ? <Link className="auth-button" to="/sell-a-board">list a board</Link> : '' }
             { this.props.userAuthenticated && !this.props.isSeller ? <Link className="auth-button" to="/sell-with-us">Start selling</Link> : '' }
             { !this.props.userAuthenticated ? <Link className="auth-button" to="/authentication">Create Account</Link> : '' }
           </div>
@@ -153,7 +153,7 @@ class IndexPage extends PureComponent {
           <div className="t-sans" style={{minHeight: '300px', paddingBottom: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             <div style={{marginBottom: '13px'}}><b>No Boards Found!</b></div>
             <div style={{marginBottom: '13px'}}>Why not be the first to sell?</div>
-            { this.props.isSeller ? <Link className="auth-button" to="/list-a-board">list a board</Link> : '' }
+            { this.props.isSeller ? <Link className="auth-button" to="/sell-a-board">list a board</Link> : '' }
             { this.props.userAuthenticated && !this.props.isSeller ? <Link className="auth-button" to="/sell-with-us">Start selling</Link> : '' }
             { !this.props.userAuthenticated ? <Link className="auth-button" to="/authentication">Create Account</Link> : '' }
           </div>

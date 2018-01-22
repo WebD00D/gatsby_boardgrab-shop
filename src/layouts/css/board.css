@@ -373,3 +373,37 @@ hr {
     width: auto;
     border-radius: 4px;
 }
+
+
+@media (max-width: 900px) {
+
+
+  .board-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .board-info__column__sm {
+    width: 100%;
+  }
+
+  .board-info__column__lg {
+    width: 100%;
+    padding-left: 0px !important;
+  }
+
+  .board-info__images {
+    display: none;
+  }
+
+  .board-info__price {
+    flex-direction: column;
+    height: 100px;
+    padding-top: 20px;
+    align-items: end;
+  }
+
+  .board-info__section-row {
+  }
+
+}
