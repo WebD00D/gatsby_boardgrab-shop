@@ -12,7 +12,7 @@ const SellWithUs = () => (
       homepage.
     </p>
     <a
-      href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8000/seller-confirmation/&client_id=ca_BktaykED2idsi5jlNomAw6kFOPYn9af2&state=VA"
+      href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://boardgrab.netlify.com/seller-confirmation/"
       className="stripe-connect"
     >
       <span>Connect with Stripe</span>
