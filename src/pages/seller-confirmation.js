@@ -152,7 +152,7 @@ class SellerConfirmation extends Component {
               sold”) as well as update bank info.
             </p>
           </div>
-          <Link to="/list-a-board" className="fc-green">
+          <Link to="/sell-a-board" className="fc-green">
             {" "}
             Click here to sell your first board!
           </Link>
