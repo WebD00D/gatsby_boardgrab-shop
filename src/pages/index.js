@@ -13,6 +13,7 @@ import Board from "../components/Board";
 import BoardFlyout from "../components/BoardFlyOut";
 
 import "../layouts/css/filters.css";
+import "../layouts/css/site.css";
 import "../layouts/css/fcss.css";
 import "../layouts/css/board.css";
 

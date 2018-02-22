@@ -397,12 +397,13 @@ class Navbar extends PureComponent {
             )}
 
             {this.props.userAuthenticated ? (
-              <div
+              <Link
+                to="/authentication"
                 onClick={this.props.signOutUser}
                 className="navbar__link hover"
               >
                 Signout
-              </div>
+              </Link>
             ) : (
               <Link className="navbar__link " to="/authentication">
                 Login / Register

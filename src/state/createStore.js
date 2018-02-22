@@ -39,6 +39,10 @@ const reducer = (state, action) => {
 	if (action.type === `SET_CURRENT_USER`) {
 		console.log('setting curret user', action.userId, action.username, action.hasNotifications);
 
+
+		document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+
 		document.cookie = `boardgrab_user=${action.userId}`;
 
 		return {
@@ -63,6 +67,9 @@ const reducer = (state, action) => {
 	}
 
 	if (action.type === `LOGOUT_USER`) {
+
+		document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
 		fire.auth().signOut();
 		return {
 			...state,

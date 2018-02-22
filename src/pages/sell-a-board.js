@@ -618,6 +618,24 @@ class ListABoard extends Component {
   }
 
   render() {
+
+    if ( !this.props.userAuthenticated ) {
+
+      return (
+        <div className="create-account">
+          <div className="create-account__headline bold" style={{marginBottom: '18px'}}>Oops!</div>
+          <div className="m-b-10 bold">You must be a registerd user to sell a board.</div>
+          <Link to="/authentication" className="button button--green ">
+            {" "}
+            Sign In
+          </Link>
+
+
+          </div>
+      )
+
+    }
+
     const cities = this.props.dropDownCityList.map((city, key) => {
       if (city.name != "All Cities") {
         return (
@@ -920,8 +938,8 @@ class ListABoard extends Component {
   }
 }
 
-const mapStateToProps = ({ userId, shop_coast, dropDownCityList }) => {
-  return { userId, shop_coast, dropDownCityList };
+const mapStateToProps = ({ userId, shop_coast, dropDownCityList, userAuthenticated }) => {
+  return { userId, shop_coast, dropDownCityList, userAuthenticated };
 };
 
 const mapDispatchToProps = dispatch => {

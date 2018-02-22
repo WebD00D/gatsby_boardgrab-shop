@@ -2,6 +2,16 @@ import React from "react";
 import "../layouts/css/site.css";
 import "../layouts/css/stripe.css";
 
+
+
+
+// <a
+//   href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:8000/seller-confirmation/&client_id=ca_BktaykED2idsi5jlNomAw6kFOPYn9af2&state=VA"
+//   className="stripe-connect"
+// >
+//   <span>Connect with Stripe</span>
+// </a>
+
 const SellWithUs = () => (
   <div className="site-container">
     <h1 className="t-primary">Selling with Boardgrab</h1>
@@ -17,6 +27,7 @@ const SellWithUs = () => (
     >
       <span>Connect with Stripe</span>
     </a>
+
   </div>
 );
 
