@@ -377,12 +377,6 @@ hr {
 
 @media (max-width: 900px) {
 
-
-  .board-list-item {
-    flex-direction: column-reverse;
-    align-items: flex-start;
-  }
-
   .board-list-item__image {
     margin-bottom: 12px;
   }
@@ -415,4 +409,16 @@ hr {
   .board-info__section-row {
   }
 
+}
+
+
+@media (max-width: 600px) {
+  .board-list-item {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .board-list-item__image {
+    max-height: 700px;
+  }
 }

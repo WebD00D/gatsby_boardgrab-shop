@@ -108,8 +108,15 @@ class Navbar extends PureComponent {
         </div>
 
         {this.state.mobileMenuOpen ? (
-          <div className="mobile-menu">
+          <div className="mobile-menu" >
             <div className="mobile-menu__header">
+
+              <img
+                className="navbar__logo"
+                src={require("../layouts/images/bg-logo-color.svg")}
+              />
+
+
               <i
                 onClick={() => {
                   this.setState({ mobileMenuOpen: !this.state.mobileMenuOpen });
@@ -117,107 +124,8 @@ class Navbar extends PureComponent {
                 className="hover fa fa-close"
               />
             </div>
-
-            <div
-              onClick={this.handleLocationDropDown}
-              className="mobile-menu__item hover"
-            >
-              {this.props.selectedRegion}
-              <img src={require("../layouts/images/dropdownarrow.png")} />
-            </div>
-
-            {this.state.locationSelectorOpen ? (
-              <div>
-                <div
-                  onClick={() => this.handleRegionChange("All Locations")}
-                  className="navbar__location__dropdown__item"
-                >
-                  All locations
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Southern California")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Southern California
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Northern California")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Northern California
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Pacific North West")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Pacific North West
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Mid Atlantic")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Mid-Atlantic
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("South East")}
-                  className="navbar__location__dropdown__item"
-                >
-                  South East
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("East Florida")}
-                  className="navbar__location__dropdown__item"
-                >
-                  East Florida
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Hawaii")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Hawaii
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Australia")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Australia
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("South Africa")}
-                  className="navbar__location__dropdown__item navbar__location__dropdown__item--no-border"
-                >
-                  South Africa
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <div
-              onClick={this.handleSubLocationDropDown}
-              className={cx([
-                "mobile-menu__item hover",
-                { "d-none": this.props.selectedRegion === "All Locations" }
-              ])}
-            >
-              {this.props.selectedCity}
-              <img src={require("../layouts/images/dropdownarrow.png")} />
-            </div>
-
-
-
-            <div className={cx([
-              "hover",
-              { "d-none": this.props.selectedRegion === "All Locations" ||
-              this.state.subLocationSelectorOpen == false }
-            ])}>
-             {mobileCities}
-            </div>
-
-
-
             <Link
-              to="/buy-boards"
+              to="/"
               onClick={() => {
                 this.setState({ mobileMenuOpen: false });
               }}
@@ -253,138 +161,36 @@ class Navbar extends PureComponent {
             >
               Blog
             </a>
-          </div>
-        ) : (
-          ""
-        )}
 
-        <div className="navbar navbar__location-selector--dt">
-          <div className="navbar__logo-wrap">
-            <Link to="/">
-              <img
-                className="navbar__logo"
-                src={require("../layouts/images/bg-logo-color.svg")}
-              />
-            </Link>
-            <div className="navbar__logo__divider" />
-            <div
-              className="navbar__location-selector "
-              onClick={this.handleLocationDropDown}
-            >
-              <div className="navbar__location">
-                {this.props.selectedRegion}
-              </div>
-              <img src={require("../layouts/images/dropdownarrow.png")} />
 
-              <div
-                className={cx(["navbar__location__dropdown"], {
-                  "d-none": !this.state.locationSelectorOpen
-                })}
-              >
-                <div className="navbar__location__dropdown__header">
-                  Boardgrab Locations
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("All Locations")}
-                  className="navbar__location__dropdown__item"
-                >
-                  All locations
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Southern California")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Southern California
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Northern California")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Northern California
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Pacific North West")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Pacific North West
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Mid Atlantic")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Mid-Atlantic
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("South East")}
-                  className="navbar__location__dropdown__item"
-                >
-                  South East
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("East Florida")}
-                  className="navbar__location__dropdown__item"
-                >
-                  East Florida
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Hawaii")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Hawaii
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("Australia")}
-                  className="navbar__location__dropdown__item"
-                >
-                  Australia
-                </div>
-                <div
-                  onClick={() => this.handleRegionChange("South Africa")}
-                  className="navbar__location__dropdown__item navbar__location__dropdown__item--no-border"
-                >
-                  South Africa
-                </div>
-              </div>
-            </div>
-            <div
-              className={cx([
-                "navbar__location-selector",
-                { "d-none": this.props.selectedRegion === "All Locations" }
-              ])}
-              style={{ marginLeft: "30px" }}
-              onClick={this.handleSubLocationDropDown}
-            >
-              <div className="navbar__location">{this.props.selectedCity}</div>
-              <img src={require("../layouts/images/dropdownarrow.png")} />
-
-              <div
-                className={cx(["navbar__location__dropdown"], {
-                  "d-none": !this.state.subLocationSelectorOpen
-                })}
-              >
-                <div className="navbar__location__dropdown__header">Cities</div>
-
-                {cities}
-              </div>
-            </div>
-          </div>
-          <div style={{ display: "flex" }}>
             {this.props.userAuthenticated && this.props.isSeller ? (
-              <Link className="navbar__link hover" to="/sell-a-board">
+              <Link
+              onClick={() => {
+                this.setState({ mobileMenuOpen: false });
+              }}
+               className="mobile-menu__item hover" to="/sell-a-board">
                 Sell a Board
               </Link>
             ) : (
               ""
             )}
             {this.props.userAuthenticated && !this.props.isSeller ? (
-              <Link className="navbar__link" to="/sell-with-us">
+              <Link
+              onClick={() => {
+                this.setState({ mobileMenuOpen: false });
+              }}
+               className="mobile-menu__item" to="/sell-with-us">
                 Start Selling
               </Link>
             ) : (
               ""
             )}
             {this.props.userAuthenticated ? (
-              <Link className="navbar__link hover" to="/account">
+              <Link
+              onClick={() => {
+                this.setState({ mobileMenuOpen: false });
+              }}
+               className="mobile-menu__item hover" to="/account">
                 My Account{" "}
                 {this.props.hasNotifications ? (
                   <i className="fa fa-bell fc-red" />
@@ -399,38 +205,106 @@ class Navbar extends PureComponent {
             {this.props.userAuthenticated ? (
               <Link
                 to="/authentication"
-                onClick={this.props.signOutUser}
-                className="navbar__link hover"
+                onClick={ () => {
+                this.props.signOutUser;
+                this.setState({ mobileMenuOpen: false });
+
+                } }
+                className="mobile-menu__item hover"
               >
                 Signout
               </Link>
             ) : (
-              <Link className="navbar__link " to="/authentication">
+              <Link
+              onClick={() => {
+                this.setState({ mobileMenuOpen: false });
+              }}
+              className="mobile-menu__item " to="/authentication">
                 Login / Register
               </Link>
             )}
+
+
           </div>
-        </div>
-        <div className="navbar__subnav navbar__location-selector--dt">
-          <div className="navbar__subnav--left navbar_subnav__section">
-            <Link className="navbar__subnav__link" to="/buy-boards">
-              Shop
+        ) : (
+          ""
+        )}
+
+
+
+        <div className="navbar">
+
+
+        <Link to="/">
+          <img
+            className="navbar__logo"
+            src={require("../layouts/images/bg-logo-color.svg")}
+          />
+        </Link>
+
+        <div style={{ display: "flex" }}>
+
+
+        <Link className="navbar__link hover" to="/about">
+          About
+        </Link>
+
+        <Link className="navbar__link hover" to="/faqs">
+          Faqs
+        </Link>
+
+        <a className="navbar__link hover" target="_blank" href="https://medium.com/boardgrab">
+          Blog
+        </a>
+
+          {this.props.userAuthenticated && this.props.isSeller ? (
+            <Link className="navbar__link hover" to="/sell-a-board">
+              Sell a Board
             </Link>
-            <Link className="navbar__subnav__link" to="/about">
-              Who we are
+          ) : (
+            ""
+          )}
+          {this.props.userAuthenticated && !this.props.isSeller ? (
+            <Link className="navbar__link" to="/sell-with-us">
+              Start Selling
             </Link>
-            <Link className="navbar__subnav__link" to="/faqs">
-              Faqs
+          ) : (
+            ""
+          )}
+          {this.props.userAuthenticated ? (
+            <Link className="navbar__link hover" to="/account">
+              My Account{" "}
+              {this.props.hasNotifications ? (
+                <i className="fa fa-bell fc-red" />
+              ) : (
+                ""
+              )}{" "}
             </Link>
-            <a
-              className="navbar__subnav__link"
-              target="_blank"
-              href="https://medium.com/boardgrab"
+          ) : (
+            ""
+          )}
+
+          {this.props.userAuthenticated ? (
+            <Link
+              to="/authentication"
+              onClick={this.props.signOutUser}
+              className="navbar__link hover"
             >
-              Blog
-            </a>
-          </div>
+              Signout
+            </Link>
+          ) : (
+            <Link className="navbar__link " to="/authentication">
+              Login / Register
+            </Link>
+          )}
         </div>
+
+        </div>
+
+
+
+
+
       </div>
     );
   }
