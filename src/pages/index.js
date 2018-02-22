@@ -467,6 +467,14 @@ class IndexPage extends PureComponent {
               </div>
               <div className="board-page-location__locations">
                 <div>
+                <div
+                  onClick={() =>
+                    this.props.setRegionData("All Locations")
+                  }
+                  className="boardpage-location__area t-sans"
+                >
+                  All Locations
+                </div>
                   <div
                     onClick={() =>
                       this.props.setRegionData("Southern California")
