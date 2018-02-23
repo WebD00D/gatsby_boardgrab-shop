@@ -74,6 +74,50 @@ class ListABoard extends Component {
     };
   }
 
+  componentWillMount() {
+    // check if user is signed in ..
+
+    const bgcookie = this.getCookie("boardgrab_user");
+
+    if (bgcookie.trim()) {
+      fire
+        .database()
+        .ref("users/" + bgcookie)
+        .once("value")
+        .then(
+          function(snapshot) {
+            console.log("SIGN IN SNAPSHOT", snapshot.val());
+            this.props.setCurrentUser(
+              bgcookie,
+              snapshot.val().username,
+              snapshot.val().email,
+              snapshot.val().hasNotifications,
+              snapshot.val().paypal_email,
+              snapshot.val().seller
+            );
+          }.bind(this)
+        );
+    }
+
+    // end check if user is signed in..
+  }
+
+  getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
   uploadPhoto(files) {
     const dateTime = Date.now();
     const storageRef = fire.storage().ref().child(`BG-${dateTime}-${files[0].name}`);
@@ -622,6 +666,10 @@ class ListABoard extends Component {
     if ( !this.props.userAuthenticated ) {
 
       return (
+        <div>
+        <div className="page-header">
+            <b className="t-sans">Sell a Board</b>
+        </div>
         <div className="create-account">
           <div className="create-account__headline bold" style={{marginBottom: '18px'}}>Oops!</div>
           <div className="m-b-10 bold">You must be a registerd user to sell a board.</div>
@@ -629,8 +677,7 @@ class ListABoard extends Component {
             {" "}
             Sign In
           </Link>
-
-
+          </div>
           </div>
       )
 
@@ -652,6 +699,10 @@ class ListABoard extends Component {
 
     if (this.state.boardJustPosted) {
       return (
+        <div>
+        <div className="page-header">
+            <b className="t-sans">Sell a Board</b>
+        </div>
         <div className="create-account">
           <div
             className="create-account__headline m-b-20"
@@ -666,6 +717,7 @@ class ListABoard extends Component {
             Post another?
           </button>
         </div>
+        </div>
       );
     }
 
@@ -676,7 +728,7 @@ class ListABoard extends Component {
       </div>
       <div className="create-account">
 
-      
+
         <Link to="/account" className="td-none t-sans fc-green f-11 ">
           Cancel and return to account page
         </Link>
@@ -950,7 +1002,24 @@ const mapStateToProps = ({ userId, shop_coast, dropDownCityList, userAuthenticat
 
 const mapDispatchToProps = dispatch => {
   return {
-    setListingCities: region => dispatch({ type: `SET_LISTING_CITIES`, region })
+    setListingCities: region => dispatch({ type: `SET_LISTING_CITIES`, region }),
+    setCurrentUser: (
+      userId,
+      username,
+      email,
+      hasNotifications,
+      paypal_email,
+      seller
+    ) =>
+      dispatch({
+        type: `SET_CURRENT_USER`,
+        userId,
+        username,
+        email,
+        hasNotifications,
+        paypal_email,
+        seller
+      })
   };
 };
 

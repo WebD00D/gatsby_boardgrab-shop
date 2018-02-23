@@ -24,8 +24,9 @@ class Authentication extends PureComponent {
   }
 
   _handleSignIn() {
-    this.setState({ loading: true });
 
+    this.setState({ loading: true });
+    
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)

@@ -26,6 +26,7 @@ class IndexPage extends PureComponent {
     this.handleCityChange = this.handleCityChange.bind(this);
     this._updateDims = this._updateDims.bind(this);
     this._handleBoardClick = this._handleBoardClick.bind(this);
+    this.getCookie = this.getCookie.bind(this);
 
     this.state = {
       popupInfo: null,
@@ -39,7 +40,49 @@ class IndexPage extends PureComponent {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    // check if user is signed in ..
+
+    const bgcookie = this.getCookie("boardgrab_user");
+
+    if (bgcookie.trim()) {
+      fire
+        .database()
+        .ref("users/" + bgcookie)
+        .once("value")
+        .then(
+          function(snapshot) {
+            console.log("SIGN IN SNAPSHOT", snapshot.val());
+            this.props.setCurrentUser(
+              bgcookie,
+              snapshot.val().username,
+              snapshot.val().email,
+              snapshot.val().hasNotifications,
+              snapshot.val().paypal_email,
+              snapshot.val().seller
+            );
+          }.bind(this)
+        );
+    }
+
+    // end check if user is signed in..
+  }
+
+  getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
 
   componentDidMount() {
     this._updateDims();
@@ -467,14 +510,12 @@ class IndexPage extends PureComponent {
               </div>
               <div className="board-page-location__locations">
                 <div>
-                <div
-                  onClick={() =>
-                    this.props.setRegionData("All Locations")
-                  }
-                  className="boardpage-location__area t-sans"
-                >
-                  All Locations
-                </div>
+                  <div
+                    onClick={() => this.props.setRegionData("All Locations")}
+                    className="boardpage-location__area t-sans"
+                  >
+                    All Locations
+                  </div>
                   <div
                     onClick={() =>
                       this.props.setRegionData("Southern California")
@@ -621,7 +662,24 @@ const mapDispatchToProps = dispatch => {
     getAllBoardsByRegion: boards =>
       dispatch({ type: `GET_ALL_BOARDS_BY_REGION`, boards }),
     getAllBoardsByCity: boards =>
-      dispatch({ type: `GET_ALL_BOARDS_BY_CITY`, boards })
+      dispatch({ type: `GET_ALL_BOARDS_BY_CITY`, boards }),
+    setCurrentUser: (
+      userId,
+      username,
+      email,
+      hasNotifications,
+      paypal_email,
+      seller
+    ) =>
+      dispatch({
+        type: `SET_CURRENT_USER`,
+        userId,
+        username,
+        email,
+        hasNotifications,
+        paypal_email,
+        seller
+      })
   };
 };
 
