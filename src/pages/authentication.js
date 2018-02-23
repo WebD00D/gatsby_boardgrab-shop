@@ -111,6 +111,11 @@ class Authentication extends PureComponent {
     }
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Welcome. Aloha. Benvenuto.</b>
+
+      </div>
       <div className="site-container--sm t-primary">
 
         <div style={{width: '100%', marginBottom: '30px', backgroundColor: '#EC644B', color: '#FFFFFF', fontSize: '12px', borderRadius: '6px', textAlign: 'center' }}>{this.state.error}</div>
@@ -173,6 +178,7 @@ class Authentication extends PureComponent {
         >
           Submit
         </button>
+      </div>
       </div>
     );
   }

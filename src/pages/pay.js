@@ -229,6 +229,10 @@ class Payment extends PureComponent {
     let amountToShow = parseFloat(this.state.amount) / 100;
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Payment</b>
+      </div>
       <div className="site-container">
         {this.state.boardAlreadySold ? (
           <div>
@@ -257,7 +261,7 @@ class Payment extends PureComponent {
               </div>
             ) : (
               <div>
-                <div className="f-28 t-sans ls-2 fw-500 m-b-20">Payment</div>
+
                 <div className="f-16 t-sans">
                   You're one step closer to getting your hands on that new
                   (used) board! Just click the payment button below, fill out
@@ -309,6 +313,7 @@ class Payment extends PureComponent {
 
                 <button
                   className="message-box__button ls-2"
+                  style={{marginTop: '22px'}}
                   onClick={() => this.handlePayment()}
                 >
                   Pay ${amountToShow}
@@ -317,6 +322,7 @@ class Payment extends PureComponent {
             )}
           </div>
         )}
+      </div>
       </div>
     );
   }

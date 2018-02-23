@@ -144,15 +144,7 @@ class Navbar extends PureComponent {
               FAQs
             </Link>
 
-            <Link
-              to="/about"
-              onClick={() => {
-                this.setState({ mobileMenuOpen: false });
-              }}
-              className="mobile-menu__item hover"
-            >
-              Who We Are
-            </Link>
+
 
             <a
               className="mobile-menu__item hover"
@@ -245,8 +237,8 @@ class Navbar extends PureComponent {
         <div style={{ display: "flex" }}>
 
 
-        <Link className="navbar__link hover" to="/about">
-          About
+        <Link className="navbar__link hover" to="/">
+          Boards
         </Link>
 
         <Link className="navbar__link hover" to="/faqs">

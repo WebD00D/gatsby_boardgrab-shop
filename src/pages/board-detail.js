@@ -404,8 +404,8 @@ class BoardDetail extends PureComponent {
 						<div className="board-info__price" style={{ borderBottom: 'none', marginBottom: '0px' }}>
 
 							{ this.state.board.sold
-							? <div style={{ fontSize: '28px' }} className="fc-red">SOLD</div>
-							: <div style={{ fontSize: '28px' }} className="fc-green">${this.state.board.price}</div>
+							? <div style={{ fontSize: '28px', marginBottom: '12px' }} className="fc-red">SOLD</div>
+							: <div style={{ fontSize: '28px', marginBottom: '12px' }} className="fc-green">${this.state.board.price}</div>
 							 }
 
 

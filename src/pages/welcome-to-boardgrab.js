@@ -4,8 +4,11 @@ import Link from 'gatsby-link';
 
 
 const Welcome = () => (
-  <div className="site-container" style={{paddingTop: '100px'}}>
-    <h1 className="t-primary">Welcome to Boardgrab</h1>
+  <div>
+  <div className="page-header">
+      <b className="t-sans">Welcome to Boardgrab</b>
+  </div>
+  <div className="site-container" style={{paddingTop: '30px'}}>
     <p className="t-primary" style={{fontWeight: 400, fontSize: 14}}>
     Selling used surfboards has always kind of sucked.
     Paying massive commissions to a third party , or dealing with the inconvenient/shady nuances of Craigslist doesn’t exactly give surfers many options.
@@ -15,6 +18,7 @@ const Welcome = () => (
     <Link to="/buy-boards" className="auth-button">Shop Boards</Link>
     <Link to="/sell-with-us" className="auth-button auth-button auth-button--black" style={{marginLeft: '10px'}}>Start Selling</Link>
     </div>
+  </div>
   </div>
 )
 

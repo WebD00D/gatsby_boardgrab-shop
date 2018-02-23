@@ -11,8 +11,11 @@ import "../layouts/css/stripe.css";
 // </a>
 
 const SellWithUs = () => (
+  <div>
+  <div className="page-header">
+      <b className="t-sans">Selling with Boardgrab</b>
+  </div>
   <div className="site-container">
-    <h1 className="t-primary">Selling with Boardgrab</h1>
     <p className="t-primary" style={{ fontWeight: 400, fontSize: 14 }}>
       Boardgrab uses Stripe as our payment system. It’s just like PayPal, but
       even easier! Click the button below to allow people to pay you! If you
@@ -26,6 +29,7 @@ const SellWithUs = () => (
       <span>Connect with Stripe</span>
     </a>
 
+  </div>
   </div>
 );
 

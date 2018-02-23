@@ -338,12 +338,16 @@ class ListABoard extends Component {
     }
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Edit Listing</b>
+      </div>
       <div className="create-account">
         {!this.state.userCanEdit ? (
           <div>Permission Denied</div>
         ) : (
           <div>
-            <div className="create-account__headline m-b-10">Edit Listing </div>
+            
             <Link to="/account" className="td-none t-sans fc-green f-11 ">
               Cancel and return to account page
             </Link>
@@ -620,7 +624,7 @@ class ListABoard extends Component {
               </div>
             </div>
 
-            
+
 
             <button
               onClick={this.handleListing}
@@ -630,6 +634,7 @@ class ListABoard extends Component {
             </button>
           </div>
         )}
+      </div>
       </div>
     );
   }

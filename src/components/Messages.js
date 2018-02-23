@@ -62,7 +62,7 @@ class Messages extends PureComponent {
 
       if ( value.messageType === "SELL") {
         sellMessages.push(
-          <Link to={`/message/?message=${key}&from=${value.otherPersonsUserId}`} key={key} style={{textDecoration: 'none'}} className={cx([ "table-row", {"table-row--unread": !value.read} ])} >
+          <Link to={`/message/?message=${key}&from=${value.otherPersonsUserId}&otherUser=${value.sellerUser}&board=${value.boardName}`} key={key} style={{textDecoration: 'none'}} className={cx([ "table-row", {"table-row--unread": !value.read} ])} >
             <div style={{paddingLeft: '8px'}} className={cx(["t-sans f-11 ls-2 w-40p fc-green", { "fc-white": !value.read }])}>
               {value.boardName}
             </div>
@@ -78,7 +78,7 @@ class Messages extends PureComponent {
       } else {
         buyMessages.push(
 
-          <Link to={`/message/?message=${key}&from=${value.otherPersonsUserId}`} key={key} style={{textDecoration: 'none'}} className={cx([ "table-row", {"table-row--unread": !value.read} ])} >
+          <Link to={`/message/?message=${key}&from=${value.otherPersonsUserId}&otherUser=${value.sellerUser}&board=${value.boardName}`} key={key} style={{textDecoration: 'none'}} className={cx([ "table-row", {"table-row--unread": !value.read} ])} >
             <div style={{paddingLeft: '8px'}} className={cx(["t-sans f-11 ls-2 w-40p fc-green", { "fc-white": !value.read }])}>
               {value.boardName}
             </div>

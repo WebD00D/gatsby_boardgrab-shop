@@ -74,6 +74,10 @@ class Account extends PureComponent {
 
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Hello, {this.props.account_username}</b>
+      </div>
       <div className="site-container">
 
 
@@ -101,6 +105,7 @@ class Account extends PureComponent {
          { this.state.activeTab === "Settings" ?  <div className="tab"><Settings /></div> : '' }
 
 
+     </div>
      </div>
     )
   }

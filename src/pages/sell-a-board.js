@@ -670,8 +670,13 @@ class ListABoard extends Component {
     }
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Sell a Board</b>
+      </div>
       <div className="create-account">
-        <div className="create-account__headline m-b-10">List a Board </div>
+
+      
         <Link to="/account" className="td-none t-sans fc-green f-11 ">
           Cancel and return to account page
         </Link>
@@ -933,6 +938,7 @@ class ListABoard extends Component {
         >
           Publish Listing
         </button>
+      </div>
       </div>
     );
   }

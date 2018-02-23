@@ -26,7 +26,7 @@ class SellerConfirmation extends Component {
   componentDidMount() {
     // we should have a logged in user at this point.
     const bgcookie = this.getCookie("boardgrab_user");
-  
+
 
     if (bgcookie) {
       fire
@@ -132,8 +132,11 @@ class SellerConfirmation extends Component {
 
   render() {
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">Success!</b>
+      </div>
       <div className="site-container--sm">
-        <div className="t-sans fw-500 f-28 m-b-30">You're all setup!</div>
         <div>
           <div>
             <p className="t-primary" style={{ fontWeight: 400, fontSize: 14 }}>
@@ -157,6 +160,7 @@ class SellerConfirmation extends Component {
             Click here to sell your first board!
           </Link>
         </div>
+      </div>
       </div>
     );
   }

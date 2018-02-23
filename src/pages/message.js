@@ -22,11 +22,13 @@ class Message extends PureComponent {
       messageId: "",
       from: "",
       reply: false,
-      sendMessageBackTo: ''
+      sendMessageBackTo: '',
+      otherUser: '',
+      board: '',
     };
   }
 
- 
+
 
   componentDidMount() {
     // get board param id
@@ -34,13 +36,16 @@ class Message extends PureComponent {
     this.setState({
       sendMessageBackTo: sendMessageTo
     })
-  
+
 
       const id = this.getQueryVariable("message");
       const from = this.getQueryVariable("from");
-  
+      const otherUser = this.getQueryVariable("otherUser");
+    const board = this.getQueryVariable("board")
+
+
       console.log("FROM", from);
-  
+
       var updates = {};
       updates[
         "/users/" + this.props.userId + "/messagePreviews/" + id + "/read"
@@ -49,7 +54,7 @@ class Message extends PureComponent {
         .database()
         .ref()
         .update(updates);
-  
+
       var messageRef = fire
         .database()
         .ref(`/users/${this.props.userId}/messages/${id}`);
@@ -60,18 +65,20 @@ class Message extends PureComponent {
           this.setState({
             messageThread: snapshot.val(),
             messageId: id,
-            message: ''
+            message: '',
+            otherUser: otherUser,
+            board: board
           });
         }.bind(this)
       );
 
-    
+
 
   }
 
   getQueryVariable(variable) {
 
-    // BUG: Failing on Netlify deploy. Window is not defined. 
+    // BUG: Failing on Netlify deploy. Window is not defined.
     // NOTE: I though since this was in componentDidMount that window would be available.
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -118,7 +125,7 @@ class Message extends PureComponent {
 		// MESSAGE PREVIEWS.. These are what we will pull from in the user's account, that just show a snapshot of the latest message.
 
 		var updates = {};
-	
+
     // FOR CURRENT USERS HISTORY
 		updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/lastMessage'] = message;
 		updates['/users/' + this.props.userId + '/messagePreviews/' + messageThreadId + '/from'] = this.props.userId;
@@ -153,14 +160,16 @@ class Message extends PureComponent {
 	}
 
   render() {
-    
+
     console.log( 'MESSAGE THREAD',  this.state.messageThread )
+
+  //  let otherUser = this.state.messageThread[0].otherUsername;
 
     let messages = [];
 
     messages = Object.keys(this.state.messageThread).map(
       function(key) {
-        
+
         return (
           <div key={key} className={cx(["message-row t-sans f-13", {  "bg-light-grey" : this.state.messageThread[key].from === this.props.userId}])}>
             <div className="fx fx-col">
@@ -186,7 +195,7 @@ class Message extends PureComponent {
       }.bind(this)
     );
 
-   
+
 
     let newMessages = _.reverse(messages);
 
@@ -195,6 +204,10 @@ class Message extends PureComponent {
     // }.bind(this));
 
     return (
+      <div>
+      <div className="page-header">
+          <b className="t-sans">{decodeURIComponent(this.state.board)}</b>
+      </div>
       <div className="site-container">
 
 
@@ -258,9 +271,9 @@ class Message extends PureComponent {
         >
           Back to Messages
         </Link>
-        
+
         <div className="message-header">
-          <div className="f-13 fw-500 t-sans" style={{marginLeft: "8px"}}>6'0 Chilli Super Nice</div>
+          <div className="f-13 fw-500 t-sans" style={{marginLeft: "8px"}}>{this.state.otherUser}</div>
           <div
             className="f-13 fw-500 t-sans fc-white ls-2 t-upper hover"
             style={{ marginRight: "16px" }}
@@ -270,6 +283,7 @@ class Message extends PureComponent {
           </div>
         </div>
         {newMessages}
+      </div>
       </div>
     );
   }
