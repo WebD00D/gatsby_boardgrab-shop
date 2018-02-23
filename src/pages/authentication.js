@@ -26,7 +26,7 @@ class Authentication extends PureComponent {
   _handleSignIn() {
 
     this.setState({ loading: true });
-    
+
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -117,7 +117,7 @@ class Authentication extends PureComponent {
           <b className="t-sans">Welcome. Aloha. Benvenuto.</b>
 
       </div>
-      <div className="site-container--sm t-primary">
+      <div className="site-container--sm t-primary" style={{paddingTop: '0px'}}>
 
         <div style={{width: '100%', marginBottom: '30px', backgroundColor: '#EC644B', color: '#FFFFFF', fontSize: '12px', borderRadius: '6px', textAlign: 'center' }}>{this.state.error}</div>
 
