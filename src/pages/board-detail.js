@@ -29,7 +29,48 @@ class BoardDetail extends PureComponent {
 		};
 	}
 
+	getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
 	componentDidMount() {
+
+
+		const bgcookie = this.getCookie("boardgrab_user");
+
+    if (bgcookie.trim()) {
+      fire
+        .database()
+        .ref("users/" + bgcookie)
+        .once("value")
+        .then(
+          function(snapshot) {
+            console.log("SIGN IN SNAPSHOT", snapshot.val());
+            this.props.setCurrentUser(
+              bgcookie,
+              snapshot.val().username,
+              snapshot.val().email,
+              snapshot.val().hasNotifications,
+              snapshot.val().paypal_email,
+              snapshot.val().seller
+            );
+          }.bind(this)
+        );
+    }
+
+
 		// get board param id
 		const id = this.getQueryVariable('board');
 
@@ -358,6 +399,132 @@ class BoardDetail extends PureComponent {
 				)}
 
 				<div className="board-info">
+
+
+					<div className="board-info__column__lg" style={{ paddingLeft: '40px' }}>
+						<div className="board-info__header">
+							<div className="board-info__title">{this.state.board.name}
+
+							</div>
+
+							<div className="board-info__location">
+								<span>{this.state.board.city}, </span>
+								<span>{this.state.board.region}</span>
+							</div>
+							<div className="board-info__short-desc">
+								Sold by <b className="fc-green">{this.state.sellerUserName}</b>
+							</div>
+							{ this.state.board.sold
+							? <div style={{ fontSize: '28px',  marginTop: '12px', fontWeight: '500' }} className="fc-red t-sans">SOLD</div>
+							: <div style={{ fontSize: '28px',  marginTop: '12px', fontWeight: '500' }} className="fc-green t-sans">${this.state.board.price}</div>
+							 }
+						</div>
+
+						<div className="board-info__price" style={{ borderBottom: 'none', marginBottom: '0px' }}>
+
+
+							{ this.state.board.sold
+							? ''
+							: <div>
+								<div><button
+									onClick={() => {
+										this.setState({ isOffer: false, isQuestion: true });
+									}}
+									style={{ backgroundColor: '#498144', marginRight: '8px' }}
+								>
+									Ask a Question
+								</button></div>
+								<div><button
+									onClick={() => {
+										this.setState({ isOffer: true, isQuestion: false });
+									}}
+								>
+									Make an Offer
+								</button></div>
+							</div>
+							}
+
+
+						</div>
+
+						<div className="board-info__tags" style={{ marginTop: '0px' }}>
+							<label style={{ display: 'block', width: '100%' }}>Perfect For: </label>
+
+							{this.state.board.tag_advanced ? <div className="board-info__tag">Advanced Rider</div> : ''}
+							{this.state.board.tag_beginner ? <div className="board-info__tag">Beginners</div> : ''}
+							{this.state.board.tag_greatforanybody ? <div className="board-info__tag">Anybody</div> : ''}
+							{this.state.board.tag_intermediate ? (
+								<div className="board-info__tag">Intermediate Rider</div>
+							) : (
+								''
+							)}
+							{this.state.board.tag_budget ? <div className="board-info__tag">On a Budget</div> : ''}
+							{this.state.board.tag_smallwaves ? <div className="board-info__tag">Small Waves</div> : ''}
+						</div>
+
+						<div className="board-info__section">
+
+							<div className="board-info__section-row t-sans f-16">
+								<label className="fw-500 t-upper ls-2 f-11 mw-150p">Dimensions:</label>
+								<span  className="fc-green f-11 t-upper ls-2">
+									{this.state.board.dimensions}
+								</span>
+							</div>
+							<div className="board-info__section-row t-sans f-16">
+								<label className="fw-500 t-upper ls-2 f-11 mw-150p">Fin Setup:</label>
+								<span  className="fc-green f-11 t-upper ls-2">
+									{this.state.board.fins}-Fin
+								</span>
+							</div>
+							<div className="board-info__section-row t-sans f-16">
+								<label className="fw-500 t-upper ls-2 f-11 mw-150p">Volume:</label>
+								<span  className="fc-green f-11 t-upper ls-2">
+									{this.state.board.volume} Liters
+								</span>
+							</div>
+						</div>
+
+						{/* <div className="board-info__section b-top-solid p-t-18">
+							<div className="board-info__section-row t-sans f-16 fx-a-end">
+								<div className="about-seller">
+									About the seller, <br /> Bailey
+								</div>
+								<span style={{ marginLeft: '14px' }}>
+									Bailey has grown up and lived in Venice Beach all his life, surfing most if not
+									every day. Favorite board is a GH, and favorite surfer (for obvious reasons) is
+									Jordy Smith.
+								</span>
+							</div>
+						</div> */}
+
+						<div className="board-info__section b-top-solid p-t-18">
+							<div className="board-info__section-row t-sans f-16 fx-a-end">
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Description</div>
+								<span  className="f-11 t-upper ls-2">
+									{this.state.board.description}
+								</span>
+							</div>
+						</div>
+
+						<div className="board-info__section b-top-solid p-t-18">
+							<div className="board-info__section-row t-sans f-16 fx-a-end">
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Condition</div>
+								<span className="f-11 t-upper ls-2">
+									{this.state.board.condition}
+								</span>
+							</div>
+						</div>
+
+						<div className="board-info__section b-top-solid p-t-18">
+							<div className="board-info__section-row t-sans f-16 fx-a-end">
+								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Shaper Info</div>
+								<span  className="f-11 t-upper ls-2">
+									{this.state.board.shaperInfo}
+								</span>
+							</div>
+						</div>
+					</div>
+
 					<div className="board-info__column__sm">
 						<img className="hover" style={{ borderRadius: '4px' }} src={this.state.board.featurePhotoURL} />
 
@@ -388,128 +555,6 @@ class BoardDetail extends PureComponent {
 							/>
 						</div>
 					</div>
-
-					<div className="board-info__column__lg" style={{ paddingLeft: '40px' }}>
-						<div className="board-info__header">
-							<div className="board-info__title">{this.state.board.name}</div>
-							<div className="board-info__location">
-								<span>{this.state.board.city}, </span>
-								<span>{this.state.board.region}</span>
-							</div>
-							<div className="board-info__short-desc">
-								Sold by <b className="fc-green">{this.state.sellerUserName}</b>
-							</div>
-						</div>
-
-						<div className="board-info__price" style={{ borderBottom: 'none', marginBottom: '0px' }}>
-
-							{ this.state.board.sold
-							? <div style={{ fontSize: '28px', marginBottom: '12px' }} className="fc-red">SOLD</div>
-							: <div style={{ fontSize: '28px', marginBottom: '12px' }} className="fc-green">${this.state.board.price}</div>
-							 }
-
-
-							{ this.state.board.sold
-							? ''
-							: <div>
-								<button
-									onClick={() => {
-										this.setState({ isOffer: false, isQuestion: true });
-									}}
-									style={{ backgroundColor: '#498144', marginRight: '8px' }}
-								>
-									Ask a Question
-								</button>
-								<button
-									onClick={() => {
-										this.setState({ isOffer: true, isQuestion: false });
-									}}
-								>
-									Make an Offer
-								</button>
-							</div>
-							}
-
-
-						</div>
-
-						<div className="board-info__tags" style={{ marginTop: '0px' }}>
-							<label style={{ display: 'block', width: '100%' }}>Perfect For: </label>
-
-							{this.state.board.tag_advanced ? <div className="board-info__tag">Advanced Rider</div> : ''}
-							{this.state.board.tag_beginner ? <div className="board-info__tag">Beginners</div> : ''}
-							{this.state.board.tag_greatforanybody ? <div className="board-info__tag">Anybody</div> : ''}
-							{this.state.board.tag_intermediate ? (
-								<div className="board-info__tag">Intermediate Rider</div>
-							) : (
-								''
-							)}
-							{this.state.board.tag_budget ? <div className="board-info__tag">On a Budget</div> : ''}
-							{this.state.board.tag_smallwaves ? <div className="board-info__tag">Small Waves</div> : ''}
-						</div>
-
-						<div className="board-info__section">
-
-							<div className="board-info__section-row t-sans f-16">
-								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
-									{this.state.board.dimensions}
-								</span>
-							</div>
-							<div className="board-info__section-row t-sans f-16">
-								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
-									{this.state.board.fins}-Fin
-								</span>
-							</div>
-							<div className="board-info__section-row t-sans f-16">
-								<i className="fa fa-leaf" />
-								<span style={{ marginLeft: '14px' }} className="fc-green f-11 t-upper ls-2">
-									{this.state.board.volume} Liters
-								</span>
-							</div>
-						</div>
-
-						{/* <div className="board-info__section b-top-solid p-t-18">
-							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="about-seller">
-									About the seller, <br /> Bailey
-								</div>
-								<span style={{ marginLeft: '14px' }}>
-									Bailey has grown up and lived in Venice Beach all his life, surfing most if not
-									every day. Favorite board is a GH, and favorite surfer (for obvious reasons) is
-									Jordy Smith.
-								</span>
-							</div>
-						</div> */}
-
-						<div className="board-info__section b-top-solid p-t-18">
-							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Description</div>
-								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
-									{this.state.board.description}
-								</span>
-							</div>
-						</div>
-
-						<div className="board-info__section b-top-solid p-t-18">
-							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Condition</div>
-								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
-									{this.state.board.condition}
-								</span>
-							</div>
-						</div>
-
-						<div className="board-info__section b-top-solid p-t-18">
-							<div className="board-info__section-row t-sans f-16 fx-a-end">
-								<div className="fw-500 t-upper ls-2 f-11 mw-150p">Shaper Info</div>
-								<span style={{ marginLeft: '14px' }} className="f-11 t-upper ls-2">
-									{this.state.board.shaperInfo}
-								</span>
-							</div>
-						</div>
-					</div>
 				</div>
 
 				<Disqus title="Board Comments" shortname="boardgrab-comments" identifier={this.state.boardId} />
@@ -526,8 +571,25 @@ const mapDispatchToProps = dispatch => {
 	return {
 		createAndSignInUser: (userId, account_username) =>
 			dispatch({ type: `CREATE_AND_SIGNIN_USER`, userId, account_username }),
-		setCurrentUser: userId => dispatch({ type: `SET_CURRENT_USER`, userId }),
+			setCurrentUser: (
+	      userId,
+	      username,
+	      email,
+	      hasNotifications,
+	      paypal_email,
+	      seller
+	    ) =>
+	      dispatch({
+	        type: `SET_CURRENT_USER`,
+	        userId,
+	        username,
+	        email,
+	        hasNotifications,
+	        paypal_email,
+	        seller
+	      }),
 		getAllBoards: boards => dispatch({ type: `GET_ALL_BOARDS`, boards })
+
 	};
 };
 
