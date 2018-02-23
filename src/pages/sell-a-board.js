@@ -74,7 +74,7 @@ class ListABoard extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // check if user is signed in ..
 
     const bgcookie = this.getCookie("boardgrab_user");
