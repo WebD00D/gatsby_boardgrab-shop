@@ -43,6 +43,30 @@ class IndexPage extends PureComponent {
   componentWillMount() {
     // check if user is signed in ..
 
+
+
+    // end check if user is signed in..
+  }
+
+  getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  componentDidMount() {
+
+
     const bgcookie = this.getCookie("boardgrab_user");
 
     if (bgcookie.trim()) {
@@ -65,26 +89,6 @@ class IndexPage extends PureComponent {
         );
     }
 
-    // end check if user is signed in..
-  }
-
-  getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
-  componentDidMount() {
     this._updateDims();
     window.addEventListener("resize", this._updateDims);
 
