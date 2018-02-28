@@ -112,7 +112,7 @@ class BoardDetail extends PureComponent {
 		const shortMessage = `${this.props.account_username} has sent an offer for ${this.state.board.name}! Visit your account to view!`
 
 		fetch(
-			`https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+			`https://boardgrab-api.herokuapp.com/send-message-or-offer-to-seller?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
 		).then(function(response) {
 			console.log("SEND OFFER EMAIL RESPONSE", response);
 		});
@@ -211,7 +211,7 @@ class BoardDetail extends PureComponent {
 		const shortMessage = `${this.props.account_username} has asked a question about ${this.state.board.name}! Visit your account to view and reply!`
 
 		fetch(
-			`https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+			`https://boardgrab-api.herokuapp.com/send-message-or-offer-to-seller?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
 		).then(function(response) {
 			console.log("SEND QUESTION EMAIL RESPONSE", response);
 		});
