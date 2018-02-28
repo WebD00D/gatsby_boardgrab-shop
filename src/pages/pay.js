@@ -64,11 +64,31 @@ class Payment extends PureComponent {
               const ccType = cardInfo.brand;
 
               if (isPaid && status === "succeeded") {
+
                 this.setState({
                   status: "succeeded"
                 });
 
                 // hit the mail BG mail api.
+
+                // to seller
+                const shortMessage = `${this.props.account_username} has purchased ${this.state.board}! Visit your account to message and arrange delivery or pickup!`
+
+            		fetch(
+            			`https://boardgrab-api.herokuapp.com/seller-sold-a-board?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+            		).then(function(response) {
+            			console.log("PAYMENT TO SELLER EMAIL RESPONSE", response);
+            		});
+
+
+                // to buyer
+                const buyerMessage = `congrats on your purchase of ${this.state.board} from ${this.state.sellerUsername}! Visit your account to message and arrange delivery or pickup!`
+
+            		fetch(
+            			`https://boardgrab-api.herokuapp.com/buyer-bought-a-board?email=${this.props.currentUserEmail}&username=${this.props.account_username}&bodySnippet=${buyerMessage}`
+            		).then(function(response) {
+            			console.log("PURCHASE FROM BUYER EMAIL RESPONSE", response);
+            		});
 
                 // Update offers/boardid/ meta..
                 var updates = {};
