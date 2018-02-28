@@ -32,6 +32,8 @@ class Message extends PureComponent {
 
 
   componentDidMount() {
+
+  
     // get board param id
     const sendMessageTo = this.getQueryVariable("from");
     this.setState({
@@ -111,7 +113,7 @@ class Message extends PureComponent {
     const shortMessage = this.state.message.substr(0,30) + "...";
 
     fetch(
-      `https://boardgrab-api.herokuapp.com/send-message-notification?email=${this.state.sendMessageBackToEmail}&username=${this.state.sendToUser}&bodySnippet=${shortMessage}`
+      `https://boardgrab-api.herokuapp.com/send-message-notification?email=${this.state.sendMessageBackToEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
     ).then(function(response) {
       console.log("RESPONSE", response);
     });
