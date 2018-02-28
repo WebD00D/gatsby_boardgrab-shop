@@ -21,17 +21,18 @@ class OffersReceived extends PureComponent {
       this.handleOfferAccept = this.handleOfferAccept.bind(this);
 
       this.state = {
+        sendMessageBackToEmail: '',
         offersReceived: {}
       }
 
   }
 
   componentDidMount() {
-    // GET ALL THE SELLERS OFFERS PER BOARD... 
+    // GET ALL THE SELLERS OFFERS PER BOARD...
     var messageRef = fire.database().ref('/users/' + this.props.userId + '/offersReceived');
 
     messageRef.on('value', function(snapshot){
-    
+
       this.setState({
         offersReceived: snapshot.val()
       })
@@ -40,7 +41,32 @@ class OffersReceived extends PureComponent {
 
 
   handleOfferAccept(offerId, buyerId, boardId) {
-    
+
+    let buyerEmail;
+
+    fire
+      .database()
+      .ref("users/" + buyerId)
+      .once("value")
+      .then(
+        function(snapshot) {
+          console.log("OTHER USER SNAPSHOT", snapshot.val());
+
+          buyerEmail = snapshot.val().email;
+
+          const shortMessage = `${this.props.account_username} has accepted your offer! Visit you account to view and purchase!`
+
+          fetch(
+            `https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${buyerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+          ).then(function(response) {
+            console.log("RESPONSE", response);
+          });
+
+
+        }.bind(this)
+      );
+
+
     var updates = {};
     updates[`offers/${boardId}/offersMade/${offerId}/offerAccepted`] = true;
     updates[`users/${this.props.userId}/offersReceived/${boardId}/offers/${offerId}/offerAccepted`] = true;
@@ -56,15 +82,15 @@ class OffersReceived extends PureComponent {
   render() {
 
     const offersReceivedDataSource = this.state.offersReceived;
-   
+
     let offersReceivedList = [];
     let offersReceivedItems = [];
 
     _.forEach(offersReceivedDataSource, function(value, key) {
 
             console.log('OFFERS RECEIVED LIST',  value);
-           
-        
+
+
             _.forEach(value.offers, function(v, k) {
 
                 console.log('DETAILS ABOUT THE SPECIFIC OFFEr', v)
@@ -78,11 +104,11 @@ class OffersReceived extends PureComponent {
                             </div>
                             <div>
                                 {
-                                    v.offerAccepted 
+                                    v.offerAccepted
                                         ? <div className="fc-green t-sans fw-500" style={{fontStyle: 'italic', paddingRight: '30px'}}>Offer Accepted</div>
                                         : <button onClick={ () => this.handleOfferAccept( k, v.buyerId, v.boardId ) } className="message-box__button">Accept Offer</button>
                                 }
-                            </div>  
+                            </div>
                         </div>
 
                 )
@@ -106,12 +132,12 @@ class OffersReceived extends PureComponent {
         }.bind(this));
 
         const offersReceivedListReverse = _.reverse(offersReceivedList)
-        
-        
+
+
 
 	return (<div>
 			<div className="table-rows">
-              
+
 				{offersReceivedList.length > 0 ? (
 					<div>{offersReceivedListReverse}</div>
 				) : (

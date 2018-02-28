@@ -33,7 +33,7 @@ class Message extends PureComponent {
 
   componentDidMount() {
 
-  
+
     // get board param id
     const sendMessageTo = this.getQueryVariable("from");
     this.setState({
