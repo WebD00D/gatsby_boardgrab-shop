@@ -52,6 +52,8 @@ class Messages extends PureComponent {
 
 
     const messages = this.state.messages;
+
+    console.log("MESSAGESSSSS", messages);
     const buyMessages = [];
     const sellMessages = [];
 

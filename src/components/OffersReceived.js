@@ -40,7 +40,7 @@ class OffersReceived extends PureComponent {
   }
 
 
-  handleOfferAccept(offerId, buyerId, boardId) {
+  handleOfferAccept(offerId, buyerId, boardId, boardName) {
 
     let buyerEmail;
 
@@ -54,7 +54,7 @@ class OffersReceived extends PureComponent {
 
           buyerEmail = snapshot.val().email;
 
-          const shortMessage = `${this.props.account_username} has accepted your offer! Visit you account to view and purchase!`
+          const shortMessage = `${this.props.account_username} has accepted your offer for ${boardName}! Visit your account to view and purchase!`
 
           fetch(
             `https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${buyerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
@@ -106,7 +106,7 @@ class OffersReceived extends PureComponent {
                                 {
                                     v.offerAccepted
                                         ? <div className="fc-green t-sans fw-500" style={{fontStyle: 'italic', paddingRight: '30px'}}>Offer Accepted</div>
-                                        : <button onClick={ () => this.handleOfferAccept( k, v.buyerId, v.boardId ) } className="message-box__button">Accept Offer</button>
+                                        : <button onClick={ () => this.handleOfferAccept( k, v.buyerId, v.boardId, v.boardName ) } className="message-box__button">Accept Offer</button>
                                 }
                             </div>
                         </div>
