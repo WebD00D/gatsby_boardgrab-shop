@@ -25,9 +25,10 @@ class Message extends PureComponent {
       sendMessageBackTo: '',
       otherUser: '',
       board: '',
+      sendMessageBackToEmail: '',
+      sendToUser: ''
     };
   }
-
 
 
   componentDidMount() {
@@ -37,11 +38,25 @@ class Message extends PureComponent {
       sendMessageBackTo: sendMessageTo
     })
 
+    fire
+      .database()
+      .ref("users/" + sendMessageTo)
+      .once("value")
+      .then(
+        function(snapshot) {
+          console.log("OTHER USER SNAPSHOT", snapshot.val());
+          this.setState({
+            sendMessageBackToEmail: snapshot.val().email,
+            sendToUser: snapshot.val().username
+          })
+        }.bind(this)
+      );
+
 
       const id = this.getQueryVariable("message");
       const from = this.getQueryVariable("from");
       const otherUser = this.getQueryVariable("otherUser");
-    const board = this.getQueryVariable("board")
+      const board = this.getQueryVariable("board")
 
 
       console.log("FROM", from);
@@ -92,6 +107,14 @@ class Message extends PureComponent {
   }
 
   sendMessage() {
+
+    const shortMessage = this.state.message.substr(0,30) + "...";
+
+    fetch(
+      `https://boardgrab-api.herokuapp.com/send-message-notification?email=${this.state.sendMessageBackToEmail}&username=${this.state.sendToUser}&bodySnippet=${shortMessage}`
+    ).then(function(response) {
+      console.log("RESPONSE", response);
+    });
 
 		const message = this.state.message;
 		const messageDate = new Date();
@@ -273,7 +296,7 @@ class Message extends PureComponent {
         </Link>
 
         <div className="message-header">
-          <div className="f-13 fw-500 t-sans" style={{marginLeft: "8px"}}>{this.state.otherUser}</div>
+          <div className="f-13 fw-500 t-sans" style={{marginLeft: "8px"}}>{this.state.sendToUser} </div>
           <div
             className="f-13 fw-500 t-sans fc-white ls-2 t-upper hover"
             style={{ marginRight: "16px" }}
