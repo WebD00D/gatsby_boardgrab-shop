@@ -8,7 +8,7 @@
   margin-bottom: 12px;
   display: flex;
   align-items: center;
-  height: 80px;
+  min-height: 80px;
   width: 100%;
   border-bottom: 1px solid rgba(01,01,01,0.3);
   transition: .2s ease;
@@ -34,7 +34,7 @@
 }
 
 .message-row {
-  height: 80px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   border: 1px solid #cccccc;
@@ -56,4 +56,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+
+@media (max-width: 600px) {
+  .table-row--messages {
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .w-100p-m {
+    width: 100%;
+  }
+
+  .t-left-m {
+    text-align: left;
+  }
+
+
 }

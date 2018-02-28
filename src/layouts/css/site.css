@@ -265,7 +265,7 @@
   .site-container, .site-container--sm {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 50px;
+    padding-top: 10px;
     padding-bottom: 100px;
   }
 }
@@ -450,15 +450,26 @@ hr {
 .offers__row {
     padding-left: 12px;
     padding-right: 12px;
+    padding: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 80px;
+    min-height: 80px;
     border: 1px solid #498144;
     border-top: none;
     font-size: 12px;
     font-family: "Montserrat",tahoma,helvetica,sans-serif;
     letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+
+  .offers__row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
 }
 
 /**

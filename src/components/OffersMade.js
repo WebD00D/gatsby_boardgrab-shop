@@ -25,11 +25,11 @@ class OffersMade extends PureComponent {
   }
 
   componentDidMount() {
-    // GET ALL THE SELLERS OFFERS PER BOARD... 
+    // GET ALL THE SELLERS OFFERS PER BOARD...
     var messageRef = fire.database().ref('/users/' + this.props.userId + '/offersMade');
 
     messageRef.on('value', function(snapshot){
-    
+
       this.setState({
         offersMade: snapshot.val()
       })
@@ -37,20 +37,20 @@ class OffersMade extends PureComponent {
   }
 
 
- 
+
 
   render() {
 
     const offersMadeDataSource = this.state.offersMade;
     const offersMadeList = [];
     const offersMadeItems = [];
-  
+
     _.forEach(offersMadeDataSource, function(v, k) {
 
                 console.log('DETAILS ABOUT THE SPECIFIC OFFER', v)
 
-  
-             
+
+
                const amount = (parseFloat(v.amountOffered) * 100);
                const paymentLink = `/pay/?sellerId=${v.sellerId}&boardId=${v.boardId}&boardName=${v.boardName}&amount=${amount}`;
 
@@ -62,37 +62,38 @@ class OffersMade extends PureComponent {
                         <div className="offers__row" >
                             <div>
                                 <div className="f-16 fw-500">${v.amountOffered}</div>
-                                <div><Moment format="MM/DD/YYYY @ hh:mm A" date={v.offerDate} /> to {v.sellerUsername}</div>
+                                <div><Moment format="MM/DD/YYYY @ hh:mm A" date={v.offerDate} /></div>
+                                <div> {v.sellerUsername}</div>
                             </div>
                             <div>
                                 {
-                                    !v.offerAccepted 
+                                    !v.offerAccepted
                                         ? <div className="fc-yellow t-sans fw-500" style={{fontStyle: 'italic', paddingRight: '30px'}}>Offer Pending</div>
-                                        : 
+                                        :
                                         <div style={{paddingRight: '30px'}}>
                                             <div className="fc-green t-sans fw-500">
-                                            Offer Accepted! 
+                                            Offer Accepted!
                                             <Link className="fc-green" to={paymentLink}>Pay Now!</Link></div>
                                         </div>
                                 }
-                            </div>  
+                            </div>
                         </div>
                     </div>
 
                 )
 
-           
+
 
 
         }.bind(this));
 
         var offersMadeListReversed = _.reverse(offersMadeItems);
-        
-        
+
+
 
 	return (<div>
 			<div className="table-rows">
-              
+
 				{offersMadeItems.length > 0 ? (
 					<div>{offersMadeListReversed}</div>
 				) : (

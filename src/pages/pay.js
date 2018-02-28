@@ -291,6 +291,7 @@ class Payment extends PureComponent {
                 </div>
                 <hr />
                 <div className="f-16 t-sans">
+                
                   {" "}
                   <span className="fw-500">Board:</span> {this.state.board}{" "}
                 </div>
