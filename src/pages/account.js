@@ -39,6 +39,8 @@ class Account extends PureComponent {
 
     const bgcookie = this.getCookie("boardgrab_user");
 
+    let stripeId;
+
     if (bgcookie.trim()) {
       fire
         .database()
@@ -47,6 +49,7 @@ class Account extends PureComponent {
         .then(
           function(snapshot) {
             console.log("SIGN IN SNAPSHOT", snapshot.val());
+            stripeId = snapshot.val().stripe;
             this.props.setCurrentUser(
               bgcookie,
               snapshot.val().username,
@@ -56,38 +59,46 @@ class Account extends PureComponent {
               snapshot.val().seller
             );
           }.bind(this)
-        );
+        ).then(function(){
+
+
+          // clear notifications..
+          var updates = {};
+          updates["users/" + this.props.userId + "/hasNotifications"] = false;
+          fire
+            .database()
+            .ref()
+            .update(updates);
+          this.props.clearNotifications();
+
+          // GET SELLERS DASHBOARD LINK...
+          console.log("STRIPE", this.props.stripe)
+          console.log(stripeId)
+
+          if (this.props.isSeller) {
+            fetch(
+              `https://boardgrab-api.herokuapp.com/get-login-link?link=${
+                stripeId
+              }`
+            )
+              .then(function(response) {
+                return response.json();
+              })
+              .then(
+                function(r) {
+
+                  this.setState({
+                    stripeDashboardLink: r.url
+                  });
+                }.bind(this)
+              );
+          }
+
+
+        }.bind(this))
     }
 
-    // clear notifications..
-    var updates = {};
-    updates["users/" + this.props.userId + "/hasNotifications"] = false;
-    fire
-      .database()
-      .ref()
-      .update(updates);
-    this.props.clearNotifications();
 
-    // GET SELLERS DASHBOARD LINK...
-
-    if (this.props.isSeller) {
-      fetch(
-        `https://boardgrab-api.herokuapp.com/get-login-link?link=${
-          this.props.stripe
-        }`
-      )
-        .then(function(response) {
-          return response.json();
-        })
-        .then(
-          function(r) {
-            console.log(r.url);
-            this.setState({
-              stripeDashboardLink: r.url
-            });
-          }.bind(this)
-        );
-    }
   }
 
   getCookie(cname) {

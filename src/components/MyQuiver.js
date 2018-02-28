@@ -55,13 +55,13 @@ class MyQuiver extends PureComponent {
         boardList.push(
           <div key={key} style={{textDecoration: 'none', justifyContent: 'space-between'}} className={cx([ "table-row" ])} >
           <div style={{paddingLeft: '8px'}} className={cx(["t-sans f-11 ls-2 w-40p fc-green"])}>
-            {value.name} <br />
+            <Link className="fc-green" to={`/board-detail/?board=${key}`}><b>{value.name}</b></Link> <br />
             <span style={{color: '#404040', fontSize: '9px'}}>Listed on <Moment format="MM/DD/YYYY @ hh:mm A" date={value.listDate} /></span>
           </div>
           <div style={{paddingRight: '8px'}}>
-            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div> : <Link className="f-13 fc-green t-sans" to={`/edit-board?boardId=${key}`}> <i className="fa fa-pencil"></i> Edit Listing</Link> }
+            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div> : <Link className="f-13 fc-green t-sans" to={`/edit-board?boardId=${key}`}> <i className="fa fa-pencil"></i> Edit</Link> }
           </div>
-         
+
         </div>
         )
 
@@ -69,7 +69,7 @@ class MyQuiver extends PureComponent {
     }.bind(this));
 
     boardListReversed = _.reverse(boardList);
- 
+
 
     return (
         <div>

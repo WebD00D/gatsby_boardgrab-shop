@@ -124,6 +124,7 @@ class Navbar extends PureComponent {
                 className="hover fa fa-close"
               />
             </div>
+
             <Link
               to="/"
               onClick={() => {
@@ -132,6 +133,13 @@ class Navbar extends PureComponent {
               className="mobile-menu__item hover"
             >
               Buy Boards
+            </Link>
+            <Link
+            onClick={() => {
+              this.setState({ mobileMenuOpen: false });
+            }}
+             className="mobile-menu__item hover" to="/sell-a-board">
+              Sell Boards
             </Link>
 
             <Link
@@ -155,17 +163,7 @@ class Navbar extends PureComponent {
             </a>
 
 
-            {this.props.userAuthenticated && this.props.isSeller ? (
-              <Link
-              onClick={() => {
-                this.setState({ mobileMenuOpen: false });
-              }}
-               className="mobile-menu__item hover" to="/sell-a-board">
-                Sell a Board
-              </Link>
-            ) : (
-              ""
-            )}
+
             {this.props.userAuthenticated && !this.props.isSeller ? (
               <Link
               onClick={() => {
@@ -238,7 +236,11 @@ class Navbar extends PureComponent {
 
 
         <Link className="navbar__link hover" to="/">
-          Boards
+           Buy Boards
+        </Link>
+
+        <Link className="navbar__link hover" to="/sell-a-board">
+          Sell Boards
         </Link>
 
         <Link className="navbar__link hover" to="/faqs">
@@ -249,13 +251,7 @@ class Navbar extends PureComponent {
           Blog
         </a>
 
-          {this.props.userAuthenticated && this.props.isSeller ? (
-            <Link className="navbar__link hover" to="/sell-a-board">
-              Sell a Board
-            </Link>
-          ) : (
-            ""
-          )}
+
           {this.props.userAuthenticated && !this.props.isSeller ? (
             <Link className="navbar__link" to="/sell-with-us">
               Start Selling

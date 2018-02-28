@@ -61,6 +61,7 @@ class ListABoard extends Component {
       photoOneProgress: 0,
       photoOneURL: "",
       boardJustPosted: false,
+      justPostedId: "",
 
       tag_beginner: false,
       tag_intermediate: false,
@@ -70,7 +71,9 @@ class ListABoard extends Component {
       tag_budget: false,
 
       newShaper: false,
-      newModel: true
+      newModel: true,
+
+
     };
   }
 
@@ -657,7 +660,8 @@ class ListABoard extends Component {
       });
 
     this.setState({
-      boardJustPosted: true
+      boardJustPosted: true,
+      justPostedId: dateTime
     });
   }
 
@@ -670,10 +674,14 @@ class ListABoard extends Component {
         <div className="page-header">
             <b className="t-sans">Sell a Board</b>
         </div>
-        <div className="create-account">
-          <div className="create-account__headline bold" style={{marginBottom: '18px'}}>Oops!</div>
-          <div className="m-b-10 bold">You must be a registerd user to sell a board.</div>
-          <Link to="/authentication" className="button button--green ">
+        <div className="create-account t-center">
+
+          <div className="m-b-10 bold t-sans t-center" style={{marginBottom: '22px'}}>
+          <b>
+            We're stoked you want to sell a board, but first you gotta sign in or create an account!
+          </b>
+          </div>
+          <Link to="/authentication" className="button button--green " style={{display: 'inline-block'}}>
             {" "}
             Sign In
           </Link>
@@ -703,19 +711,12 @@ class ListABoard extends Component {
         <div className="page-header">
             <b className="t-sans">Sell a Board</b>
         </div>
-        <div className="create-account">
-          <div
-            className="create-account__headline m-b-20"
-            style={{ marginTop: "20px" }}
-          >
-            Nice work.
-          </div>
-          <button
-            onClick={this.handlePostAnother}
-            className="button button--green button--small m-b-20"
-          >
-            Post another?
-          </button>
+        <div className="create-account t-center">
+          <div className="t-sans t-center"><b>Success! Your board has been listed.
+          Check it out <Link to={`/board-detail/?board=${this.state.justPostedId}`} className="fc-green td-none">here</Link>,
+          or maybe <span onClick={this.handlePostAnother} className="fc-green hover">post another?</span></b></div>
+          <img style={{maxHeight: '300px', borderRadius: '6px', marginTop: '22px'}} src={this.state.avatar} />
+
         </div>
         </div>
       );
@@ -833,7 +834,7 @@ class ListABoard extends Component {
               onChange={e => {
                 this.setState({ price: e.target.value });
               }}
-              type="text"
+              type="number"
             />
           </div>
         </div>

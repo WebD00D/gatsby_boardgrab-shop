@@ -21,7 +21,6 @@
 }
 
 .table-row:hover {
-  cursor: pointer;
   background-color: rgba(01,01,01,0.05);
 }
 
