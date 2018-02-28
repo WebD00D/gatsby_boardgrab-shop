@@ -25,7 +25,8 @@ class BoardDetail extends PureComponent {
 			offer: 0,
 			messageStatus: '',
 			messageId: false,
-			sellerUserName: ''
+			sellerUserName: '',
+			sellerEmail: '',
 		};
 	}
 
@@ -96,7 +97,8 @@ class BoardDetail extends PureComponent {
 							function(s) {
 								console.log('SELLER SNAPSHOT', s.val());
 								this.setState({
-									sellerUserName: s.val().username
+									sellerUserName: s.val().username,
+									sellerEmail: s.val().email
 								});
 							}.bind(this)
 						);
@@ -105,6 +107,16 @@ class BoardDetail extends PureComponent {
 	}
 
 	sendOffer() {
+
+
+		const shortMessage = `${this.props.account_username} has sent an offer for ${this.state.board.name}! Visit your account to view!`
+
+		fetch(
+			`https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+		).then(function(response) {
+			console.log("SEND OFFER EMAIL RESPONSE", response);
+		});
+
 
 		const sellerId = this.state.board.userId;
 		const buyerId = this.props.userId;
@@ -188,10 +200,22 @@ class BoardDetail extends PureComponent {
 	} // end Send Offer
 
 	sendMessage() {
+
+
 		const sellerId = this.state.board.userId;
 		const buyerId = this.props.userId;
 		const message = this.state.message;
 		const messageDate = new Date();
+
+
+		const shortMessage = `${this.props.account_username} has asked a question about ${this.state.board.name}! Visit your account to view and reply!`
+
+		fetch(
+			`https://boardgrab-api.herokuapp.com/send-accepted-offer-notification?email=${this.state.sellerEmail}&username=${this.props.account_username}&bodySnippet=${shortMessage}`
+		).then(function(response) {
+			console.log("SEND QUESTION EMAIL RESPONSE", response);
+		});
+
 
 		let messageThreadId = this.state.messageId
 			? this.state.messageId
