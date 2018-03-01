@@ -104,11 +104,6 @@ class Payment extends PureComponent {
                   `offers/${this.state.boardId}/amountPaid`
                 ] = this.state.amount;
 
-                // `boardsByRegion/${this.state.region}/${this.state.boardId}`
-                // `boardsByCity/${this.state.city}/boards/${this.state.boardId}`
-                // `allBoardsList/boards/${this.state.boardId}`
-                // `boardsByUser/${this.state.sellerId}/${this.state.boardId}`
-
                 updates[
                   `boardsByRegion/${this.state.boardRegion}/${
                     this.state.boardId
@@ -148,6 +143,32 @@ class Payment extends PureComponent {
                     this.state.boardId
                   }/amountSoldFor`
                 ] = this.state.amount;
+
+                // Add to buyers Purchased node..
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/boardId`
+                ] = this.state.boardId;
+
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/board`
+                ] = this.state.board;
+
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/sellerId`
+                ] = this.state.sellerId;
+
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/sellerUsername`
+                ] = this.state.sellerUsername;
+
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/sellerEmail`
+                ] = this.state.sellerEmail;
+
+                updates[
+                  `/users/${this.props.userId}/purchases/${this.state.boardId}/pricePaid`
+                ] = this.state.amount;
+
 
                 fire
                   .database()
@@ -291,7 +312,7 @@ class Payment extends PureComponent {
                 </div>
                 <hr />
                 <div className="f-16 t-sans">
-                
+
                   {" "}
                   <span className="fw-500">Board:</span> {this.state.board}{" "}
                 </div>

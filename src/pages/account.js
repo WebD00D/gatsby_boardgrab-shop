@@ -15,6 +15,7 @@ import MyQuiver from "../components/MyQuiver";
 import Settings from "../components/Settings";
 import OffersReceived from "../components/OffersReceived";
 import OffersMade from "../components/OffersMade";
+import Purchases from "../components/Purchases";
 
 class Account extends PureComponent {
   constructor(props) {
@@ -156,6 +157,14 @@ class Account extends PureComponent {
             >
               Offers Made
             </div>
+            <div
+              onClick={() => this.handleTabChange("Purchases")}
+              className={cx(["account_tab hover"], {
+                "account_tab--active": this.state.activeTab === "Purchases"
+              })}
+            >
+              Purchases
+            </div>
             {this.props.isSeller ? (
               <div
                 onClick={() => this.handleTabChange("My Quiver")}
@@ -182,7 +191,7 @@ class Account extends PureComponent {
                   textDecoration: "none"
                 }}
               >
-                Stripe Dashboard
+                Stripe
               </a>
             ) : (
               ""
@@ -206,6 +215,13 @@ class Account extends PureComponent {
           {this.state.activeTab === "Received" ? (
             <div className="tab">
               <OffersReceived />
+            </div>
+          ) : (
+            ""
+          )}
+          {this.state.activeTab === "Purchases" ? (
+            <div className="tab">
+              <Purchases />
             </div>
           ) : (
             ""
