@@ -20,6 +20,8 @@ class MyQuiver extends PureComponent {
   constructor(props) {
       super(props);
 
+      this._handleDelete = this._handleDelete.bind(this);
+
       this.state = {
         boards: {}
       }
@@ -36,6 +38,25 @@ class MyQuiver extends PureComponent {
         boards: snapshot.val()
       })
     }.bind(this))
+  }
+
+  _handleDelete(id, city, region) {
+
+    fire.database().ref(`/boardsByUser/${this.props.userId}/${id}`).remove();
+    fire.database().ref(`/boardsByCity/${city}/boards/${id}`).remove();
+    fire.database().ref(`/boardsByRegion/${region}/${id}`).remove();
+    fire.database().ref(`/allBoardsList/boards/${id}`).remove();
+
+    var boardRef = fire.database().ref('/boardsByUser/' + this.props.userId );
+
+    boardRef.on('value', function(snapshot){
+      console.log('BOARD PREVIEWZZZ', snapshot.val())
+      this.setState({
+        boards: snapshot.val()
+      })
+    }.bind(this))
+
+
   }
 
 
@@ -59,7 +80,13 @@ class MyQuiver extends PureComponent {
             <span style={{color: '#404040', fontSize: '9px'}}>Listed on <Moment format="MM/DD/YYYY @ hh:mm A" date={value.listDate} /></span>
           </div>
           <div style={{paddingRight: '8px'}}>
-            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div> : <Link className="f-13 fc-green t-sans" to={`/edit-board?boardId=${key}`}> <i className="fa fa-pencil"></i> Edit</Link> }
+            { value.sold ? <div className="f-13 fc-green t-sans">Sold for ${ value.amountSoldFor / 100 }! </div>
+            :
+            <div>
+            <Link className="f-13 fc-green t-sans td-none" to={`/edit-board?boardId=${key}`}> <i className="fa fa-pencil"></i> Edit</Link>
+            <span onClick={ () => this._handleDelete(key, value.city, value.region) } className="hover f-13 fa fc-red t-sans m-l-22"><i className="fa fa-close"></i> Delete</span>
+            </div>
+           }
           </div>
 
         </div>
