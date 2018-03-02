@@ -151,7 +151,8 @@ class ListABoard extends Component {
         );
       }.bind(this),
       {
-        orientation: true
+        orientation: true,
+        maxWidth: 600,
       }
     );
   }
