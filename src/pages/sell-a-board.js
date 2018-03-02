@@ -7,6 +7,7 @@ import FatherTime from "../utils/fatherTime";
 import { connect } from "react-redux";
 import Moment from "react-moment";
 import Dropzone from "react-dropzone";
+import LoadImage from "blueimp-load-image";
 
 import "../layouts/css/login.css";
 import "../layouts/css/listing.css";
@@ -71,9 +72,7 @@ class ListABoard extends Component {
       tag_budget: false,
 
       newShaper: false,
-      newModel: true,
-
-
+      newModel: true
     };
   }
 
@@ -122,13 +121,39 @@ class ListABoard extends Component {
   }
 
   uploadPhoto(files) {
-    const dateTime = Date.now();
-    const storageRef = fire.storage().ref().child(`BG-${dateTime}-${files[0].name}`);
-    storageRef.put(files[0]).then(function(snapshot) {
-      this.setState({
-        avatar: snapshot.metadata.downloadURLs[0]
-      })
-    }.bind(this));
+    console.log("LOAD IMAGE", LoadImage);
+
+    let originalFile = files[0];
+
+    LoadImage(
+      originalFile,
+      function(img) {
+        img.toBlob(
+          function(blob) {
+            console.log(blob);
+
+            var url = URL.createObjectURL(blob);
+            console.log("URL", url);
+
+            const dateTime = Date.now();
+            const storageRef = fire
+              .storage()
+              .ref()
+              .child(`BG-${dateTime}-${files[0].name}`);
+            storageRef.put(blob).then(
+              function(snapshot) {
+                this.setState({
+                  avatar: snapshot.metadata.downloadURLs[0]
+                });
+              }.bind(this)
+            );
+          }.bind(this)
+        );
+      }.bind(this),
+      {
+        orientation: true
+      }
+    );
   }
 
   updateCityFromRegionChange(region) {
@@ -666,29 +691,33 @@ class ListABoard extends Component {
   }
 
   render() {
-
-    if ( !this.props.userAuthenticated ) {
-
+    if (!this.props.userAuthenticated) {
       return (
         <div>
-        <div className="page-header">
+          <div className="page-header">
             <b className="t-sans">Sell a Board</b>
+          </div>
+          <div className="create-account t-center">
+            <div
+              className="m-b-10 bold t-sans t-center"
+              style={{ marginBottom: "22px" }}
+            >
+              <b>
+                We're stoked you want to sell a board, but first you gotta sign
+                in or create an account!
+              </b>
+            </div>
+            <Link
+              to="/authentication"
+              className="button button--green "
+              style={{ display: "inline-block" }}
+            >
+              {" "}
+              Sign In
+            </Link>
+          </div>
         </div>
-        <div className="create-account t-center">
-
-          <div className="m-b-10 bold t-sans t-center" style={{marginBottom: '22px'}}>
-          <b>
-            We're stoked you want to sell a board, but first you gotta sign in or create an account!
-          </b>
-          </div>
-          <Link to="/authentication" className="button button--green " style={{display: 'inline-block'}}>
-            {" "}
-            Sign In
-          </Link>
-          </div>
-          </div>
-      )
-
+      );
     }
 
     const cities = this.props.dropDownCityList.map((city, key) => {
@@ -708,302 +737,353 @@ class ListABoard extends Component {
     if (this.state.boardJustPosted) {
       return (
         <div>
-        <div className="page-header">
+          <div className="page-header">
             <b className="t-sans">Sell a Board</b>
-        </div>
-        <div className="create-account t-center">
-          <div className="t-sans t-center"><b>Success! Your board has been listed.
-          Check it out <Link to={`/board-detail/?board=${this.state.justPostedId}`} className="fc-green td-none">here</Link>,
-          or maybe <span onClick={this.handlePostAnother} className="fc-green hover">post another?</span></b></div>
-          <img style={{maxHeight: '300px', borderRadius: '6px', marginTop: '22px'}} src={this.state.avatar} />
-
-        </div>
+          </div>
+          <div className="create-account t-center">
+            <div className="t-sans t-center">
+              <b>
+                Success! Your board has been listed. Check it out{" "}
+                <Link
+                  to={`/board-detail/?board=${this.state.justPostedId}`}
+                  className="fc-green td-none"
+                >
+                  here
+                </Link>, or maybe{" "}
+                <span
+                  onClick={this.handlePostAnother}
+                  className="fc-green hover"
+                >
+                  post another?
+                </span>
+              </b>
+            </div>
+            <img
+              style={{
+                maxHeight: "300px",
+                borderRadius: "6px",
+                marginTop: "22px"
+              }}
+              src={this.state.avatar}
+            />
+          </div>
         </div>
       );
     }
 
     return (
       <div>
-      <div className="page-header">
+        <div className="page-header">
           <b className="t-sans">Sell a Board</b>
-      </div>
-      <div className="create-account">
+        </div>
+        <div className="create-account">
+          <Link to="/account" className="td-none t-sans fc-green f-11 ">
+            Cancel and return to account page
+          </Link>
 
-
-        <Link to="/account" className="td-none t-sans fc-green f-11 ">
-          Cancel and return to account page
-        </Link>
-
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Listing Title </label>
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Listing Title </label>
+              <input
+                name="listingTitle"
+                onChange={e => {
+                  this.setState({ listingTitle: e.target.value });
+                }}
+                type="text"
+              />
+            </div>
+            <label>Brand / Shaper </label>
             <input
-              name="listingTitle"
+              name="brandShaper"
               onChange={e => {
-                this.setState({ listingTitle: e.target.value });
+                this.setState({ brandShaper: e.target.value });
               }}
               type="text"
             />
           </div>
-          <label>Brand / Shaper </label>
-          <input
-            name="brandShaper"
-            onChange={e => {
-              this.setState({ brandShaper: e.target.value });
-            }}
-            type="text"
-          />
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Model </label>
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Model </label>
+              <input
+                name="model"
+                onChange={e => {
+                  this.setState({ model: e.target.value });
+                }}
+                type="text"
+              />
+            </div>
+            <label>Dimensions </label>
             <input
-              name="model"
+              name="dimensions"
               onChange={e => {
-                this.setState({ model: e.target.value });
+                this.setState({ dimensions: e.target.value });
+              }}
+              type="text"
+            />
+            <label>Volume </label>
+            <input
+              name="volume"
+              onChange={e => {
+                this.setState({ volume: e.target.value });
               }}
               type="text"
             />
           </div>
-          <label>Dimensions </label>
-          <input
-            name="dimensions"
-            onChange={e => {
-              this.setState({ dimensions: e.target.value });
-            }}
-            type="text"
-          />
-          <label>Volume </label>
-          <input
-            name="volume"
-            onChange={e => {
-              this.setState({ volume: e.target.value });
-            }}
-            type="text"
-          />
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Fins </label>
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Fins </label>
+              <input
+                name="fins"
+                onChange={e => {
+                  this.setState({ fins: e.target.value });
+                }}
+                type="text"
+              />
+            </div>
+            <label>Condition </label>
             <input
-              name="fins"
+              name="condition"
               onChange={e => {
-                this.setState({ fins: e.target.value });
+                this.setState({ condition: e.target.value });
               }}
               type="text"
             />
           </div>
-          <label>Condition </label>
-          <input
-            name="condition"
-            onChange={e => {
-              this.setState({ condition: e.target.value });
-            }}
-            type="text"
-          />
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Description </label>
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Description </label>
+              <input
+                name="description"
+                onChange={e => {
+                  this.setState({ description: e.target.value });
+                }}
+                type="text"
+              />
+            </div>
+            <label>Shaper Info </label>
             <input
-              name="description"
+              name="shaperInfo"
               onChange={e => {
-                this.setState({ description: e.target.value });
+                this.setState({ shaperInfo: e.target.value });
               }}
               type="text"
             />
           </div>
-          <label>Shaper Info </label>
-          <input
-            name="shaperInfo"
-            onChange={e => {
-              this.setState({ shaperInfo: e.target.value });
-            }}
-            type="text"
-          />
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Price </label>
-            <input
-              name="price"
-              onChange={e => {
-                this.setState({ price: e.target.value });
-              }}
-              type="number"
-            />
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Price </label>
+              <input
+                name="price"
+                onChange={e => {
+                  this.setState({ price: e.target.value });
+                }}
+                type="number"
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Tags </label>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_beginner"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_beginner")
-                      .checked;
-                    this.setState({ tag_beginner: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">Beginner</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_intermediate"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_intermediate")
-                      .checked;
-                    this.setState({ tag_intermediate: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">Intermediate</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_advanced"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_advanced")
-                      .checked;
-                    this.setState({ tag_advanced: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">Advanced</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_greatforanybody"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_greatforanybody")
-                      .checked;
-                    this.setState({ tag_greatforanybody: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">Great for anybody</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_smallwaves"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_smallwaves")
-                      .checked;
-                    this.setState({ tag_smallwaves: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">Small Waves</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                  id="tag_budget"
-                  style={{ width: "30px", marginBottom: "0px", height: "20px" }}
-                  name="beginners"
-                  onChange={e => {
-                    let checked = document.getElementById("tag_budget").checked;
-                    this.setState({ tag_budget: checked });
-                  }}
-                  type="checkbox"
-                />
-                <div className="tag">On a Budget</div>
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Tags </label>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_beginner"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById("tag_beginner")
+                        .checked;
+                      this.setState({ tag_beginner: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">Beginner</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_intermediate"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById("tag_intermediate")
+                        .checked;
+                      this.setState({ tag_intermediate: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">Intermediate</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_advanced"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById("tag_advanced")
+                        .checked;
+                      this.setState({ tag_advanced: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">Advanced</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_greatforanybody"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById(
+                        "tag_greatforanybody"
+                      ).checked;
+                      this.setState({ tag_greatforanybody: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">Great for anybody</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_smallwaves"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById("tag_smallwaves")
+                        .checked;
+                      this.setState({ tag_smallwaves: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">Small Waves</div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    id="tag_budget"
+                    style={{
+                      width: "30px",
+                      marginBottom: "0px",
+                      height: "20px"
+                    }}
+                    name="beginners"
+                    onChange={e => {
+                      let checked = document.getElementById("tag_budget")
+                        .checked;
+                      this.setState({ tag_budget: checked });
+                    }}
+                    type="checkbox"
+                  />
+                  <div className="tag">On a Budget</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="login-form__field m-t-30">
-          <div className="login-form__field">
-            <label>Region</label>
-            <select
-              onChange={e => {
-                this.setState({ region: e.target.value });
-                this.props.setListingCities(e.target.value);
-                this.updateCityFromRegionChange(e.target.value);
-              }}
-            >
-              <option value="Southern California">Southern California</option>
-              <option value="Northern California">Northern California</option>
-              <option value="Pacific North West">Pacific North West</option>
-              <option value="Mid Atlantic">Mid Atlantic</option>
-              <option value="South East">South East</option>
-              <option value="East Florida">East Florida</option>
-              <option value="Hawaii">Hawaii</option>
-              <option value="Australia">Australia</option>
-              <option value="South Africa">South Africa</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="login-form__field">
-          <div className="login-form__field">
-            <label>City</label>
-            <select
-              onChange={e => {
-                this.setState({ city: e.target.value });
-                this.updateCityLongitudeLatitude(e.target.value);
-              }}
-              value={this.state.city}
-            >
-              {cities}
-            </select>
-          </div>
-        </div>
-
-        <div className="login-form__field m-t-30 m-b-0">
-          <div className="login-form__field" style={{alignItems: 'center'}}>
-            { this.state.avatar ? <img src={this.state.avatar} /> : "" }
-            <Dropzone onDrop={this.uploadPhoto} multiple={false}>
-              <p
-                style={{
-                  textAlign: "center",
-                  paddingTop: "20px",
-                  fontFamily: "Montserrat"
+          <div className="login-form__field m-t-30">
+            <div className="login-form__field">
+              <label>Region</label>
+              <select
+                onChange={e => {
+                  this.setState({ region: e.target.value });
+                  this.props.setListingCities(e.target.value);
+                  this.updateCityFromRegionChange(e.target.value);
                 }}
               >
-                Click or drop your board photo.
-              </p>
-            </Dropzone>
+                <option value="Southern California">Southern California</option>
+                <option value="Northern California">Northern California</option>
+                <option value="Pacific North West">Pacific North West</option>
+                <option value="Mid Atlantic">Mid Atlantic</option>
+                <option value="South East">South East</option>
+                <option value="East Florida">East Florida</option>
+                <option value="Hawaii">Hawaii</option>
+                <option value="Australia">Australia</option>
+                <option value="South Africa">South Africa</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <button
-          onClick={this.handleListing}
-          className="button button--green button--large"
-        >
-          Publish Listing
-        </button>
-      </div>
+          <div className="login-form__field">
+            <div className="login-form__field">
+              <label>City</label>
+              <select
+                onChange={e => {
+                  this.setState({ city: e.target.value });
+                  this.updateCityLongitudeLatitude(e.target.value);
+                }}
+                value={this.state.city}
+              >
+                {cities}
+              </select>
+            </div>
+          </div>
+
+          <div className="login-form__field m-t-30 m-b-0">
+            <div className="login-form__field" style={{ alignItems: "center" }}>
+              {this.state.avatar ? <img src={this.state.avatar} /> : ""}
+              <Dropzone onDrop={this.uploadPhoto} multiple={false}>
+                <p
+                  style={{
+                    textAlign: "center",
+                    paddingTop: "20px",
+                    fontFamily: "Montserrat",
+                    marginTop: "22px"
+                  }}
+                >
+                  Click or drop your board photo.
+                </p>
+              </Dropzone>
+            </div>
+          </div>
+
+          <button
+            onClick={this.handleListing}
+            className="button button--green button--large"
+          >
+            Publish Listing
+          </button>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ userId, shop_coast, dropDownCityList, userAuthenticated }) => {
+const mapStateToProps = ({
+  userId,
+  shop_coast,
+  dropDownCityList,
+  userAuthenticated
+}) => {
   return { userId, shop_coast, dropDownCityList, userAuthenticated };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setListingCities: region => dispatch({ type: `SET_LISTING_CITIES`, region }),
+    setListingCities: region =>
+      dispatch({ type: `SET_LISTING_CITIES`, region }),
     setCurrentUser: (
       userId,
       username,
