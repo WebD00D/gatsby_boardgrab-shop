@@ -32,6 +32,7 @@ class ListABoard extends Component {
     this.uploadPhoto = this.uploadPhoto.bind(this);
 
     this.state = {
+      imageLoading: false,
       region: "Southern California",
       city: "San Diego",
       longitude: -117.14996337890625,
@@ -125,6 +126,10 @@ class ListABoard extends Component {
 
     let originalFile = files[0];
 
+    this.setState({
+      imageLoading: true
+    })
+
     LoadImage(
       originalFile,
       function(img) {
@@ -143,7 +148,8 @@ class ListABoard extends Component {
             storageRef.put(blob).then(
               function(snapshot) {
                 this.setState({
-                  avatar: snapshot.metadata.downloadURLs[0]
+                  avatar: snapshot.metadata.downloadURLs[0],
+                  imageLoading: false
                 });
               }.bind(this)
             );
@@ -152,7 +158,6 @@ class ListABoard extends Component {
       }.bind(this),
       {
         orientation: true,
-        maxWidth: 600,
       }
     );
   }
@@ -1044,7 +1049,10 @@ class ListABoard extends Component {
 
           <div className="login-form__field m-t-30 m-b-0">
             <div className="login-form__field" style={{ alignItems: "center" }}>
-              {this.state.avatar ? <img src={this.state.avatar} /> : ""}
+
+              {this.state.imageLoading ? <div className="loader">Loading...</div> : ""}
+
+              {this.state.avatar ? <img style={{marginBottom: '22px'}} src={this.state.avatar} /> : ""}
               <Dropzone onDrop={this.uploadPhoto} multiple={false}>
                 <p
                   style={{
