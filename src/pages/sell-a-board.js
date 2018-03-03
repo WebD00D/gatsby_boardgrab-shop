@@ -30,6 +30,7 @@ class ListABoard extends Component {
     );
 
     this.uploadPhoto = this.uploadPhoto.bind(this);
+    this._uploadPhoto = this._uploadPhoto.bind(this);
 
     this.state = {
       imageLoading: false,
@@ -73,7 +74,18 @@ class ListABoard extends Component {
       tag_budget: false,
 
       newShaper: false,
-      newModel: true
+      newModel: true,
+
+      photoOnePreview: '',
+      photoOneFile: null,
+      photoTwoPreview: '',
+      photoTwoFile: null,
+      photoThreePreview: '',
+      photoThreeFile: null,
+      photoFourPreview: '',
+      photoFourFile: null,
+      photoFivePreview: '',
+      photoFiveFile: null
     };
   }
 
@@ -121,6 +133,62 @@ class ListABoard extends Component {
     return "";
   }
 
+  _uploadPhoto(files) {
+
+    console.log(files[0].preview)
+
+    if ( this.state.photoOnePreview.trim() == "" ) {
+      this.setState({
+        photoOnePreview: files[0].preview,
+        photoOneFile: files[0]
+      })
+      return;
+    }
+
+    if ( this.state.photoTwoPreview.trim() == "" ) {
+      this.setState({
+        photoTwoPreview: files[0].preview,
+        photoTwoFile: files[0]
+      })
+      return;
+    }
+
+    if ( this.state.photoThreePreview.trim() == "" ) {
+      console.log("photo three uploadig")
+      this.setState({
+        photoThreePreview: files[0].preview,
+        photoThreeFile: files[0]
+      })
+      return;
+    }
+
+    if ( this.state.photoFourPreview.trim() == "" ) {
+      this.setState({
+        photoFourPreview: files[0].preview,
+        photoFourFile: files[0]
+      })
+      return;
+    }
+
+    if ( this.state.photoFivePreview.trim() == "" ) {
+      this.setState({
+        photoFivePreview: files[0].preview,
+        photoFiveFile: files[0]
+      })
+      return;
+    }
+
+
+    // const dateTime = Date.now();
+    // const storageRef = fire.storage().ref().child(`BG-${dateTime}-${files[0].name}`);
+    // storageRef.put(files[0]).then(function(snapshot) {
+    //   this.setState({
+    //     avatar: snapshot.metadata.downloadURLs[0]
+    //   })
+    // }.bind(this));
+
+  }
+
   uploadPhoto(files) {
     console.log("LOAD IMAGE", LoadImage);
 
@@ -128,7 +196,7 @@ class ListABoard extends Component {
 
     this.setState({
       imageLoading: true
-    })
+    });
 
     LoadImage(
       originalFile,
@@ -157,7 +225,7 @@ class ListABoard extends Component {
         );
       }.bind(this),
       {
-        orientation: true,
+        orientation: true
       }
     );
   }
@@ -1049,10 +1117,17 @@ class ListABoard extends Component {
 
           <div className="login-form__field m-t-30 m-b-0">
             <div className="login-form__field" style={{ alignItems: "center" }}>
+              {this.state.imageLoading ? (
+                <div className="loader">Loading...</div>
+              ) : (
+                ""
+              )}
 
-              {this.state.imageLoading ? <div className="loader">Loading...</div> : ""}
-
-              {this.state.avatar ? <img style={{marginBottom: '22px'}} src={this.state.avatar} /> : ""}
+              {this.state.avatar ? (
+                <img style={{ marginBottom: "22px" }} src={this.state.avatar} />
+              ) : (
+                ""
+              )}
               <Dropzone onDrop={this.uploadPhoto} multiple={false}>
                 <p
                   style={{
@@ -1065,6 +1140,104 @@ class ListABoard extends Component {
                   Click or drop your board photo.
                 </p>
               </Dropzone>
+            </div>
+          </div>
+
+          <div className="login-form__field m-t-30 m-b-0">
+            <div className="stab-travel__photo--row">
+              <div className="stab-travel__photo-wrap">
+                <span className="stab-travel__photo-count">1</span>
+                {this.state.photoOnePreview ? (
+                  <div
+                    className="stab-travel__photo-lg stab-travel___photo-bg"
+                    style={{
+                      backgroundImage: `url(${this.state.photoOnePreview})`
+                    }}
+                  />
+                ) : (
+                  <Dropzone
+                    onDrop={this._uploadPhoto}
+                    className="stab-travel__photo-lg"
+                    multiple={false}
+                  />
+                )}
+              </div>
+              <div className="stab-travel__small-photo-row">
+                <div className="stab-travel-small-photo-half">
+                  <div className="stab-travel__photo-wrap">
+                    <span className="stab-travel__photo-count">2</span>
+                    {this.state.photoTwoPreview ? (
+                      <div
+                        className="stab-travel__photo-sm stab-travel___photo-bg"
+                        style={{
+                          backgroundImage: `url(${this.state.photoTwoPreview})`
+                        }}
+                      />
+                    ) : (
+                      <Dropzone
+                        onDrop={this._uploadPhoto}
+                        className="stab-travel__photo-sm"
+                        multiple={false}
+                      />
+                    )}
+                  </div>
+                  <div className="stab-travel__photo-wrap">
+                    <span className="stab-travel__photo-count">3</span>
+                    {this.state.photoThreePreview ? (
+                      <div
+                        className="stab-travel__photo-sm stab-travel___photo-bg"
+                        style={{
+                          backgroundImage: `url(${
+                            this.state.photoThreePreview
+                          })`
+                        }}
+                      />
+                    ) : (
+                      <Dropzone
+                        onDrop={this._uploadPhoto}
+                        className="stab-travel__photo-sm"
+                        multiple={false}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="stab-travel-small-photo-half">
+                  <div className="stab-travel__photo-wrap">
+                    <span className="stab-travel__photo-count">4</span>
+                    {this.state.photoFourPreview ? (
+                      <div
+                        className="stab-travel__photo-sm stab-travel___photo-bg"
+                        style={{
+                          backgroundImage: `url(${this.state.photoFourPreview})`
+                        }}
+                      />
+                    ) : (
+                      <Dropzone
+                        onDrop={this._uploadPhoto}
+                        className="stab-travel__photo-sm"
+                        multiple={false}
+                      />
+                    )}
+                  </div>
+                  <div className="stab-travel__photo-wrap">
+                    <span className="stab-travel__photo-count">5</span>
+                    {this.state.photoFivePreview ? (
+                      <div
+                        className="stab-travel__photo-sm stab-travel___photo-bg"
+                        style={{
+                          backgroundImage: `url(${this.state.photoFivePreview})`
+                        }}
+                      />
+                    ) : (
+                      <Dropzone
+                        onDrop={this._uploadPhoto}
+                        className="stab-travel__photo-sm"
+                        multiple={false}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

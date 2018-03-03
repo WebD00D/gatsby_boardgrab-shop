@@ -2,6 +2,19 @@
   display: none;
 }
 
+.access-wall {
+    background-color: #498144;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1000000000000000000;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .page-header {
   background-image: url("../images/board-header@2x.png");
   background-size: cover;

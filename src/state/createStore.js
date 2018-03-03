@@ -251,6 +251,15 @@ const reducer = (state, action) => {
 		};
 	}
 
+	if (action.type === `ALLOW_ACCESS`) {
+		return {
+			...state,
+			accessGranted: true,
+		};
+	}
+
+
+
 	return state;
 };
 
@@ -273,6 +282,7 @@ const initialState = {
 	paypal_email: '',
 	isSeller: false,
 	stripe: '',
+	accessGranted: false,
 
 	// Southern California is the initial load on default. Will change this once we store users settings in a cookie.
 	currentCityList: [

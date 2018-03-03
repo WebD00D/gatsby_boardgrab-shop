@@ -27,6 +27,7 @@ class IndexPage extends PureComponent {
     this._updateDims = this._updateDims.bind(this);
     this._handleBoardClick = this._handleBoardClick.bind(this);
     this.getCookie = this.getCookie.bind(this);
+    this.checkAccess = this.checkAccess.bind(this);
 
     this.state = {
       popupInfo: null,
@@ -36,7 +37,8 @@ class IndexPage extends PureComponent {
       board: 0,
       bestForMenuOpen: false,
       mobileLocationMenu: false,
-      mobileLocationTitle: "All Locations"
+      mobileLocationTitle: "All Locations",
+      accessGranted: false,
     };
   }
 
@@ -46,6 +48,19 @@ class IndexPage extends PureComponent {
 
 
     // end check if user is signed in..
+  }
+
+  checkAccess(value) {
+
+
+    if ( value === "KellySl8ter69!" ) {
+
+      this.props.allowAccess()
+
+
+    }
+
+
   }
 
   getCookie(cname) {
@@ -321,6 +336,25 @@ class IndexPage extends PureComponent {
 
     return (
       <div id="container" style={{ display: "flex" }}>
+
+        { !this.props.accessGranted ?
+
+          <div className="access-wall">
+              <div><img src={require("../layouts/images/bg-mono.png")} /></div>
+              <div style={{marginTop: '22px'}} className="t-sans fc-white"><b>Enter Access Code</b></div>
+              <input
+                className="authentication-field"
+                style={{width:'220px', marginTop: '22px',textAlign: 'center', fontSize: '24px'}}
+                onChange={e => {
+                  this.checkAccess(e.target.value);
+                }}
+                type="password"
+              />
+          </div>
+
+           : ""  }
+
+
         <div id="boards" className="boards-page-container">
           <div className="board-page-mobile-header">
             <div className="mobile-headline t-sans">
@@ -634,7 +668,8 @@ const mapStateToProps = ({
   regionHasNoBoards,
   selectedRegion,
   isSeller,
-  userAuthenticated
+  userAuthenticated,
+  accessGranted
 }) => {
   return {
     userId,
@@ -651,7 +686,8 @@ const mapStateToProps = ({
     regionHasNoBoards,
     selectedRegion,
     isSeller,
-    userAuthenticated
+    userAuthenticated,
+    accessGranted
   };
 };
 
@@ -667,6 +703,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({ type: `GET_ALL_BOARDS_BY_REGION`, boards }),
     getAllBoardsByCity: boards =>
       dispatch({ type: `GET_ALL_BOARDS_BY_CITY`, boards }),
+    allowAccess: () => dispatch({ type: `ALLOW_ACCESS` }),
     setCurrentUser: (
       userId,
       username,
