@@ -39,6 +39,8 @@ class Authentication extends PureComponent {
             .then(
               function(snapshot) {
                 console.log("SIGN IN SNAPSHOT", snapshot.val());
+                document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                document.cookie = `boardgrab_user=${user.uid}`;
                 this.props.setCurrentUser(
                   user.uid,
                   snapshot.val().username,
