@@ -82,6 +82,9 @@ class Authentication extends PureComponent {
         function(user) {
           const newUser = fire.auth().currentUser;
 
+          localStorage.setItem('boardgrab_user', user.uid);
+
+
           this.props.createAndSignInUser(
             user.uid,
             this.state.username,
