@@ -340,24 +340,6 @@ class IndexPage extends PureComponent {
     return (
       <div id="container" style={{ display: "flex" }}>
 
-        { !this.props.accessGranted ?
-
-          <div className="access-wall">
-              <div><img src={require("../layouts/images/bg-mono.png")} /></div>
-              <div style={{marginTop: '22px'}} className="t-sans fc-white"><b>Enter Access Code</b></div>
-              <input
-                className="authentication-field"
-                style={{width:'220px', marginTop: '22px',textAlign: 'center', fontSize: '24px'}}
-                onChange={e => {
-                  this.checkAccess(e.target.value);
-                }}
-                type="password"
-              />
-          </div>
-
-           : ""  }
-
-
         <div id="boards" className="boards-page-container">
           <div className="board-page-mobile-header">
             <div className="mobile-headline t-sans">
