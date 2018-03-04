@@ -38,7 +38,7 @@ class IndexPage extends PureComponent {
       bestForMenuOpen: false,
       mobileLocationMenu: false,
       mobileLocationTitle: "All Locations",
-      accessGranted: false,
+      accessGranted: true,
     };
   }
 
