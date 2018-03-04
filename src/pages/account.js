@@ -38,8 +38,9 @@ class Account extends PureComponent {
   componentDidMount() {
     // check if user is signed in ..
 
-    const bgcookie = this.getCookie("boardgrab_user");
+    const bgcookie = localStorage.getItem('boardgrab_user')
 
+  
     let stripeId;
 
     if (bgcookie) {
