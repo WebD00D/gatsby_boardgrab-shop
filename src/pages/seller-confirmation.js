@@ -25,8 +25,8 @@ class SellerConfirmation extends Component {
 
   componentDidMount() {
     // we should have a logged in user at this point.
-    const bgcookie = this.getCookie("boardgrab_user");
-
+    //const bgcookie = this.getCookie("boardgrab_user");
+    const bgcookie = localStorage.getItem('boardgrab_user');
 
     if (bgcookie) {
       fire

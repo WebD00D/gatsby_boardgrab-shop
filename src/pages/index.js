@@ -82,7 +82,10 @@ class IndexPage extends PureComponent {
   componentDidMount() {
 
 
-    const bgcookie = this.getCookie("boardgrab_user");
+    //const bgcookie = this.getCookie("boardgrab_user");
+
+    const bgcookie = localStorage.getItem('boardgrab_user');
+
 
     if (bgcookie.trim()) {
       fire

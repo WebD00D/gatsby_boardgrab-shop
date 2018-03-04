@@ -64,7 +64,7 @@ const reducer = (state, action) => {
 
 	if (action.type === `LOGOUT_USER`) {
 
-		document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		//document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
 		fire.auth().signOut();
 		return {

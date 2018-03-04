@@ -41,6 +41,9 @@ class Authentication extends PureComponent {
                 console.log("SIGN IN SNAPSHOT", snapshot.val());
                 document.cookie = "boardgrab_user" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 document.cookie = `boardgrab_user=${user.uid}`;
+
+                localStorage.setItem('boardgrab_user', user.uid);
+
                 this.props.setCurrentUser(
                   user.uid,
                   snapshot.val().username,
@@ -117,7 +120,6 @@ class Authentication extends PureComponent {
       <div>
       <div className="page-header">
           <b className="t-sans">Welcome. Aloha. Benvenuto.</b>
-
       </div>
       <div className="site-container--sm t-primary" style={{paddingTop: '0px'}}>
 

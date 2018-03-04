@@ -49,7 +49,13 @@ class BoardDetail extends PureComponent {
 	componentDidMount() {
 
 
-		const bgcookie = this.getCookie("boardgrab_user");
+		//const bgcookie = this.getCookie("boardgrab_user");
+
+		const bgcookie = localStorage.getItem('boardgrab_user');
+
+
+		//localStorage.setItem('boardgrab_user', user.uid);
+
 
     if (bgcookie.trim()) {
       fire
