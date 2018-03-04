@@ -38,7 +38,7 @@ class Payment extends PureComponent {
 
   handlePayment() {
     const handler = StripeCheckout.configure({
-      key: "pk_test_1cazrtmAqKca0bS7yjBlPNsC",
+      key: "pk_live_QmEZFnVVwRLwBye5fWYTQDsT",
       image: "https://stripe.com/img/documentation/checkout/marketplace.png",
       locale: "auto",
       zipCode: true,
