@@ -1143,7 +1143,7 @@ class ListABoard extends Component {
             </div>
           </div>
 
-          <div className="login-form__field m-t-30 m-b-0">
+          <div className="login-form__field m-t-30 m-b-0 d-none">
             <div className="stab-travel__photo--row">
               <div className="stab-travel__photo-wrap">
                 <span className="stab-travel__photo-count">1</span>
