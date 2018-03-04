@@ -87,7 +87,7 @@ class IndexPage extends PureComponent {
     const bgcookie = localStorage.getItem('boardgrab_user');
 
 
-    if (bgcookie.trim()) {
+    if (bgcookie) {
       fire
         .database()
         .ref("users/" + bgcookie)

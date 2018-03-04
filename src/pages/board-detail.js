@@ -57,7 +57,7 @@ class BoardDetail extends PureComponent {
 		//localStorage.setItem('boardgrab_user', user.uid);
 
 
-    if (bgcookie.trim()) {
+    if (bgcookie) {
       fire
         .database()
         .ref("users/" + bgcookie)

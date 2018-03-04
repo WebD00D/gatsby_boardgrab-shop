@@ -42,7 +42,7 @@ class Account extends PureComponent {
 
     let stripeId;
 
-    if (bgcookie.trim()) {
+    if (bgcookie) {
       fire
         .database()
         .ref("users/" + bgcookie)

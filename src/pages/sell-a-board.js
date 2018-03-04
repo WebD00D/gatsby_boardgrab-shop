@@ -97,7 +97,7 @@ class ListABoard extends Component {
     const bgcookie = localStorage.getItem('boardgrab_user');
 
 
-    if (bgcookie.trim()) {
+    if (bgcookie) {
       fire
         .database()
         .ref("users/" + bgcookie)
