@@ -38,6 +38,8 @@ class ListABoard extends Component {
       city: "San Diego",
       longitude: -117.14996337890625,
       latitude: 32.71566625570317,
+      postError: false,
+      postErrorMessage: "",
 
       listingTitle: "",
       brandShaper: "",
@@ -49,8 +51,8 @@ class ListABoard extends Component {
       volume: "",
       description: "",
 
-      shaperInfo: "8",
-      price: "655",
+      shaperInfo: "",
+      price: "",
 
       avatar: "",
       photoOne: "",
@@ -210,6 +212,9 @@ class ListABoard extends Component {
 
             var url = URL.createObjectURL(blob);
             console.log("URL", url);
+            this.setState({
+                avatar: url
+            })
 
             const dateTime = Date.now();
             const storageRef = fire
@@ -231,6 +236,8 @@ class ListABoard extends Component {
         orientation: true
       }
     );
+
+    console.log("AVATAR", this.state.avatar)
   }
 
   updateCityFromRegionChange(region) {
@@ -596,6 +603,40 @@ class ListABoard extends Component {
 
   handleListing() {
     const dateTime = Date.now();
+
+    this.setState({
+      postError: false,
+      postErrorMessage: "",
+    })
+
+    console.log("name", this.state.listingTitle, "avatar", this.state.avatar, "price", this.state.price)
+
+    if ( !this.state.listingTitle ) {
+        this.setState({
+          postError: true,
+          postErrorMessage: "Please set a listing title!"
+        })
+        return;
+    }
+
+    if ( !this.state.avatar ) {
+        this.setState({
+          postError: true,
+          postErrorMessage: "Please include an image!"
+        })
+        return;
+    }
+
+    if ( !this.state.price ) {
+      this.setState({
+        postError: true,
+        postErrorMessage: "Please include a price!"
+      })
+      return;
+    }
+
+
+    return;
 
     // 1)  SAVE BOARD BY REGION
     fire
@@ -1121,7 +1162,10 @@ class ListABoard extends Component {
           <div className="login-form__field m-t-30 m-b-0">
             <div className="login-form__field" style={{ alignItems: "center" }}>
               {this.state.imageLoading ? (
+                <div>
+                <div className="t-sans t-center">Uploading and optimizing image <br /> <small>( This can take several seconds )</small></div>
                 <div className="loader">Loading...</div>
+                </div>
               ) : (
                 ""
               )}
@@ -1250,6 +1294,8 @@ class ListABoard extends Component {
           >
             Publish Listing
           </button>
+          <br />
+          { this.state.postError ? <div className="t-sans t-center" style={{color: 'red'}}><b>{this.state.postErrorMessage}</b></div> : "" }
         </div>
       </div>
     );
