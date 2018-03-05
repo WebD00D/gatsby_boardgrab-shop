@@ -609,7 +609,6 @@ class ListABoard extends Component {
       postErrorMessage: "",
     })
 
-    console.log("name", this.state.listingTitle, "avatar", this.state.avatar, "price", this.state.price)
 
     if ( !this.state.listingTitle ) {
         this.setState({
@@ -635,8 +634,6 @@ class ListABoard extends Component {
       return;
     }
 
-
-    return;
 
     // 1)  SAVE BOARD BY REGION
     fire
