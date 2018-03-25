@@ -95,7 +95,7 @@ class Navbar extends PureComponent {
           <Link to="/">
             <img
               className="navbar__logo"
-              src={require("../layouts/images/bg-logo-color.svg")}
+              src={require("../layouts/images/BGLogoNew.svg")}
             />
           </Link>
 
@@ -126,7 +126,7 @@ class Navbar extends PureComponent {
             </div>
 
             <Link
-              to="/"
+              to="/buy-boards"
               onClick={() => {
                 this.setState({ mobileMenuOpen: false });
               }}
@@ -228,14 +228,14 @@ class Navbar extends PureComponent {
         <Link to="/">
           <img
             className="navbar__logo"
-            src={require("../layouts/images/bg-logo-color.svg")}
+            src={require("../layouts/images/BGLogoNew.svg")}
           />
         </Link>
 
         <div style={{ display: "flex" }}>
 
 
-        <Link className="navbar__link hover" to="/">
+        <Link className="navbar__link hover" to="/buy-boards">
            Buy Boards
         </Link>
 

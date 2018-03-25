@@ -38,29 +38,19 @@ class IndexPage extends PureComponent {
       bestForMenuOpen: false,
       mobileLocationMenu: false,
       mobileLocationTitle: "All Locations",
-      accessGranted: true,
+      accessGranted: true
     };
   }
 
   componentWillMount() {
     // check if user is signed in ..
-
-
-
     // end check if user is signed in..
   }
 
   checkAccess(value) {
-
-
-    if ( value === "KellySl8ter69!" ) {
-
-      this.props.allowAccess()
-
-
+    if (value === "KellySl8ter69!") {
+      this.props.allowAccess();
     }
-
-
   }
 
   getCookie(cname) {
@@ -80,12 +70,9 @@ class IndexPage extends PureComponent {
   }
 
   componentDidMount() {
-
-
     //const bgcookie = this.getCookie("boardgrab_user");
 
-    const bgcookie = localStorage.getItem('boardgrab_user');
-
+    const bgcookie = localStorage.getItem("boardgrab_user");
 
     if (bgcookie) {
       fire
@@ -203,436 +190,132 @@ class IndexPage extends PureComponent {
   }
 
   render() {
-    let boards;
-
-    if (!this.props.boardsToDisplay || this.props.boardsToDisplay.length == 0) {
-      if (!this.props.boardsToDisplay) {
-        boards = (
-          <div
-            className="t-sans"
-            style={{
-              minHeight: "300px",
-              paddingBottom: "50px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column"
-            }}
-          >
-            <div style={{ marginBottom: "13px" }}>
-              <b>No Boards Found!</b>
-            </div>
-            <div style={{ marginBottom: "13px" }}>
-              Why not be the first to sell?
-            </div>
-            {this.props.isSeller ? (
-              <Link className="auth-button" to="/sell-a-board">
-                list a board
-              </Link>
-            ) : (
-              ""
-            )}
-            {this.props.userAuthenticated && !this.props.isSeller ? (
-              <Link className="auth-button" to="/sell-with-us">
-                Start selling
-              </Link>
-            ) : (
-              ""
-            )}
-            {!this.props.userAuthenticated ? (
-              <Link className="auth-button" to="/authentication">
-                Create Account
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
-        );
-      } else {
-        boards = (
-          <div
-            className="t-sans"
-            style={{
-              minHeight: "300px",
-              paddingBottom: "50px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column"
-            }}
-          >
-            <div style={{ marginBottom: "13px" }}>
-              <b>No Boards Found!</b>
-            </div>
-            <div style={{ marginBottom: "13px" }}>
-              Why not be the first to sell?
-            </div>
-            {this.props.isSeller ? (
-              <Link className="auth-button" to="/sell-a-board">
-                list a board
-              </Link>
-            ) : (
-              ""
-            )}
-            {this.props.userAuthenticated && !this.props.isSeller ? (
-              <Link className="auth-button" to="/sell-with-us">
-                Start selling
-              </Link>
-            ) : (
-              ""
-            )}
-            {!this.props.userAuthenticated ? (
-              <Link className="auth-button" to="/authentication">
-                Create Account
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
-        );
-      }
-    } else {
-      boards = Object.keys(this.props.boardsToDisplay).map(
-        function(key) {
-          return (
-            <Link
-              key={key}
-              style={{ textDecoration: "none", color: "#404040" }}
-              to={`/board-detail/?board=${key}`}
-            >
-              <Board
-                key={`boards-${Number(key)}`}
-                board={this.props.boardsToDisplay[key]}
-              />{" "}
-            </Link>
-          );
-        }.bind(this)
-      );
-    }
-
-    let boardsByCity;
-    if (this.props.boardsByCity) {
-      boardsByCity = Object.keys(this.props.boardsByCity).map(
-        function(key) {
-          const size = _.size(this.props.boardsByCity[key].boards);
-
-          if (size == 0) {
-            return;
-          }
-
-          return (
-            <Marker
-              key={`marker-${key}`}
-              longitude={this.props.boardsByCity[key].longitude}
-              latitude={this.props.boardsByCity[key].latitude}
-            >
-              <CityPin
-                size={20}
-                boardCount={_.size(this.props.boardsByCity[key].boards)}
-                onClick={() => this.handleCityChange(key)}
-              />
-            </Marker>
-          );
-        }.bind(this)
-      );
-    }
-
     return (
-      <div id="container" style={{ display: "flex" }}>
-
-        <div id="boards" className="boards-page-container">
-          <div className="board-page-mobile-header">
-            <div className="mobile-headline t-sans">
-              <div className="mobile-headline__a">
-                <b>THE BEST PLACE TO BUY AND SELL</b>
-              </div>
-              <div className="mobile-headline__b">
-                <b>USED SURFBOARDS</b>
-              </div>
-              <div className="mobile-headline__explore">
-                <i className="fa fa-map-marker" /> Find a Board in Your Area
-              </div>
-              <div
-                onClick={() => {
-                  this.setState({
-                    mobileLocationMenu: !this.state.mobileLocationMenu
-                  });
-                }}
-                className="mobile-headline__dropdown"
-              >
-                <div className="mobile-headline__dropdown--text">
-                  {this.state.mobileLocationTitle}
-                </div>
-                <i className="fa fa-chevron-down" />
-              </div>
-              {this.state.mobileLocationMenu ? (
-                <div className="mobile-menu-dropdown">
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("All Locations");
-                      this.setState({
-                        mobileLocationTitle: "All Locations",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    All Locations
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Southern California");
-                      this.setState({
-                        mobileLocationTitle: "Southern California",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Southern California
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Northern California");
-                      this.setState({
-                        mobileLocationTitle: "Northern California",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Northern California
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Pacific North West");
-                      this.setState({
-                        mobileLocationTitle: "Pacific North West",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Pacific North West
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Mid Atlantic");
-                      this.setState({
-                        mobileLocationTitle: "Mid-Atlantic",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Mid-Atlantic
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("South East");
-                      this.setState({
-                        mobileLocationTitle: "South East",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    South East
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("East Florida");
-                      this.setState({
-                        mobileLocationTitle: "East Florida",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    East Florida
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Hawaii");
-                      this.setState({
-                        mobileLocationTitle: "Hawaii",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Hawaii
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("Australia");
-                      this.setState({
-                        mobileLocationTitle: "Australia",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    Australia
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      this.props.setRegionData("South Africa");
-                      this.setState({
-                        mobileLocationTitle: "South Africa",
-                        mobileLocationMenu: false
-                      });
-                    }}
-                    className="boardpage-location--mobile t-sans"
-                  >
-                    South Africa
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
+      <div id="container">
+        <div className="hp-hero">
+          <div className="hp-hero__title">
+            It's never been easier to <br /> buy and sell a surfboard.
           </div>
-
-          <div className="board-page-header">
-            <div className="board-page-header__wrap">
-              <div className="line-1">
-                <div className="line-1__a t-sans">
-                  <b>THE BEST</b>
-                </div>
-                <div className="line-1__b t-sans">
-                  <b>PLACE TO BUY</b>
-                </div>
-              </div>
-              <div className="line-2">
-                <div className="line-2-col-1 t-sans">
-                  <b>AND</b>
-                </div>
-                <div className="line-2-col-2 t-sans">
-                  <div className="line-2-col-2-a t-sans">
-                    <b>SELL USED</b>
-                  </div>
-                  <div className="line-2-col-2-b t-sans">
-                    <b>SURFBOARDS</b>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="board-page-location">
-              <div className="board-page-location__headline t-sans">
-                <i className="fa fa-map-marker" /> Find a Board in Your Area
-              </div>
-              <div className="board-page-location__locations">
-                <div>
-                  <div
-                    onClick={() => this.props.setRegionData("All Locations")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    All Locations
-                  </div>
-                  <div
-                    onClick={() =>
-                      this.props.setRegionData("Southern California")
-                    }
-                    className="boardpage-location__area t-sans"
-                  >
-                    Southern California
-                  </div>
-                  <div
-                    onClick={() =>
-                      this.props.setRegionData("Northern California")
-                    }
-                    className="boardpage-location__area t-sans"
-                  >
-                    Northern California
-                  </div>
-                  <div
-                    onClick={() =>
-                      this.props.setRegionData("Pacific North West")
-                    }
-                    className="boardpage-location__area t-sans"
-                  >
-                    Pacific North West
-                  </div>
-                  <div
-                    onClick={() => this.props.setRegionData("Mid Atlantic")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    Mid-Atlantic
-                  </div>
-                </div>
-                <div style={{ marginLeft: "30px" }}>
-                  <div
-                    onClick={() => this.props.setRegionData("Hawaii")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    Hawaii
-                  </div>
-                  <div
-                    onClick={() => this.props.setRegionData("East Florida")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    East Florida
-                  </div>
-                  <div
-                    onClick={() => this.props.setRegionData("Australia")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    Australia
-                  </div>
-                  <div
-                    onClick={() => this.props.setRegionData("South Africa")}
-                    className="boardpage-location__area t-sans"
-                  >
-                    South Africa
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="boards-pages-secondary-container">
-            {_.reverse(boards)}
-          </div>
+          <img
+            className="hp-hero__wave"
+            src={require("../layouts/images/Wave_White@2x.png")}
+          />
+          <div className="hp-copy fc-white m-b-20">Watch our Video.</div>
+          <img
+            className="hover hp-hero__play"
+            src={require("../layouts/images/playicon.png")}
+          />
         </div>
-        <div
-          id="map"
-          className="board-map"
-          style={{
-            width: "40%",
-            position: "fixed",
-            top: "60px",
-            bottom: 0,
-            right: 0
-          }}
-        >
-          <MapGL
-            mapboxApiAccessToken={
-              "pk.eyJ1Ijoid2ViZG9vZCIsImEiOiJjajlnZTk0OTMyeGVhMndwOWJ4bDlqMDd1In0.TzYbLbUFco-TSaqObrvWTA"
-            }
-            width={this.state.width}
-            height={this.state.height}
-            latitude={this.props.latitude}
-            longitude={this.props.longitude}
-            zoom={this.props.mapZoom}
-            mapStyle="mapbox://styles/webdood/cj9gc6pvx8udn2ro4lyqrxuo6"
-            onViewportChange={viewport => {
-              const { width, height, latitude, longitude, zoom } = viewport;
-              this.props.setMapPosition(latitude, longitude);
-            }}
+        <div className="hp-alert-bar">
+          <b style={{ paddingRight: "4px" }}>WIN A SURFBOARD! </b> List a board
+          by April 30th, and get double entries into the contest.{" "}
+          <span
+            className="hover"
+            style={{ textDecoration: "underline", paddingLeft: "4px" }}
           >
-            {boardsByCity}
-          </MapGL>
+            Enter Here.
+          </span>
         </div>
+
+        <section className="hp-section">
+          <div className="hp-section__header t-sans">
+            A peer to peer marketplace <br />
+            helping boards find new homes.
+          </div>
+          <div className="hp-section__copy hp-copy">
+            Tired of paying massive commisions to a third party, or dealing with
+            the shady nuances of Craigslist? So were we. Enter Boardgrab, the
+            best place to buy and sell used surfboards.
+          </div>
+        </section>
+
+        <section className="hp-section hp-section__features">
+          <div className="hp-features">
+            <div className="hp-feature">
+              <img src={require("../layouts/images/credit_card@2x.png")} />
+              <div className="hp-feature__spacer" />
+              <div className="t-sans f-16">
+                <b>SECURE PAYMENTS</b>
+              </div>
+              <div className="t-sans f-16">
+                Pay for your board on Boardgrab. Recieve payouts via Stripe.
+              </div>
+            </div>
+
+            <div className="hp-feature">
+              <img src={require("../layouts/images/mappin@2x.png")} />
+              <div className="hp-feature__spacer" />
+              <div className="t-sans f-16">
+                <b>EASY SEARCH</b>
+              </div>
+              <div className="t-sans f-16">
+                Using our map feature, finding your next board will be a breeze.
+              </div>
+            </div>
+            <div className="hp-feature">
+              <img src={require("../layouts/images/community@2x.png")} />
+              <div className="hp-feature__spacer" />
+              <div className="t-sans f-16">
+                <b>COMMUNITY DRIVEN</b>
+              </div>
+              <div className="t-sans f-16">
+                Messaging and comments let you nerd out even more on the stoke.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="hp-section hp-section__sell ">
+          <div className="hp-section__sell-caption">
+            <label className="t-sans">MAKE SOME CASH</label>
+            <div className="hp-section__sell-title t-sans">
+              Sell Your Surfboard
+            </div>
+            <img
+              className="hp-sell_waves"
+              src={require("../layouts/images/Waves_Black@2x.png")}
+            />
+          </div>
+          <div className="hp-sell_info t-sans fc-white">
+            We’ve made it super simple to sell your used boards . In your
+            seller’s dashboard, you’ll be able to manage your listings, accept
+            offers, answer questions, view payouts, and more.
+          </div>
+          <img
+            className="hp-sell_img"
+            src={require("../layouts/images/SellBoardPhoto@2x.png")}
+          />
+          <div className="hp-sell__cta t-sans hover">
+            Create Seller Profile <i className="fa fa-long-arrow-right" />
+          </div>
+        </section>
+
+        <section className="hp-section hp-section__sell ">
+          <div className="hp-section__sell-caption">
+            <label className="t-sans">ADD TO YOUR QUIVER</label>
+            <div className="hp-section__sell-title t-sans">
+              Find Your Next Board
+            </div>
+            <img
+              className="hp-sell_waves"
+              src={require("../layouts/images/Waves_Black@2x.png")}
+            />
+          </div>
+          <div className="hp-sell_info t-sans fc-white">
+          See a board you’re keen on? Cool - send the seller an offer, or ask
+          a question. You’ll be able to pay securely for the board on our site
+          via Stripe, view purchases, message history, and more.
+          </div>
+          <img
+            className="hp-sell_img"
+            src={require("../layouts/images/BuyBoardPhoto@2x.png")}
+          />
+          <div className="hp-sell__cta t-sans hover">
+            Create an Account <i className="fa fa-long-arrow-right" />
+          </div>
+        </section>
+
+
       </div>
     );
   }
