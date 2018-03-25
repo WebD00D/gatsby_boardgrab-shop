@@ -269,7 +269,7 @@ class IndexPage extends PureComponent {
           <div className="hp-section__sell-caption">
             <label className="t-sans">MAKE SOME CASH</label>
             <div className="hp-section__sell-title t-sans">
-              Sell Your Surfboard
+              Sell Your Board
             </div>
             <img
               className="hp-sell_waves"
@@ -294,7 +294,7 @@ class IndexPage extends PureComponent {
           <div className="hp-section__sell-caption">
             <label className="t-sans">ADD TO YOUR QUIVER</label>
             <div className="hp-section__sell-title t-sans">
-              Find Your Next Board
+              Find Your Next
             </div>
             <img
               className="hp-sell_waves"
